@@ -72,8 +72,28 @@
   </header>
 
   <!-- Hero -->
-  <section id="top" class="max-w-3xl mx-auto px-6 pt-10 pb-8">
-    <div class="relative mb-8">
+  <section id="top" class="max-w-6xl mx-auto px-6 pt-10 pb-8 grid md:grid-cols-2 gap-12 items-center">
+    <div class="md:order-1">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="bg-accent/10 text-accent text-xs tracking-wide uppercase px-4 py-2 rounded-full font-semibold">Mentoria Individual</span>
+        <span class="text-subtle text-xs tracking-wide uppercase">Não ficção</span>
+      </div>
+
+      <h1 class="font-serif font-semibold text-4xl sm:text-5xl leading-[1.1] mb-6">Escreva seu livro em até 12 meses.</h1>
+      <p class="text-subtle text-lg leading-relaxed mb-8 max-w-md">
+        Mentoria individual para profissionais que têm conhecimento a compartilhar. Com método claro e acompanhamento da primeira linha ao capítulo final.
+      </p>
+
+      <a href="#diagnostico" class="inline-block bg-accent text-white px-7 py-3.5 rounded-lg text-sm tracking-wide hover:bg-ink transition-colors">Fazer diagnóstico gratuito</a>
+      <p class="text-subtle text-sm mt-3">menos de um minuto · depois você agenda uma conversa comigo</p>
+
+      <div class="flex items-center gap-3 mt-8 pt-6 border-t border-line">
+        <img src="https://vivianepossato.vercel.app/_next/image?url=%2Ffotos%2Fviviane-13.jpeg&w=1920&q=85" alt="Viviane" class="w-10 h-10 rounded-full object-cover grayscale" />
+        <p class="text-subtle text-sm"><span class="font-semibold text-ink">Viviane</span> — jornalista · 20 anos Globo · mentora de livros</p>
+      </div>
+    </div>
+
+    <div class="relative md:order-2">
       <img src="https://vivianepossato.vercel.app/_next/image?url=%2Ffotos%2Fviviane-13.jpeg&w=1920&q=85"
            alt="Viviane Possato" class="w-full h-[420px] sm:h-[520px] object-cover grayscale rounded-2xl" />
       <span class="absolute top-5 right-5 bg-accent text-white text-sm px-4 py-2 rounded-lg">12 meses</span>
@@ -84,24 +104,6 @@
           <p class="text-subtle text-sm">Da ideia à publicação</p>
         </div>
       </div>
-    </div>
-
-    <div class="flex items-center gap-3 mb-6">
-      <span class="bg-accent/10 text-accent text-xs tracking-wide uppercase px-4 py-2 rounded-full font-semibold">Mentoria Individual</span>
-      <span class="text-subtle text-xs tracking-wide uppercase">Não ficção</span>
-    </div>
-
-    <h1 class="font-serif font-semibold text-4xl sm:text-5xl leading-[1.1] mb-6">Escreva seu livro em até 12 meses.</h1>
-    <p class="text-subtle text-lg leading-relaxed mb-8">
-      Mentoria individual para profissionais que têm conhecimento a compartilhar. Com método claro e acompanhamento da primeira linha ao capítulo final.
-    </p>
-
-    <a href="#diagnostico" class="inline-block bg-accent text-white px-7 py-3.5 rounded-lg text-sm tracking-wide hover:bg-ink transition-colors">Fazer diagnóstico gratuito</a>
-    <p class="text-subtle text-sm mt-3">menos de um minuto · depois você agenda uma conversa comigo</p>
-
-    <div class="flex items-center gap-3 mt-8 pt-6 border-t border-line">
-      <img src="https://vivianepossato.vercel.app/_next/image?url=%2Ffotos%2Fviviane-13.jpeg&w=1920&q=85" alt="Viviane" class="w-10 h-10 rounded-full object-cover grayscale" />
-      <p class="text-subtle text-sm"><span class="font-semibold text-ink">Viviane</span> — jornalista · 20 anos Globo · mentora de livros</p>
     </div>
   </section>
 
@@ -160,10 +162,10 @@
   </section>
 
   <!-- Por que você ainda não escreveu -->
-  <section class="max-w-3xl mx-auto px-6 py-20 text-center">
+  <section class="max-w-5xl mx-auto px-6 py-20 text-center">
     <div class="divider mx-auto mb-5"></div>
     <h2 class="font-serif text-3xl sm:text-4xl mb-14">Por que você ainda não escreveu</h2>
-    <div class="space-y-6 text-left">
+    <div class="grid md:grid-cols-3 gap-6 text-left">
       <div class="card p-8">
         <span class="text-accent text-xl">✦</span>
         <h3 class="font-serif text-xl mt-4 mb-2">O conteúdo você tem.</h3>
@@ -255,28 +257,30 @@
 
   <!-- Quem vai te acompanhar -->
   <section id="viviane" class="bg-paper py-20">
-    <div class="max-w-5xl mx-auto px-6">
-      <div class="grid sm:grid-cols-2 gap-4 mb-14">
-        <img src="https://vivianepossato.vercel.app/_next/image?url=%2Ffotos%2Fviviane-desk.jpeg&w=1920&q=90"
-             alt="Viviane em seu escritório" class="w-full h-64 sm:h-80 object-cover rounded-2xl mt-10" />
-        <img src="https://vivianepossato.vercel.app/_next/image?url=%2Ffotos%2Fviviane-08.jpeg&w=1920&q=85"
-             alt="Viviane jornalista" class="w-full h-64 sm:h-80 object-cover rounded-2xl" />
-      </div>
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid md:grid-cols-2 gap-12 items-start mb-14">
+        <div class="grid grid-cols-2 gap-4">
+          <img src="https://vivianepossato.vercel.app/_next/image?url=%2Ffotos%2Fviviane-desk.jpeg&w=1920&q=90"
+               alt="Viviane em seu escritório" class="w-full h-64 sm:h-80 object-cover rounded-2xl mt-10" />
+          <img src="https://vivianepossato.vercel.app/_next/image?url=%2Ffotos%2Fviviane-08.jpeg&w=1920&q=85"
+               alt="Viviane jornalista" class="w-full h-64 sm:h-80 object-cover rounded-2xl" />
+        </div>
 
-      <div class="max-w-2xl">
-        <span class="bg-accent/10 text-accent text-xs tracking-wide uppercase px-4 py-2 rounded-full inline-block mb-6 font-semibold">Ex-Globo · 20 anos</span>
-        <div class="divider mb-5"></div>
-        <h2 class="font-serif text-3xl sm:text-4xl mb-6">Quem vai te acompanhar</h2>
-        <p class="text-subtle text-lg leading-relaxed mb-4">Eu sou Viviane, jornalista com 20 anos de experiência na Globo. Passei duas décadas escrevendo histórias que precisavam ser objetivas e envolventes ao mesmo tempo.</p>
-        <p class="text-subtle text-lg leading-relaxed mb-10">Quando comecei a ajudar pessoas a escreverem livros, trouxe essa mesma lógica: processo e acompanhamento de quem entende.</p>
-        <div class="grid grid-cols-2 gap-4 mb-10 max-w-sm">
-          <div class="card-white p-6">
-            <p class="font-serif text-3xl text-accent mb-1">20</p>
-            <p class="text-subtle text-xs uppercase tracking-wide">Anos na Globo</p>
-          </div>
-          <div class="card-white p-6">
-            <p class="font-serif text-3xl text-accent mb-1">12</p>
-            <p class="text-subtle text-xs uppercase tracking-wide">Meses de mentoria</p>
+        <div>
+          <span class="bg-accent/10 text-accent text-xs tracking-wide uppercase px-4 py-2 rounded-full inline-block mb-6 font-semibold">Ex-Globo · 20 anos</span>
+          <div class="divider mb-5"></div>
+          <h2 class="font-serif text-3xl sm:text-4xl mb-6">Quem vai te acompanhar</h2>
+          <p class="text-subtle text-lg leading-relaxed mb-4">Eu sou Viviane, jornalista com 20 anos de experiência na Globo. Passei duas décadas escrevendo histórias que precisavam ser objetivas e envolventes ao mesmo tempo.</p>
+          <p class="text-subtle text-lg leading-relaxed mb-10">Quando comecei a ajudar pessoas a escreverem livros, trouxe essa mesma lógica: processo e acompanhamento de quem entende.</p>
+          <div class="grid grid-cols-2 gap-4 max-w-sm">
+            <div class="card-white p-6">
+              <p class="font-serif text-3xl text-accent mb-1">20</p>
+              <p class="text-subtle text-xs uppercase tracking-wide">Anos na Globo</p>
+            </div>
+            <div class="card-white p-6">
+              <p class="font-serif text-3xl text-accent mb-1">12</p>
+              <p class="text-subtle text-xs uppercase tracking-wide">Meses de mentoria</p>
+            </div>
           </div>
         </div>
       </div>
@@ -287,10 +291,10 @@
   </section>
 
   <!-- Como a gente começa -->
-  <section id="como-comecar" class="max-w-3xl mx-auto px-6 py-20">
+  <section id="como-comecar" class="max-w-5xl mx-auto px-6 py-20">
     <div class="divider mb-5"></div>
     <h2 class="font-serif text-3xl sm:text-4xl mb-14">Como a gente começa</h2>
-    <div class="space-y-6">
+    <div class="grid md:grid-cols-3 gap-6">
       <div class="card-white p-8">
         <span class="w-14 h-14 rounded-full border-2 border-accent text-accent font-serif text-lg flex items-center justify-center">1</span>
         <h3 class="font-semibold text-lg mt-5 mb-2">Preencha o diagnóstico</h3>
