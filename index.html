@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Escrita de Memórias | Viviane Possato</title>
+  <meta name="description" content="Curso online de escrita de memórias com Viviane Possato. Um percurso guiado para transformar memórias em texto, sem pressão, sem exigência técnica." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500&family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            paper: '#FDFCF8',
+            ink: '#1F1F1F',
+            subtle: '#5A5A5A',
+            accent: '#A87B7B',
+            line: '#E6E4E0',
+            warm: '#F5F4F0',
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'serif'],
+            sans: ['"Lato"', 'sans-serif'],
+            hand: ['"Caveat"', 'cursive'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #FDFCF8;
+      color: #1F1F1F;
+      font-family: 'Lato', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      position: relative;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 50;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+    ::selection { background: #E8DCDC; color: #1F1F1F; }
+    .polaroid {
+      background: #fff;
+      padding: 12px 12px 40px 12px;
+      box-shadow: 0 20px 40px -10px rgba(0,0,0,0.25);
+    }
+    details > summary { list-style: none; cursor: pointer; }
+    details > summary::-webkit-details-marker { display: none; }
+    details[open] .faq-icon { transform: rotate(45deg); }
+  </style>
+</head>
+<body>
+
+  <!-- Top bar -->
+  <div class="bg-ink text-paper text-center text-xs sm:text-sm py-2 px-4 font-sans tracking-wide">
+    A história da sua vida começa aqui.
+    <a href="https://pay.hotmart.com/U102857700C?bid=1766501787612" class="underline decoration-accent ml-2 hover:text-accent transition-colors">Começar a escrever agora</a>
+  </div>
+
+  <!-- Nav -->
+  <header class="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
+    <span class="font-serif text-lg sm:text-xl">Escrita de Memórias</span>
+    <nav class="hidden md:flex items-center gap-8 text-sm text-subtle">
+      <a href="#percurso" class="hover:text-ink transition-colors">Percurso</a>
+      <a href="#sobre" class="hover:text-ink transition-colors">Sobre mim</a>
+      <a href="#duvidas" class="hover:text-ink transition-colors">Dúvidas</a>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="max-w-6xl mx-auto px-6 pt-6 pb-20 grid md:grid-cols-2 gap-12 items-center">
+    <div>
+      <p class="uppercase tracking-[0.2em] text-xs text-accent font-sans mb-4">Curso Online de Escrita</p>
+      <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl leading-[1.1] mb-6">
+        Escreva a história<br/>que só você viveu.
+      </h1>
+      <p class="text-subtle text-lg leading-relaxed mb-8 max-w-md">
+        Um percurso guiado para transformar memórias em texto. Sem pressão, sem exigência técnica, com a verdade do seu coração.
+      </p>
+      <div class="flex flex-wrap gap-4 mb-8">
+        <a href="https://pay.hotmart.com/U102857700C?bid=1766501787612" class="bg-ink text-paper px-7 py-3.5 font-sans text-sm tracking-wide hover:bg-accent transition-colors">Quero começar agora</a>
+        <a href="#percurso" class="border border-ink/20 px-7 py-3.5 font-sans text-sm tracking-wide hover:border-ink transition-colors">Entender como funciona</a>
+      </div>
+      <div class="flex flex-wrap gap-x-6 gap-y-2 text-xs text-subtle font-sans">
+        <span>✳ No seu ritmo</span>
+        <span>✳ Práticas guiadas</span>
+        <span>✳ Sem críticas</span>
+      </div>
+    </div>
+
+    <div class="relative">
+      <img src="https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=800&auto=format&fit=crop"
+           alt="Caneta tinteiro sobre carta escrita à mão"
+           class="w-full h-[420px] object-cover shadow-xl" />
+      <div class="polaroid absolute -bottom-8 -left-8 w-44 rotate-[-6deg] hidden sm:block">
+        <div class="h-24 bg-warm"></div>
+        <p class="font-hand text-xl text-center mt-3 text-ink">"Você só precisa começar pela primeira linha."</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Por que escrever -->
+  <section class="bg-warm py-24">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <h2 class="font-serif text-3xl sm:text-4xl mb-8">Por que escrever memórias?</h2>
+      <p class="text-subtle text-lg leading-relaxed mb-10">
+        A vida passa rápido demais e, muitas vezes, esquecemos os detalhes que nos fizeram quem somos.
+        O cheiro do café na casa da avó, o frio na barriga do primeiro dia de aula, o silêncio de um adeus.
+      </p>
+      <blockquote class="font-serif italic text-xl sm:text-2xl text-ink leading-snug border-l-2 border-accent pl-6 text-left max-w-xl mx-auto mb-10">
+        "Escrever não é apenas sobre colocar palavras no papel. É um gesto de cuidado com a própria história."
+      </blockquote>
+      <p class="text-subtle text-lg leading-relaxed">
+        É dizer para si mesmo que sua trajetória importa. É organizar o caos dos dias e encontrar sentido nos capítulos que já se fecharam.
+        <span class="text-ink">Você não precisa ser escritor para escrever.</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- Percurso -->
+  <section id="percurso" class="max-w-5xl mx-auto px-6 py-24">
+    <div class="text-center mb-16">
+      <h2 class="font-serif text-3xl sm:text-4xl mb-4">Um percurso gentil e possível</h2>
+      <p class="text-subtle text-lg">Não é um curso técnico. É um convite para passear pela sua vida em quatro movimentos.</p>
+    </div>
+
+    <div class="relative max-w-2xl mx-auto">
+      <div class="absolute left-4 top-2 bottom-2 w-px bg-line hidden sm:block"></div>
+
+      <div class="space-y-14">
+        <div class="relative sm:pl-14">
+          <div class="hidden sm:flex absolute left-0 top-0 w-8 h-8 rounded-full bg-accent text-paper items-center justify-center text-xs font-sans">01</div>
+          <p class="text-xs uppercase tracking-widest text-accent font-sans mb-1">Passo 01</p>
+          <h3 class="font-serif text-2xl mb-2">A Linha do Tempo</h3>
+          <p class="text-subtle leading-relaxed">Revisitar marcos não por data, mas por sentimento. Um mapa do que realmente importou.</p>
+        </div>
+
+        <div class="relative sm:pl-14">
+          <div class="hidden sm:flex absolute left-0 top-0 w-8 h-8 rounded-full bg-accent text-paper items-center justify-center text-xs font-sans">02</div>
+          <p class="text-xs uppercase tracking-widest text-accent font-sans mb-1">Passo 02</p>
+          <h3 class="font-serif text-2xl mb-2">O Inventário Afetivo</h3>
+          <p class="text-subtle leading-relaxed">Objetos, fotos, cartas antigas. Como transformar o material em narrativas que emocionam.</p>
+        </div>
+
+        <div class="relative sm:pl-14">
+          <div class="hidden sm:flex absolute left-0 top-0 w-8 h-8 rounded-full bg-accent text-paper items-center justify-center text-xs font-sans">03</div>
+          <p class="text-xs uppercase tracking-widest text-accent font-sans mb-1">Passo 03</p>
+          <h3 class="font-serif text-2xl mb-2">Os Sentidos da Memória</h3>
+          <p class="text-subtle leading-relaxed">Cheiros, sabores e sons. Acessar a memória que ficou guardada no corpo.</p>
+        </div>
+
+        <div class="relative sm:pl-14">
+          <div class="hidden sm:flex absolute left-0 top-0 w-8 h-8 rounded-full bg-accent text-paper items-center justify-center text-xs font-sans">04</div>
+          <p class="text-xs uppercase tracking-widest text-accent font-sans mb-1">Passo 04</p>
+          <h3 class="font-serif text-2xl mb-2">A Escrita da Verdade</h3>
+          <p class="text-subtle leading-relaxed">Encontrar sua própria voz, sem medo de julgamentos ou regras.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-16">
+      <a href="https://pay.hotmart.com/U102857700C?bid=1766501787612" class="inline-block bg-ink text-paper px-8 py-4 font-sans text-sm tracking-wide hover:bg-accent transition-colors">Quero começar meu percurso</a>
+      <p class="text-xs text-subtle mt-3 font-hand text-base">Comece hoje, no seu tempo.</p>
+    </div>
+  </section>
+
+  <!-- Você vai escrever sobre -->
+  <section class="bg-ink text-paper py-20">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h2 class="font-serif text-2xl sm:text-3xl mb-10">Você vai escrever sobre&hellip;</h2>
+      <div class="flex flex-wrap justify-center gap-3 font-sans text-sm">
+        <span class="border border-paper/25 rounded-full px-5 py-2">A cozinha da infância</span>
+        <span class="border border-paper/25 rounded-full px-5 py-2">Despedidas</span>
+        <span class="border border-paper/25 rounded-full px-5 py-2">Primeiros amores</span>
+        <span class="border border-paper/25 rounded-full px-5 py-2">Cartas guardadas</span>
+        <span class="border border-paper/25 rounded-full px-5 py-2">Cheiro de chuva</span>
+        <span class="border border-paper/25 rounded-full px-5 py-2">Viagens inesquecíveis</span>
+        <span class="border border-paper/25 rounded-full px-5 py-2">Silêncios</span>
+        <span class="border border-paper/25 rounded-full px-5 py-2">A casa dos avós</span>
+        <span class="border border-paper/25 rounded-full px-5 py-2">Mudanças</span>
+        <span class="border border-paper/25 rounded-full px-5 py-2">Pequenos rituais</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Como funciona -->
+  <section class="py-24">
+    <div class="max-w-5xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-start">
+      <div>
+        <h2 class="font-serif text-3xl sm:text-4xl mb-10">Como funciona?</h2>
+        <div class="space-y-8">
+          <div class="flex gap-5">
+            <span class="font-serif text-2xl text-accent">1</span>
+            <p class="text-subtle leading-relaxed pt-1">Você recebe acesso imediato ao portal do curso.</p>
+          </div>
+          <div class="flex gap-5">
+            <span class="font-serif text-2xl text-accent">2</span>
+            <p class="text-subtle leading-relaxed pt-1">Assiste às aulas gravadas no seu próprio ritmo.</p>
+          </div>
+          <div class="flex gap-5">
+            <span class="font-serif text-2xl text-accent">3</span>
+            <p class="text-subtle leading-relaxed pt-1">Segue as propostas de escrita ao final de cada módulo.</p>
+          </div>
+        </div>
+        <div class="mt-10 border-t border-line pt-6">
+          <p class="font-serif text-lg">Acesso Vitalício</p>
+          <p class="text-subtle text-sm">Você pode voltar sempre que sentir saudade.</p>
+        </div>
+      </div>
+
+      <div class="bg-warm p-10 text-center">
+        <p class="font-hand text-2xl text-accent mb-4">Simples assim</p>
+        <h3 class="font-serif text-2xl sm:text-3xl mb-5 leading-snug">Sem burocracia,<br/>apenas escrita.</h3>
+        <p class="text-subtle leading-relaxed mb-8">
+          Não inventamos regras. O curso é desenhado para destravar, não complicar. Você entra, sente, lembra e escreve.
+        </p>
+        <div class="flex justify-center gap-8 text-sm font-sans">
+          <span>No seu tempo</span>
+          <span>100% Online</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quem guia você -->
+  <section id="sobre" class="bg-warm py-24">
+    <div class="max-w-5xl mx-auto px-6 grid md:grid-cols-[280px_1fr] gap-14 items-center">
+      <div class="polaroid mx-auto w-64 rotate-[-3deg]">
+        <img src="https://i.im.ge/2025/12/23/BhBOb6.1774e106e-ImagemdoWhatsAppde2025-11-04s185439-72da8cf21-1.png"
+             alt="Viviane Possato" class="w-full h-72 object-cover" />
+        <p class="font-hand text-xl text-center mt-3">Viviane Possato</p>
+      </div>
+
+      <div>
+        <p class="uppercase tracking-[0.2em] text-xs text-accent font-sans mb-4">Quem guia você</p>
+        <p class="text-subtle text-lg leading-relaxed mb-4">
+          Sou jornalista, escritora e mentora. Durante mais de 20 anos, contei histórias de outras pessoas como repórter da TV Globo.
+        </p>
+        <p class="text-subtle text-lg leading-relaxed mb-4">
+          Em 2024, troquei os holofotes pela página em branco. Comecei um novo capítulo, vivendo da minha paixão pelas palavras.
+        </p>
+        <p class="text-subtle text-lg leading-relaxed mb-6">
+          Hoje, conduzo a mentoria Página a Página e o curso Escrita de Memórias.
+        </p>
+        <blockquote class="font-serif italic text-xl text-ink border-l-2 border-accent pl-6">
+          "Acredito que escrever é a forma mais bonita de dizer ao tempo que nós estivemos aqui."
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- Para você que / Talvez não seja -->
+  <section class="max-w-5xl mx-auto px-6 py-24 grid md:grid-cols-2 gap-10">
+    <div class="border border-line p-10">
+      <h3 class="font-serif text-2xl mb-6 flex items-center gap-2"><span class="text-accent">✓</span> Para você que&hellip;</h3>
+      <ul class="space-y-4 text-subtle leading-relaxed">
+        <li class="flex gap-3"><span class="text-accent">✓</span> Sente que tem muitas histórias, mas trava na hora de começar.</li>
+        <li class="flex gap-3"><span class="text-accent">✓</span> Quer deixar um registro afetivo para filhos, netos ou para si mesmo.</li>
+        <li class="flex gap-3"><span class="text-accent">✓</span> Busca um momento terapêutico, criativo e silencioso.</li>
+        <li class="flex gap-3"><span class="text-accent">✓</span> Nunca escreveu nada além de e-mails de trabalho.</li>
+      </ul>
+    </div>
+    <div class="border border-line p-10">
+      <h3 class="font-serif text-2xl mb-6 flex items-center gap-2"><span class="text-subtle">✕</span> Talvez não seja&hellip;</h3>
+      <ul class="space-y-4 text-subtle leading-relaxed">
+        <li class="flex gap-3"><span class="text-subtle">✕</span> Para quem busca fórmulas mágicas de best-seller.</li>
+        <li class="flex gap-3"><span class="text-subtle">✕</span> Para quem procura um curso acadêmico rígido.</li>
+        <li class="flex gap-3"><span class="text-subtle">✕</span> Para quem tem pressa e busca resultados imediatos.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="duvidas" class="max-w-3xl mx-auto px-6 py-24">
+    <h2 class="font-serif text-3xl sm:text-4xl text-center mb-14">Dúvidas Frequentes</h2>
+    <div class="divide-y divide-line border-t border-b border-line">
+      <details class="group py-6">
+        <summary class="flex justify-between items-center font-serif text-lg">
+          Nunca escrevi nada. Esse curso é para mim?
+          <span class="faq-icon transition-transform text-accent text-xl">+</span>
+        </summary>
+        <p class="text-subtle leading-relaxed mt-4">Com certeza. O curso foi desenhado justamente para destravar a escrita, usando suas próprias memórias como guia. Não é necessário ter experiência prévia.</p>
+      </details>
+      <details class="group py-6">
+        <summary class="flex justify-between items-center font-serif text-lg">
+          Quanto tempo tenho de acesso?
+          <span class="faq-icon transition-transform text-accent text-xl">+</span>
+        </summary>
+        <p class="text-subtle leading-relaxed mt-4">O acesso é vitalício. Você pode fazer no seu tempo, rever as aulas quantas vezes quiser e voltar a elas sempre que sentir saudade.</p>
+      </details>
+      <details class="group py-6">
+        <summary class="flex justify-between items-center font-serif text-lg">
+          Preciso mostrar meus textos para alguém?
+          <span class="faq-icon transition-transform text-accent text-xl">+</span>
+        </summary>
+        <p class="text-subtle leading-relaxed mt-4">Não. A escrita de memórias é um processo íntimo. Se você quiser compartilhar, será lindo, mas o objetivo principal é que você escreva para si mesmo.</p>
+      </details>
+      <details class="group py-6">
+        <summary class="flex justify-between items-center font-serif text-lg">
+          Como acesso o curso?
+          <span class="faq-icon transition-transform text-accent text-xl">+</span>
+        </summary>
+        <p class="text-subtle leading-relaxed mt-4">Assim que o pagamento for confirmado, você recebe um e-mail com seu login e senha para a nossa área de membros.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- CTA final -->
+  <section class="bg-ink text-paper py-28 text-center">
+    <div class="max-w-2xl mx-auto px-6">
+      <p class="font-hand text-2xl text-accent mb-4">Só falta a primeira linha&hellip;</p>
+      <h2 class="font-serif text-3xl sm:text-4xl leading-snug mb-10">Comece a escrever a história<br/>da sua vida hoje.</h2>
+      <a href="https://pay.hotmart.com/U102857700C?bid=1766501787612" class="inline-block bg-accent text-paper px-9 py-4 font-sans text-sm tracking-wide hover:bg-paper hover:text-ink transition-colors">Sim, quero escrever minhas memórias</a>
+      <div class="flex justify-center gap-8 mt-8 text-xs text-paper/60 font-sans">
+        <span>Acesso vitalício</span>
+        <span>Satisfação garantida</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-10 text-center">
+    <p class="text-sm text-subtle">Escrita de Memórias &copy; 2026</p>
+    <p class="text-xs text-subtle/70 mt-1 font-hand text-base">Feito com afeto por Viviane Possato.</p>
+    <div class="flex justify-center gap-6 mt-4 text-xs text-subtle uppercase tracking-wide">
+      <a href="#" class="hover:text-ink">Privacidade</a>
+      <a href="#" class="hover:text-ink">Termos</a>
+      <a href="#" class="hover:text-ink">Contato</a>
+    </div>
+  </footer>
+
+</body>
+</html>
