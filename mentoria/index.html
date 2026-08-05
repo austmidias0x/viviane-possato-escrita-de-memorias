@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mentoria de Livro | Viviane, da ideia à publicação em 12 meses</title>
+  <title>Mentoria de Livro | Acompanhamento individual com Viviane Possato</title>
   <meta name="description" content="Mentoria individual para profissionais que têm conhecimento a compartilhar. Método claro e acompanhamento da primeira linha ao capítulo final." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -50,6 +50,7 @@
     .field-label { font-weight:700; font-size:0.85rem; letter-spacing:0.02em; text-transform:uppercase; color:#1A1A1A; display:block; margin-bottom:10px; }
     .group-label { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8A8A; font-weight:600; }
     .radio-card { border:1px solid #E9E7E3; border-radius:0.6rem; padding: 14px 16px; cursor:pointer; font-size:0.92rem; display:flex; align-items:center; gap:10px; transition: all .15s; }
+    input[type="radio"] { width:auto; }
     .radio-card:has(input:checked) { border-color:#BC3D3D; background: rgba(188,61,61,0.06); }
     .squiggle { color:#D9A8A8; }
   </style>
@@ -83,15 +84,15 @@
 
       <h1 class="font-serif font-semibold text-4xl sm:text-5xl leading-[1.1] mb-6">Escreva seu livro em até 12 meses.</h1>
       <p class="text-subtle text-lg leading-relaxed mb-8 max-w-md">
-        Mentoria individual para profissionais que têm conhecimento a compartilhar. Com método claro e acompanhamento da primeira linha ao capítulo final.
+        Mentoria individual para profissionais que têm conhecimento a compartilhar, com método e acompanhamento da primeira linha ao capítulo final.
       </p>
 
       <a href="#diagnostico" class="inline-block bg-accent text-white px-7 py-3.5 rounded-lg text-sm tracking-wide hover:bg-ink transition-colors">Fazer diagnóstico gratuito</a>
-      <p class="text-subtle text-sm mt-3">menos de um minuto · depois você agenda uma conversa comigo</p>
+      <p class="text-subtle text-sm mt-3">cerca de 3 minutos · depois, revise e envie as respostas por e-mail</p>
 
       <div class="flex items-center gap-3 mt-8 pt-6 border-t border-line">
         <img src="https://vivianepossato.vercel.app/_next/image?url=%2Ffotos%2Fviviane-13.jpeg&w=1920&q=85" alt="Viviane" class="w-10 h-10 rounded-full object-cover grayscale" />
-        <p class="text-subtle text-sm"><span class="font-semibold text-ink">Viviane</span> — jornalista · 20 anos Globo · mentora de livros</p>
+        <p class="text-subtle text-sm"><span class="font-semibold text-ink">Viviane</span> · jornalista · 20 anos Globo · mentora de livros</p>
       </div>
     </div>
 
@@ -103,7 +104,7 @@
         <span class="w-2.5 h-2.5 rounded-full bg-accent shrink-0"></span>
         <div>
           <p class="font-semibold text-sm">Mentoria Individual</p>
-          <p class="text-subtle text-sm">Da ideia à publicação</p>
+          <p class="text-subtle text-sm">Da ideia ao manuscrito</p>
         </div>
       </div>
     </div>
@@ -114,7 +115,7 @@
     <div class="max-w-2xl mx-auto px-6">
       <div class="divider mb-5"></div>
       <h2 class="font-serif text-3xl sm:text-4xl mb-3">Diagnóstico do seu livro</h2>
-      <p class="text-subtle leading-relaxed mb-10">Preciso entender seu caso para a gente conversar com clareza. Leva menos de um minuto.</p>
+      <p class="text-subtle leading-relaxed mb-10">Preciso entender seu caso para a gente conversar com clareza. O preenchimento leva cerca de 3 minutos.</p>
 
       <form id="diagForm" class="card-white p-6 sm:p-10 space-y-10">
         <div>
@@ -144,20 +145,20 @@
         <div>
           <p class="group-label mb-4">Motivação</p>
           <label class="field-label" for="trava">O que te trava hoje?</label>
-          <input id="trava" name="trava" type="text" placeholder="Não sei estruturar? Não sei se está bom? Falta disciplina? Não sei começar?" required />
+          <input id="trava" name="trava" type="text" placeholder="Estrutura, confiança no texto, disciplina ou primeiro passo?" required />
         </div>
 
         <div>
-          <label class="field-label mb-4">O investimento mínimo é de 9.997 reais, qual a sua disponibilidade?</label>
+          <label class="field-label mb-4">O investimento da mentoria parte de R$ 9.997. Qual opção descreve melhor o seu momento?</label>
           <div class="grid sm:grid-cols-2 gap-3">
-            <label class="radio-card"><input type="radio" name="disponibilidade" value="Não tenho disponibilidade" required /> Não tenho disponibilidade</label>
-            <label class="radio-card"><input type="radio" name="disponibilidade" value="Até 5 mil" /> Até 5 mil</label>
-            <label class="radio-card"><input type="radio" name="disponibilidade" value="5 a 10 mil" /> 5 a 10 mil</label>
-            <label class="radio-card"><input type="radio" name="disponibilidade" value="10 mil+" /> 10 mil+</label>
+            <label class="radio-card"><input type="radio" name="disponibilidade" value="Ainda não pretendo investir" required /> Ainda não pretendo investir</label>
+            <label class="radio-card"><input type="radio" name="disponibilidade" value="Até R$ 5.000" /> Até R$ 5.000</label>
+            <label class="radio-card"><input type="radio" name="disponibilidade" value="De R$ 5.001 a R$ 9.996" /> De R$ 5.001 a R$ 9.996</label>
+            <label class="radio-card"><input type="radio" name="disponibilidade" value="A partir de R$ 9.997" /> A partir de R$ 9.997</label>
           </div>
         </div>
 
-        <button type="submit" class="w-full bg-accent text-white py-4 rounded-lg text-sm tracking-wide hover:bg-ink transition-colors">Enviar e agendar conversa</button>
+        <button type="submit" class="w-full bg-accent text-white py-4 rounded-lg text-sm tracking-wide hover:bg-ink transition-colors">Preparar e-mail com minhas respostas</button>
         <p id="formNote" class="text-subtle text-xs text-center"></p>
       </form>
     </div>
@@ -170,18 +171,18 @@
     <div class="grid md:grid-cols-3 gap-6 text-left">
       <div class="card p-8">
         <span class="text-accent text-xl">✦</span>
-        <h3 class="font-serif text-xl mt-4 mb-2">O conteúdo você tem.</h3>
-        <p class="text-subtle leading-relaxed">Você tem anos de experiência, conhecimento construído na prática, histórias que outras pessoas poderiam aprender. Isso não está faltando.</p>
+        <h3 class="font-serif text-xl mt-4 mb-2">Você já construiu o conteúdo.</h3>
+        <p class="text-subtle leading-relaxed">São anos de experiência, conhecimento desenvolvido na prática e histórias que podem orientar outras pessoas.</p>
       </div>
       <div class="card p-8">
         <span class="text-accent text-xl">✦</span>
-        <h3 class="font-serif text-xl mt-4 mb-2">O que trava é a organização.</h3>
-        <p class="text-subtle leading-relaxed">Você começa, escreve algumas páginas e para porque não sabe se está bom. Reescreve. Duvida. Para de novo. O livro fica sempre "quase começando".</p>
+        <h3 class="font-serif text-xl mt-4 mb-2">A dificuldade aparece na organização.</h3>
+        <p class="text-subtle leading-relaxed">Você começa, escreve algumas páginas e encontra dúvidas sobre a estrutura, então reescreve os mesmos trechos e interrompe o livro mais uma vez.</p>
       </div>
       <div class="card p-8">
         <span class="text-accent text-xl">✦</span>
-        <h3 class="font-serif text-xl mt-4 mb-2">Falta direção. Sem ela, o normal é desistir.</h3>
-        <p class="text-subtle leading-relaxed">Escrever sozinho é difícil porque você não tem com quem validar. Não sabe se o capítulo faz sentido, se a estrutura está certa, qual é o próximo passo.</p>
+        <h3 class="font-serif text-xl mt-4 mb-2">A direção sustenta a continuidade.</h3>
+        <p class="text-subtle leading-relaxed">As dúvidas sobre o capítulo, a estrutura e o próximo passo interrompem o projeto quando você ainda procura uma forma de validar o texto.</p>
       </div>
     </div>
   </section>
@@ -198,8 +199,8 @@
             <span class="w-px flex-1 bg-line mt-2"></span>
           </div>
           <div>
-            <h3 class="font-serif text-xl mb-2">Você não vai escrever sozinho.</h3>
-            <p class="text-subtle leading-relaxed">A gente trabalha junto, capítulo a capítulo. Reuniões frequentes em que eu te ajudo a organizar as ideias, estruturar o texto, resolver o que travou. Você sempre sabe o próximo passo.</p>
+            <h3 class="font-serif text-xl mb-2">Acompanhamento capítulo a capítulo.</h3>
+            <p class="text-subtle leading-relaxed">A gente trabalha junto em reuniões frequentes, nas quais eu ajudo você a organizar as ideias, estruturar o texto e resolver o ponto que interrompeu a escrita.</p>
           </div>
         </div>
         <div class="grid grid-cols-[60px_1fr] gap-4 pb-10 relative">
@@ -208,8 +209,8 @@
             <span class="w-px flex-1 bg-line mt-2"></span>
           </div>
           <div>
-            <h3 class="font-serif text-xl mb-2">Tem prazo definido.</h3>
-            <p class="text-subtle leading-relaxed">12 meses para sair do zero até o livro pronto. É cronograma real de trabalho.</p>
+            <h3 class="font-serif text-xl mb-2">Um cronograma de até 12 meses.</h3>
+            <p class="text-subtle leading-relaxed">O processo distribui a estrutura, a escrita e a revisão ao longo de um cronograma de trabalho.</p>
           </div>
         </div>
         <div class="grid grid-cols-[60px_1fr] gap-4">
@@ -217,13 +218,13 @@
             <span class="w-14 h-14 rounded-full border-2 border-accent text-accent font-serif text-lg flex items-center justify-center bg-white shrink-0">03</span>
           </div>
           <div>
-            <h3 class="font-serif text-xl mb-2">Método que já funciona.</h3>
+            <h3 class="font-serif text-xl mb-2">Método aplicado à escrita.</h3>
             <p class="text-subtle leading-relaxed">Eu passei 20 anos na Globo escrevendo matérias que precisavam ser claras e diretas. Uso a mesma lógica aqui: organizar conhecimento de um jeito que outras pessoas consigam ler e aplicar.</p>
           </div>
         </div>
       </div>
       <p class="text-center font-serif text-xl mt-14 max-w-xl mx-auto leading-snug">
-        No final você tem um livro de verdade, não um e-book de 30 páginas ou um "material digital". Um livro que representa o que você sabe.
+        Ao final do percurso, o livro reúne e representa o conhecimento que você construiu ao longo da sua trajetória.
       </p>
     </div>
   </section>
@@ -231,27 +232,27 @@
   <!-- Para quem -->
   <section id="para-quem" class="max-w-3xl mx-auto px-6 py-20">
     <div class="divider mb-5"></div>
-    <h2 class="font-serif text-3xl sm:text-4xl mb-14">Isso funciona se:</h2>
+    <h2 class="font-serif text-3xl sm:text-4xl mb-14">A mentoria faz sentido para você se:</h2>
     <div class="divide-y divide-line">
       <div class="flex gap-5 pb-8">
         <span class="w-9 h-9 rounded-full bg-accent/10 text-accent flex items-center justify-center shrink-0">✓</span>
         <div>
-          <h3 class="font-semibold text-lg mb-2">Você tem experiência real.</h3>
-          <p class="text-subtle leading-relaxed">Pode ser gestão, empreendedorismo, metodologia própria, trajetória profissional relevante, uma história pessoal forte. Não precisa ser referência mundial, mas precisa ter algo útil para compartilhar.</p>
+          <h3 class="font-semibold text-lg mb-2">Você tem experiência para transformar em conteúdo.</h3>
+          <p class="text-subtle leading-relaxed">Pode ser gestão, empreendedorismo, uma metodologia própria, uma trajetória profissional ou uma história pessoal que ofereça algo útil ao leitor.</p>
         </div>
       </div>
       <div class="flex gap-5 py-8">
         <span class="w-9 h-9 rounded-full bg-accent/10 text-accent flex items-center justify-center shrink-0">✓</span>
         <div>
-          <h3 class="font-semibold text-lg mb-2">Você está disposto a trabalhar de forma consistente.</h3>
-          <p class="text-subtle leading-relaxed">Aparecer nas reuniões, fazer o trabalho entre uma e outra, levar a sério pelos próximos 12 meses.</p>
+          <h3 class="font-semibold text-lg mb-2">Você consegue reservar tempo para o livro.</h3>
+          <p class="text-subtle leading-relaxed">Isso inclui participar das reuniões e escrever entre um encontro e outro ao longo dos 12 meses.</p>
         </div>
       </div>
       <div class="flex gap-5 pt-8">
         <span class="w-9 h-9 rounded-full bg-accent/10 text-accent flex items-center justify-center shrink-0">✓</span>
         <div>
-          <h3 class="font-semibold text-lg mb-2">Você entende que livro bom leva tempo.</h3>
-          <p class="text-subtle leading-relaxed">Demanda estrutura, acompanhamento, processo real. Se você quer algo sério, essa mentoria é para isso.</p>
+          <h3 class="font-semibold text-lg mb-2">Você quer desenvolver um livro de não ficção.</h3>
+          <p class="text-subtle leading-relaxed">A mentoria acompanha a organização do conhecimento e o desenvolvimento dos capítulos durante 12 meses.</p>
         </div>
       </div>
     </div>
@@ -272,8 +273,8 @@
           <span class="bg-accent/10 text-accent text-xs tracking-wide uppercase px-4 py-2 rounded-full inline-block mb-6 font-semibold">Ex-Globo · 20 anos</span>
           <div class="divider mb-5"></div>
           <h2 class="font-serif text-3xl sm:text-4xl mb-6">Quem vai te acompanhar</h2>
-          <p class="text-subtle text-lg leading-relaxed mb-4">Eu sou Viviane, jornalista com 20 anos de experiência na Globo. Passei duas décadas escrevendo histórias que precisavam ser objetivas e envolventes ao mesmo tempo.</p>
-          <p class="text-subtle text-lg leading-relaxed mb-10">Quando comecei a ajudar pessoas a escreverem livros, trouxe essa mesma lógica: processo e acompanhamento de quem entende.</p>
+          <p class="text-subtle text-lg leading-relaxed mb-4">Eu sou Viviane, jornalista e mentora de livros. Durante 20 anos na Globo, escrevi histórias que precisavam unir objetividade e envolvimento.</p>
+          <p class="text-subtle text-lg leading-relaxed mb-10">Hoje, aplico essa experiência à mentoria, ajudando cada pessoa a organizar o próprio conhecimento e desenvolver o livro capítulo a capítulo.</p>
           <div class="grid grid-cols-2 gap-4 max-w-sm">
             <div class="card-white p-6">
               <p class="font-serif text-3xl text-accent mb-1">20</p>
@@ -300,23 +301,23 @@
       <div class="card-white p-8">
         <span class="w-14 h-14 rounded-full border-2 border-accent text-accent font-serif text-lg flex items-center justify-center">1</span>
         <h3 class="font-semibold text-lg mt-5 mb-2">Preencha o diagnóstico</h3>
-        <p class="text-subtle leading-relaxed">Eu preciso entender sobre o que você quer escrever, em que estágio está, e se esse momento faz sentido. Leva menos de um minuto.</p>
+        <p class="text-subtle leading-relaxed">O diagnóstico reúne o tema do livro, o estágio do projeto e o seu momento. O preenchimento leva cerca de 3 minutos.</p>
       </div>
       <div class="card-white p-8">
         <span class="w-14 h-14 rounded-full border-2 border-accent text-accent font-serif text-lg flex items-center justify-center">2</span>
-        <h3 class="font-semibold text-lg mt-5 mb-2">Agende uma conversa</h3>
-        <p class="text-subtle leading-relaxed">Depois de preencher, você agenda uma reunião diretamente na minha agenda. A gente conversa sobre o seu livro.</p>
+        <h3 class="font-semibold text-lg mt-5 mb-2">Envie suas respostas</h3>
+        <p class="text-subtle leading-relaxed">Ao concluir, o seu aplicativo de e-mail será aberto com as respostas preenchidas. Revise a mensagem e envie para a Viviane.</p>
       </div>
       <div class="card-white p-8">
         <span class="w-14 h-14 rounded-full border-2 border-accent text-accent font-serif text-lg flex items-center justify-center">3</span>
-        <h3 class="font-semibold text-lg mt-5 mb-2">A gente decide juntos</h3>
-        <p class="text-subtle leading-relaxed">Eu te mostro como funciona, tiro suas dúvidas. Você decide se quer seguir. Sem compromisso.</p>
+        <h3 class="font-semibold text-lg mt-5 mb-2">Converse sobre o seu livro</h3>
+        <p class="text-subtle leading-relaxed">A partir das respostas, eu explico como a mentoria funciona, tiro as suas dúvidas e avaliamos se o processo combina com o seu momento.</p>
       </div>
     </div>
     <div class="mt-14">
-      <p class="font-serif italic text-2xl mb-6">Simples assim.</p>
+      <p class="font-serif italic text-2xl mb-6">Se houver alinhamento, a mentoria começa.</p>
       <a href="#diagnostico" class="inline-block bg-accent text-white px-7 py-3.5 rounded-lg text-sm tracking-wide hover:bg-ink transition-colors">Preencher diagnóstico</a>
-      <p class="text-subtle text-sm mt-3">menos de um minuto · depois você agenda uma conversa comigo</p>
+      <p class="text-subtle text-sm mt-3">cerca de 3 minutos · depois, revise e envie as respostas por e-mail</p>
     </div>
   </section>
 
@@ -331,9 +332,9 @@
         <span class="text-accent text-xs tracking-[0.2em] uppercase font-semibold">Próximo passo</span>
       </div>
       <h2 class="font-serif text-3xl sm:text-4xl leading-snug mb-10">Seu livro começa com uma conversa.</h2>
-      <p class="text-white/80 leading-relaxed mb-10 max-w-lg mx-auto">Responda o diagnóstico em menos de um minuto. Vou ler antes de você e chegar pronta para falarmos sobre o seu livro especificamente.</p>
+      <p class="text-white/80 leading-relaxed mb-10 max-w-lg mx-auto">Responda o diagnóstico em cerca de 3 minutos. Vou ler as respostas antes da conversa para falarmos sobre o seu livro com contexto.</p>
       <a href="#diagnostico" class="inline-block bg-accent text-white px-9 py-4 rounded-lg text-sm tracking-wide hover:bg-white hover:text-ink transition-colors">Fazer diagnóstico gratuito</a>
-      <p class="text-white/60 text-xs mt-4">Sem compromisso · 3 min</p>
+      <p class="text-white/60 text-xs mt-4">Cerca de 3 minutos · conversa de alinhamento</p>
     </div>
   </section>
 
@@ -347,7 +348,7 @@
           <p class="text-subtle text-xs mt-1">Mentoria de Livro</p>
         </div>
       </div>
-      <p class="font-serif italic text-xl leading-snug mb-10 max-w-lg">"Do primeiro rascunho até o livro escrito, com método, acompanhamento e prazo real."</p>
+      <p class="font-serif italic text-xl leading-snug mb-10 max-w-lg">"Do primeiro rascunho ao manuscrito concluído, com método, acompanhamento e um cronograma de 12 meses."</p>
 
       <div class="grid sm:grid-cols-2 gap-10">
         <div>

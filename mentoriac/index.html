@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mentoria de Livro | Diagnóstico com Viviane Possato</title>
+  <meta name="description" content="Diagnóstico para a mentoria individual de livro com Viviane Possato, com acompanhamento capítulo a capítulo por até 12 meses." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { paper:'#FAFAF9', ink:'#1A1A1A', subtle:'#5C5C5C', accent:'#BC3D3D', line:'#E9E7E3' },
+          fontFamily: { serif:['"Noto Serif"','Georgia','serif'], sans:['"Helvetica Neue"','Helvetica','Arial','sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior:smooth; }
+    body { margin:0; background:#fff; color:#1A1A1A; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; -webkit-font-smoothing:antialiased; }
+    .divider { width:48px; height:2px; background:#BC3D3D; }
+    .card { background:#FAFAF9; border:1px solid #E9E7E3; border-radius:1rem; }
+    .field-label { display:block; font-size:.74rem; letter-spacing:.1em; text-transform:uppercase; font-weight:700; margin-bottom:8px; }
+    input, textarea, select { width:100%; border:1px solid #DCD9D4; border-radius:.65rem; padding:12px 14px; background:#fff; font:inherit; font-size:.94rem; }
+    textarea { min-height:82px; resize:vertical; }
+    input:focus, textarea:focus, select:focus, button:focus-visible, a:focus-visible, summary:focus-visible { outline:2px solid #BC3D3D; outline-offset:2px; }
+    details > summary { list-style:none; cursor:pointer; }
+    details > summary::-webkit-details-marker { display:none; }
+    details[open] .faq-icon { transform:rotate(45deg); }
+  </style>
+</head>
+<body>
+
+  <header class="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between border-b border-line">
+    <a href="#inicio">
+      <p class="font-serif text-2xl leading-none">Viviane</p>
+      <p class="text-accent text-[.65rem] tracking-[.2em] uppercase mt-1 font-semibold">Mentoria de Livro</p>
+    </a>
+    <a href="#diagnostico" class="text-sm bg-accent text-white px-5 py-2.5 rounded-lg hover:bg-ink transition-colors">Fazer diagnóstico</a>
+  </header>
+
+  <main>
+    <section id="inicio" class="bg-paper">
+      <div class="max-w-6xl mx-auto px-6 py-12 lg:py-16 grid lg:grid-cols-[.9fr_1.1fr] gap-12 items-start">
+        <div class="lg:sticky lg:top-8">
+          <span class="inline-block bg-accent/10 text-accent text-xs tracking-wide uppercase px-4 py-2 rounded-full font-semibold mb-6">Mentoria individual · até 12 meses</span>
+          <h1 class="font-serif font-semibold text-4xl sm:text-5xl leading-[1.1] mb-6">Conte em que ponto o seu livro está.</h1>
+          <p class="text-subtle text-lg leading-relaxed mb-8 max-w-lg">O diagnóstico reúne seis informações para Viviane entender o tema, o estágio do projeto e a sua disponibilidade antes da conversa.</p>
+          <div class="grid sm:grid-cols-3 lg:grid-cols-1 gap-4 max-w-lg">
+            <div class="flex gap-4 items-center">
+              <span class="w-9 h-9 rounded-full bg-accent text-white flex items-center justify-center shrink-0">1</span>
+              <p class="text-subtle">Preencha os campos abaixo.</p>
+            </div>
+            <div class="flex gap-4 items-center">
+              <span class="w-9 h-9 rounded-full bg-accent text-white flex items-center justify-center shrink-0">2</span>
+              <p class="text-subtle">Revise o e-mail preparado.</p>
+            </div>
+            <div class="flex gap-4 items-center">
+              <span class="w-9 h-9 rounded-full bg-accent text-white flex items-center justify-center shrink-0">3</span>
+              <p class="text-subtle">Envie para Viviane.</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 mt-8 pt-6 border-t border-line max-w-lg">
+            <img src="https://vivianepossato.vercel.app/_next/image?url=%2Ffotos%2Fviviane-13.jpeg&w=1920&q=85" alt="Viviane Possato" class="w-11 h-11 rounded-full object-cover grayscale" />
+            <p class="text-subtle text-sm"><span class="font-semibold text-ink">Viviane Possato</span><br />Jornalista e mentora de livros, com 20 anos na Globo</p>
+          </div>
+        </div>
+
+        <form id="quickForm" class="bg-white border border-line rounded-2xl p-6 sm:p-9 space-y-6 shadow-sm" aria-labelledby="diagnostico">
+          <div>
+            <div class="divider mb-4"></div>
+            <h2 id="diagnostico" class="font-serif text-3xl mb-2">Diagnóstico do livro</h2>
+            <p class="text-subtle text-sm">Os seis campos são obrigatórios.</p>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-5">
+            <div>
+              <label class="field-label" for="nome">Nome completo</label>
+              <input id="nome" name="nome" type="text" autocomplete="name" required />
+            </div>
+            <div>
+              <label class="field-label" for="whatsapp">WhatsApp</label>
+              <input id="whatsapp" name="whatsapp" type="tel" autocomplete="tel" required />
+            </div>
+          </div>
+          <div>
+            <label class="field-label" for="email">E-mail</label>
+            <input id="email" name="email" type="email" autocomplete="email" required />
+          </div>
+          <div>
+            <label class="field-label" for="tema">Sobre o que você quer escrever?</label>
+            <textarea id="tema" name="tema" maxlength="400" placeholder="Resuma o tema em uma frase." required></textarea>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-5">
+            <div>
+              <label class="field-label" for="estagio">Estágio do livro</label>
+              <select id="estagio" name="estagio" required>
+                <option value="" selected disabled>Selecione</option>
+                <option>Tenho uma ideia ou um tema</option>
+                <option>Tenho anotações espalhadas</option>
+                <option>Já escrevi alguns capítulos</option>
+                <option>Tenho um primeiro rascunho</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label" for="investimento">Momento de investimento</label>
+              <select id="investimento" name="investimento" required>
+                <option value="" selected disabled>Selecione</option>
+                <option>Posso considerar a partir de R$ 9.997</option>
+                <option>Preciso planejar o investimento</option>
+                <option>Esse valor não cabe no meu momento</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="w-full bg-accent text-white py-4 rounded-lg text-sm tracking-wide hover:bg-ink transition-colors">Preparar e-mail com meu diagnóstico</button>
+          <p id="formNote" class="text-subtle text-xs text-center" aria-live="polite">O seu aplicativo de e-mail será aberto com as respostas. Revise a mensagem e conclua o envio.</p>
+        </form>
+      </div>
+    </section>
+
+    <section class="max-w-5xl mx-auto px-6 py-16">
+      <div class="grid md:grid-cols-3 gap-6">
+        <article class="card p-7">
+          <p class="text-accent font-serif text-2xl mb-3">Estrutura</p>
+          <p class="text-subtle leading-relaxed">O tema e o leitor orientam a sequência dos capítulos.</p>
+        </article>
+        <article class="card p-7">
+          <p class="text-accent font-serif text-2xl mb-3">Ritmo</p>
+          <p class="text-subtle leading-relaxed">O plano de escrita distribui o trabalho ao longo do percurso.</p>
+        </article>
+        <article class="card p-7">
+          <p class="text-accent font-serif text-2xl mb-3">Acompanhamento</p>
+          <p class="text-subtle leading-relaxed">As conversas trabalham o livro capítulo a capítulo.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="bg-ink text-white py-16">
+      <div class="max-w-5xl mx-auto px-6 grid md:grid-cols-[1fr_auto] gap-10 items-center">
+        <div>
+          <p class="text-accent text-xs tracking-[.18em] uppercase font-semibold mb-3">Página a Página</p>
+          <h2 class="font-serif text-3xl sm:text-4xl leading-tight mb-4">Mentoria individual para desenvolver um livro de não ficção por até 12 meses.</h2>
+          <p class="text-white/70 leading-relaxed">O investimento parte de R$ 9.997 e o escopo é alinhado durante a conversa.</p>
+        </div>
+        <a href="#diagnostico" class="bg-accent text-white px-8 py-4 rounded-lg text-sm tracking-wide hover:bg-white hover:text-ink transition-colors">Preencher diagnóstico</a>
+      </div>
+    </section>
+
+    <section class="max-w-3xl mx-auto px-6 py-16">
+      <h2 class="font-serif text-3xl mb-8">Dúvidas</h2>
+      <div class="divide-y divide-line border-y border-line">
+        <details class="py-5">
+          <summary class="font-serif text-lg flex justify-between gap-6">A mentoria é individual?<span class="faq-icon text-accent transition-transform" aria-hidden="true">+</span></summary>
+          <p class="text-subtle leading-relaxed mt-4">Sim. O acompanhamento é feito diretamente com Viviane.</p>
+        </details>
+        <details class="py-5">
+          <summary class="font-serif text-lg flex justify-between gap-6">Quanto tempo dura?<span class="faq-icon text-accent transition-transform" aria-hidden="true">+</span></summary>
+          <p class="text-subtle leading-relaxed mt-4">O percurso apresentado nesta página dura até 12 meses.</p>
+        </details>
+        <details class="py-5">
+          <summary class="font-serif text-lg flex justify-between gap-6">O formulário envia as respostas automaticamente?<span class="faq-icon text-accent transition-transform" aria-hidden="true">+</span></summary>
+          <p class="text-subtle leading-relaxed mt-4">O botão abre o seu aplicativo de e-mail com as respostas preenchidas. Revise a mensagem e toque em enviar para concluir.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-paper py-10 text-center text-sm text-subtle">Viviane Possato &copy; 2026 · Mentoria de Livro</footer>
+
+  <script>
+    document.getElementById('quickForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      const data = new FormData(event.currentTarget);
+      const subject = encodeURIComponent('Diagnóstico de livro, ' + String(data.get('nome') || '').trim());
+      const body = encodeURIComponent(
+        'Nome: ' + data.get('nome') + '\n' +
+        'WhatsApp: ' + data.get('whatsapp') + '\n' +
+        'E-mail: ' + data.get('email') + '\n' +
+        'Tema do livro: ' + data.get('tema') + '\n' +
+        'Estágio do livro: ' + data.get('estagio') + '\n' +
+        'Momento de investimento: ' + data.get('investimento')
+      );
+      document.getElementById('formNote').textContent = 'Abrindo o seu aplicativo de e-mail com as respostas preenchidas.';
+      window.location.href = 'mailto:contato@vivianepossato.com?subject=' + subject + '&body=' + body;
+    });
+  </script>
+
+</body>
+</html>

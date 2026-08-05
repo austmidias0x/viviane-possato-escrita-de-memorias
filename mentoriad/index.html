@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diagnóstico Interativo de Livro | Viviane Possato</title>
+  <meta name="description" content="Responda a seis perguntas sobre o seu livro e prepare um diagnóstico para a mentoria individual de Viviane Possato." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { paper:'#FAFAF9', ink:'#1A1A1A', subtle:'#5C5C5C', accent:'#BC3D3D', line:'#E9E7E3', rosewash:'#F8EEEE' },
+          fontFamily: { serif:['"Noto Serif"','Georgia','serif'], sans:['"Helvetica Neue"','Helvetica','Arial','sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { margin:0; min-height:100vh; background:#fff; color:#1A1A1A; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; -webkit-font-smoothing:antialiased; }
+    [hidden] { display:none !important; }
+    .quiz-card { min-width:0; background:#fff; border:1px solid #E9E7E3; border-radius:1rem; box-shadow:0 24px 70px -42px rgba(26,26,26,.42); }
+    .group-label { font-size:.7rem; letter-spacing:.15em; text-transform:uppercase; font-weight:700; color:#777; }
+    .option { display:flex; align-items:flex-start; gap:13px; min-width:0; min-height:56px; padding:15px 16px; border:1px solid #E9E7E3; border-radius:.65rem; cursor:pointer; transition:border-color .15s,background-color .15s; }
+    .option > span:last-child, h1, h2, legend { min-width:0; overflow-wrap:anywhere; }
+    .option:hover { border-color:#BC3D3D; }
+    .option:has(input:checked) { border-color:#BC3D3D; background:#F8EEEE; }
+    .option:has(input:checked) .select-mark { background:#BC3D3D; border-color:#BC3D3D; box-shadow:inset 0 0 0 4px #F8EEEE; }
+    .option input { position:absolute; opacity:0; pointer-events:none; }
+    .select-mark { width:18px; height:18px; margin-top:2px; border:1px solid #9C9C9C; border-radius:999px; flex:0 0 auto; }
+    .field-label { display:block; font-size:.74rem; letter-spacing:.09em; text-transform:uppercase; font-weight:700; margin-bottom:8px; }
+    input[type="text"], input[type="email"], input[type="tel"], textarea { width:100%; border:1px solid #DCD9D4; border-radius:.65rem; padding:13px 15px; font:inherit; font-size:.95rem; background:#fff; }
+    textarea { min-height:112px; resize:vertical; }
+    progress { width:100%; height:4px; border:0; appearance:none; }
+    progress::-webkit-progress-bar { background:#E9E7E3; }
+    progress::-webkit-progress-value { background:#BC3D3D; transition:width .2s ease; }
+    progress::-moz-progress-bar { background:#BC3D3D; }
+    button, a { min-height:44px; }
+    button:focus-visible, a:focus-visible, .option:focus-within, input:focus, textarea:focus { outline:2px solid #BC3D3D; outline-offset:2px; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior:auto !important; transition:none !important; } }
+  </style>
+</head>
+<body>
+
+  <header class="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between border-b border-line">
+    <a href="#diagnostico">
+      <p class="font-serif text-2xl leading-none">Viviane</p>
+      <p class="text-accent text-[.65rem] tracking-[.2em] uppercase mt-1 font-semibold">Mentoria de Livro</p>
+    </a>
+    <span class="hidden sm:inline text-sm text-subtle">Diagnóstico em 6 perguntas</span>
+  </header>
+
+  <main id="diagnostico" class="bg-paper">
+    <div class="max-w-6xl mx-auto px-6 py-10 lg:py-14 grid lg:grid-cols-[.8fr_1.2fr] gap-10 lg:gap-14 items-stretch">
+      <aside class="order-2 lg:order-1 relative min-w-0 min-h-[340px] lg:min-h-[760px] overflow-hidden rounded-2xl">
+        <img src="https://vivianepossato.vercel.app/_next/image?url=%2Ffotos%2Fviviane-13.jpeg&w=1920&q=85" alt="Viviane Possato durante uma conversa" class="absolute inset-0 w-full h-full object-cover grayscale" />
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/15 to-transparent"></div>
+        <div class="absolute top-5 right-5 bg-accent text-white px-4 py-2 rounded-lg text-sm">Até 12 meses</div>
+        <div class="absolute left-6 right-6 bottom-6 text-white">
+          <p class="group-label text-accent mb-3">Página a Página</p>
+          <p class="font-serif text-2xl leading-snug mb-3">Acompanhamento individual, capítulo a capítulo.</p>
+          <p class="text-white/65 text-sm">Investimento a partir de R$ 9.997</p>
+        </div>
+      </aside>
+
+      <section class="order-1 lg:order-2 min-w-0 quiz-card p-6 sm:p-10 lg:p-12 min-h-[650px] flex flex-col" aria-label="Diagnóstico interativo do livro">
+        <div id="progressArea" hidden>
+          <div class="flex justify-between gap-4 text-xs uppercase tracking-[.14em] text-subtle mb-3">
+            <span id="progressText" aria-live="polite">Pergunta 1 de 6</span>
+            <span>Diagnóstico do livro</span>
+          </div>
+          <progress id="quizProgress" max="6" value="1" aria-label="Progresso do diagnóstico"></progress>
+        </div>
+
+        <form id="bookQuiz" class="flex-1 flex flex-col mt-7" novalidate>
+          <section id="screen-intro" data-screen>
+            <span class="inline-block bg-accent/10 text-accent text-xs tracking-wide uppercase px-4 py-2 rounded-full font-semibold mb-6">Mentoria individual de livro</span>
+            <h1 tabindex="-1" class="font-serif text-4xl sm:text-5xl leading-[1.1] mb-6">Em que ponto o seu livro está e qual acompanhamento ele pede agora?</h1>
+            <p class="text-subtle text-lg leading-relaxed mb-8">Responda a seis perguntas. Ao final, você recebe uma síntese das respostas e pode enviá-la por e-mail para Viviane.</p>
+            <div class="grid sm:grid-cols-3 gap-3 mb-9 text-sm">
+              <span class="bg-paper border border-line rounded-lg px-4 py-3 text-center">Individual</span>
+              <span class="bg-paper border border-line rounded-lg px-4 py-3 text-center">Capítulo a capítulo</span>
+              <span class="bg-paper border border-line rounded-lg px-4 py-3 text-center">Até 12 meses</span>
+            </div>
+            <button type="button" data-start class="bg-accent text-white px-8 py-4 rounded-lg text-sm tracking-wide hover:bg-ink transition-colors">Começar diagnóstico</button>
+          </section>
+
+          <section id="screen-q1" data-screen hidden>
+            <fieldset>
+              <legend tabindex="-1" class="font-serif text-3xl sm:text-4xl leading-tight mb-7">Em que ponto o seu livro está hoje?</legend>
+              <div class="space-y-3">
+                <label class="option"><input type="radio" name="q1" value="Tenho uma ideia ou um tema" data-title="O seu primeiro passo pode ser definir o ponto de partida do livro." /><span class="select-mark" aria-hidden="true"></span><span>Tenho uma ideia ou um tema</span></label>
+                <label class="option"><input type="radio" name="q1" value="Tenho anotações espalhadas" data-title="O próximo passo pode ser organizar o material em uma estrutura de capítulos." /><span class="select-mark" aria-hidden="true"></span><span>Tenho anotações espalhadas</span></label>
+                <label class="option"><input type="radio" name="q1" value="Já escrevi alguns capítulos" data-title="O próximo passo pode ser revisar a sequência entre os capítulos." /><span class="select-mark" aria-hidden="true"></span><span>Já escrevi alguns capítulos</span></label>
+                <label class="option"><input type="radio" name="q1" value="Tenho um primeiro rascunho" data-title="O próximo passo pode ser definir a direção do rascunho." /><span class="select-mark" aria-hidden="true"></span><span>Tenho um primeiro rascunho</span></label>
+              </div>
+            </fieldset>
+            <p class="stepError text-accent text-sm mt-4" role="alert"></p>
+            <div class="flex justify-between gap-4 mt-8"><button type="button" data-back="intro" class="border border-line px-6 py-3 rounded-lg hover:border-ink">Voltar</button><button type="button" data-next="q2" class="bg-accent text-white px-7 py-3 rounded-lg hover:bg-ink">Continuar</button></div>
+          </section>
+
+          <section id="screen-q2" data-screen hidden>
+            <label for="tema" tabindex="-1" class="font-serif text-3xl sm:text-4xl leading-tight mb-4 block">Sobre o que você quer escrever?</label>
+            <p class="text-subtle mb-5">Resuma o tema em uma frase.</p>
+            <textarea id="tema" name="q2" maxlength="300" required placeholder="Exemplo: uma metodologia de gestão construída ao longo da minha carreira."></textarea>
+            <div class="flex justify-between gap-4 mt-2 text-xs text-subtle"><span>Campo obrigatório</span><span id="charCount">0 de 300</span></div>
+            <p class="stepError text-accent text-sm mt-4" role="alert"></p>
+            <div class="flex justify-between gap-4 mt-8"><button type="button" data-back="q1" class="border border-line px-6 py-3 rounded-lg hover:border-ink">Voltar</button><button type="button" data-next="q3" class="bg-accent text-white px-7 py-3 rounded-lg hover:bg-ink">Continuar</button></div>
+          </section>
+
+          <section id="screen-q3" data-screen hidden>
+            <fieldset>
+              <legend tabindex="-1" class="font-serif text-3xl sm:text-4xl leading-tight mb-7">O que mais impede o próximo capítulo?</legend>
+              <div class="space-y-3">
+                <label class="option"><input type="radio" name="q3" value="A estrutura ainda precisa ser definida" data-summary="a estrutura ainda precisa ser definida" /><span class="select-mark" aria-hidden="true"></span><span>Ainda não defini a estrutura</span></label>
+                <label class="option"><input type="radio" name="q3" value="Tenho dificuldade para organizar o conteúdo" data-summary="a organização do conteúdo é o ponto principal" /><span class="select-mark" aria-hidden="true"></span><span>Tenho dificuldade para organizar o conteúdo</span></label>
+                <label class="option"><input type="radio" name="q3" value="Perco a continuidade entre uma etapa e outra" data-summary="a continuidade entre uma etapa e outra é o ponto principal" /><span class="select-mark" aria-hidden="true"></span><span>Perco a continuidade entre uma etapa e outra</span></label>
+                <label class="option"><input type="radio" name="q3" value="Preciso de direção para o próximo passo" data-summary="a direção do próximo passo é o ponto principal" /><span class="select-mark" aria-hidden="true"></span><span>Preciso de direção para o próximo passo</span></label>
+              </div>
+            </fieldset>
+            <p class="stepError text-accent text-sm mt-4" role="alert"></p>
+            <div class="flex justify-between gap-4 mt-8"><button type="button" data-back="q2" class="border border-line px-6 py-3 rounded-lg hover:border-ink">Voltar</button><button type="button" data-next="bridge" class="bg-accent text-white px-7 py-3 rounded-lg hover:bg-ink">Continuar</button></div>
+          </section>
+
+          <section id="screen-bridge" data-screen hidden>
+            <p class="group-label text-accent mb-4">Como a mentoria trabalha esse percurso</p>
+            <h2 tabindex="-1" class="font-serif text-3xl sm:text-4xl leading-tight mb-6">O acompanhamento é individual e avança a partir do estágio do seu livro.</h2>
+            <p class="text-subtle text-lg leading-relaxed mb-8">A mentoria trabalha recorte, estrutura, escrita e revisão conforme o estágio do livro. As conversas acompanham o manuscrito capítulo a capítulo dentro de um percurso de até 12 meses.</p>
+            <div class="grid grid-cols-2 gap-3 mb-8 text-sm">
+              <span class="bg-paper border border-line rounded-lg p-4">Organização do conhecimento</span><span class="bg-paper border border-line rounded-lg p-4">Estrutura do texto</span><span class="bg-paper border border-line rounded-lg p-4">Escrita</span><span class="bg-paper border border-line rounded-lg p-4">Revisão ao longo do percurso</span>
+            </div>
+            <div class="flex justify-between gap-4"><button type="button" data-back="q3" class="border border-line px-6 py-3 rounded-lg hover:border-ink">Voltar</button><button type="button" data-next="q4" class="bg-accent text-white px-7 py-3 rounded-lg hover:bg-ink">Continuar</button></div>
+          </section>
+
+          <section id="screen-q4" data-screen hidden>
+            <fieldset>
+              <legend tabindex="-1" class="font-serif text-3xl sm:text-4xl leading-tight mb-7">Que apoio você procura para avançar?</legend>
+              <div class="space-y-3">
+                <label class="option"><input type="radio" name="q4" value="Organizar o tema e a estrutura" /><span class="select-mark" aria-hidden="true"></span><span>Organizar o tema e a estrutura</span></label>
+                <label class="option"><input type="radio" name="q4" value="Trabalhar capítulo a capítulo" /><span class="select-mark" aria-hidden="true"></span><span>Trabalhar capítulo a capítulo</span></label>
+                <label class="option"><input type="radio" name="q4" value="Definir os próximos passos" /><span class="select-mark" aria-hidden="true"></span><span>Definir os próximos passos</span></label>
+                <label class="option"><input type="radio" name="q4" value="Reservar tempo para escrever entre os encontros" /><span class="select-mark" aria-hidden="true"></span><span>Reservar tempo para escrever entre os encontros</span></label>
+              </div>
+            </fieldset>
+            <p class="stepError text-accent text-sm mt-4" role="alert"></p>
+            <div class="flex justify-between gap-4 mt-8"><button type="button" data-back="bridge" class="border border-line px-6 py-3 rounded-lg hover:border-ink">Voltar</button><button type="button" data-next="q5" class="bg-accent text-white px-7 py-3 rounded-lg hover:bg-ink">Continuar</button></div>
+          </section>
+
+          <section id="screen-q5" data-screen hidden>
+            <fieldset>
+              <legend tabindex="-1" class="font-serif text-3xl sm:text-4xl leading-tight mb-7">Como este projeto entra na sua agenda nos próximos meses?</legend>
+              <div class="space-y-3">
+                <label class="option"><input type="radio" name="q5" value="Já consigo reservar tempo para escrever" /><span class="select-mark" aria-hidden="true"></span><span>Já consigo reservar tempo para escrever</span></label>
+                <label class="option"><input type="radio" name="q5" value="Preciso reorganizar minha rotina" /><span class="select-mark" aria-hidden="true"></span><span>Preciso reorganizar minha rotina</span></label>
+                <label class="option"><input type="radio" name="q5" value="Ainda estou avaliando o momento" /><span class="select-mark" aria-hidden="true"></span><span>Ainda estou avaliando o momento</span></label>
+              </div>
+            </fieldset>
+            <p class="stepError text-accent text-sm mt-4" role="alert"></p>
+            <div class="flex justify-between gap-4 mt-8"><button type="button" data-back="q4" class="border border-line px-6 py-3 rounded-lg hover:border-ink">Voltar</button><button type="button" data-next="q6" class="bg-accent text-white px-7 py-3 rounded-lg hover:bg-ink">Continuar</button></div>
+          </section>
+
+          <section id="screen-q6" data-screen hidden>
+            <fieldset>
+              <legend tabindex="-1" class="font-serif text-3xl sm:text-4xl leading-tight mb-3">Qual opção descreve a sua disponibilidade para o investimento?</legend>
+              <p class="text-subtle leading-relaxed mb-6">O investimento da mentoria parte de R$ 9.997.</p>
+              <div class="space-y-3">
+                <label class="option"><input type="radio" name="q6" value="Tenho disponibilidade se a proposta fizer sentido" data-finance="Você informou disponibilidade para considerar o investimento a partir de R$ 9.997." /><span class="select-mark" aria-hidden="true"></span><span>Tenho disponibilidade se a proposta fizer sentido</span></label>
+                <label class="option"><input type="radio" name="q6" value="Preciso planejar esse investimento" data-finance="Você informou que precisa se planejar para um investimento a partir de R$ 9.997." /><span class="select-mark" aria-hidden="true"></span><span>Preciso planejar esse investimento</span></label>
+                <label class="option"><input type="radio" name="q6" value="Esse valor não cabe no meu momento" data-finance="Você informou que um investimento a partir de R$ 9.997 não cabe no seu momento." /><span class="select-mark" aria-hidden="true"></span><span>Esse valor não cabe no meu momento</span></label>
+              </div>
+            </fieldset>
+            <p class="stepError text-accent text-sm mt-4" role="alert"></p>
+            <div class="flex justify-between gap-4 mt-8"><button type="button" data-back="q5" class="border border-line px-6 py-3 rounded-lg hover:border-ink">Voltar</button><button type="button" data-result class="bg-accent text-white px-7 py-3 rounded-lg hover:bg-ink">Ver minha síntese</button></div>
+          </section>
+
+          <section id="screen-result" data-screen hidden aria-live="polite">
+            <p class="group-label text-accent mb-4">Síntese do diagnóstico</p>
+            <h2 id="resultTitle" tabindex="-1" class="font-serif text-4xl sm:text-5xl leading-[1.1] mb-6"></h2>
+            <p id="resultSummary" class="text-subtle text-lg leading-relaxed mb-5"></p>
+            <div class="bg-paper border border-line rounded-lg p-5 mb-5 text-sm leading-relaxed space-y-3">
+              <p><span class="font-semibold">Apoio procurado:</span> <span id="resultSupport"></span></p>
+              <p><span class="font-semibold">Tempo para o projeto:</span> <span id="resultTime"></span></p>
+            </div>
+            <p id="financeNote" class="bg-rosewash border-l-2 border-accent p-5 text-sm leading-relaxed mb-8"></p>
+
+            <div class="border-t border-line pt-8">
+              <h3 class="font-serif text-2xl mb-2">Enviar o diagnóstico</h3>
+              <p class="text-subtle text-sm mb-6">Preencha seus dados. O botão abre o seu aplicativo de e-mail com todas as respostas para você revisar e enviar.</p>
+              <div id="contactFields" class="space-y-5">
+                <div>
+                  <label class="field-label" for="nome">Nome completo</label>
+                  <input id="nome" name="nome" type="text" autocomplete="name" required />
+                </div>
+                <div class="grid sm:grid-cols-2 gap-5">
+                  <div><label class="field-label" for="email">E-mail</label><input id="email" name="email" type="email" autocomplete="email" required /></div>
+                  <div><label class="field-label" for="whatsapp">WhatsApp</label><input id="whatsapp" name="whatsapp" type="tel" autocomplete="tel" required /></div>
+                </div>
+              </div>
+              <button type="submit" class="w-full bg-accent text-white py-4 rounded-lg text-sm tracking-wide hover:bg-ink mt-6">Abrir e-mail com minhas respostas</button>
+              <p class="text-subtle text-xs text-center mt-3">Revise a mensagem e conclua o envio no seu aplicativo de e-mail.</p>
+              <div class="flex flex-wrap justify-center gap-5 mt-6 text-sm">
+                <button type="button" data-copy class="underline decoration-accent underline-offset-4 hover:text-accent">Copiar diagnóstico</button>
+                <button type="button" data-restart class="underline decoration-accent underline-offset-4 hover:text-accent">Refazer diagnóstico</button>
+              </div>
+              <p id="actionStatus" class="text-subtle text-xs text-center mt-4" aria-live="polite"></p>
+              <p class="text-subtle text-xs text-center mt-2">E-mail de destino: contato@vivianepossato.com</p>
+            </div>
+          </section>
+        </form>
+
+        <noscript>
+          <div class="mt-8 bg-paper border border-line rounded-lg p-6">
+            <p class="font-serif text-xl mb-3">O diagnóstico interativo precisa de JavaScript.</p>
+            <p class="text-subtle">Você pode escrever diretamente para contato@vivianepossato.com e informar o tema e o estágio do seu livro.</p>
+          </div>
+        </noscript>
+      </section>
+    </div>
+  </main>
+
+  <footer class="py-9 text-center text-sm text-subtle border-t border-line">Viviane Possato &copy; 2026 · Mentoria de Livro</footer>
+
+  <script>
+    (function () {
+      const form = document.getElementById('bookQuiz');
+      const screens = Array.from(form.querySelectorAll('[data-screen]'));
+      const progressArea = document.getElementById('progressArea');
+      const progress = document.getElementById('quizProgress');
+      const progressText = document.getElementById('progressText');
+      const questionNumber = { q1:1, q2:2, q3:3, bridge:3, q4:4, q5:5, q6:6 };
+      const themeField = document.getElementById('tema');
+      const actionStatus = document.getElementById('actionStatus');
+
+      function showScreen(name) {
+        screens.forEach(function (screen) { screen.hidden = screen.id !== 'screen-' + name; });
+        const number = questionNumber[name];
+        progressArea.hidden = !number;
+        if (number) {
+          progress.value = number;
+          progressText.textContent = name === 'bridge' ? '3 de 6 perguntas concluídas' : 'Pergunta ' + number + ' de 6';
+        }
+        const current = document.getElementById('screen-' + name);
+        const heading = current.querySelector('h1, h2, legend, label[tabindex]');
+        if (heading) heading.focus();
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
+      }
+
+      function validateScreen(screen) {
+        const error = screen.querySelector('.stepError');
+        const fieldset = screen.querySelector('fieldset');
+        if (fieldset) {
+          const selected = fieldset.querySelector('input[type="radio"]:checked');
+          if (!selected) {
+            error.textContent = 'Escolha uma opção para continuar.';
+            const first = fieldset.querySelector('input[type="radio"]');
+            if (first) first.focus();
+            return false;
+          }
+        }
+        const textarea = screen.querySelector('textarea[required]');
+        if (textarea && !textarea.value.trim()) {
+          error.textContent = 'Escreva o tema do livro para continuar.';
+          textarea.focus();
+          return false;
+        }
+        if (error) error.textContent = '';
+        return true;
+      }
+
+      function valueOf(name) {
+        const field = form.elements[name];
+        if (!field) return '';
+        if (field instanceof RadioNodeList) return field.value;
+        return String(field.value || '').trim();
+      }
+
+      function buildResult() {
+        const stage = form.querySelector('input[name="q1"]:checked');
+        const difficulty = form.querySelector('input[name="q3"]:checked');
+        const finance = form.querySelector('input[name="q6"]:checked');
+        document.getElementById('resultTitle').textContent = stage.dataset.title;
+        document.getElementById('resultSummary').textContent = 'Você informou que quer escrever sobre ' + themeField.value.trim() + ' e que ' + difficulty.dataset.summary + '. A mentoria oferece acompanhamento individual, capítulo a capítulo, por até 12 meses.';
+        document.getElementById('resultSupport').textContent = valueOf('q4') + '.';
+        document.getElementById('resultTime').textContent = valueOf('q5') + '.';
+        document.getElementById('financeNote').textContent = finance.dataset.finance;
+      }
+
+      function validateContacts() {
+        const fields = Array.from(document.querySelectorAll('#contactFields input'));
+        for (const field of fields) {
+          if (!field.reportValidity()) return false;
+        }
+        return true;
+      }
+
+      function diagnosticText() {
+        return [
+          'Nome: ' + valueOf('nome'),
+          'E-mail: ' + valueOf('email'),
+          'WhatsApp: ' + valueOf('whatsapp'),
+          'Etapa do livro: ' + valueOf('q1'),
+          'Tema: ' + valueOf('q2'),
+          'Principal dificuldade: ' + valueOf('q3'),
+          'Apoio procurado: ' + valueOf('q4'),
+          'Disponibilidade de tempo: ' + valueOf('q5'),
+          'Disponibilidade de investimento: ' + valueOf('q6')
+        ].join('\n');
+      }
+
+      async function copyDiagnostic() {
+        if (!validateContacts()) return;
+        const text = diagnosticText();
+        try {
+          await navigator.clipboard.writeText(text);
+          actionStatus.textContent = 'Diagnóstico copiado. Envie o texto para contato@vivianepossato.com.';
+        } catch (error) {
+          const temporary = document.createElement('textarea');
+          temporary.value = text;
+          temporary.setAttribute('readonly', '');
+          temporary.style.position = 'fixed';
+          temporary.style.opacity = '0';
+          document.body.appendChild(temporary);
+          temporary.select();
+          document.execCommand('copy');
+          temporary.remove();
+          actionStatus.textContent = 'Diagnóstico copiado. Envie o texto para contato@vivianepossato.com.';
+        }
+      }
+
+      themeField.addEventListener('input', function () {
+        document.getElementById('charCount').textContent = themeField.value.length + ' de 300';
+      });
+      form.querySelector('[data-start]').addEventListener('click', function () { showScreen('q1'); });
+      form.querySelectorAll('[data-next]').forEach(function (button) {
+        button.addEventListener('click', function () {
+          const current = button.closest('[data-screen]');
+          if (validateScreen(current)) showScreen(button.dataset.next);
+        });
+      });
+      form.querySelectorAll('[data-back]').forEach(function (button) {
+        button.addEventListener('click', function () { showScreen(button.dataset.back); });
+      });
+      form.querySelector('[data-result]').addEventListener('click', function (event) {
+        const current = event.currentTarget.closest('[data-screen]');
+        if (!validateScreen(current)) return;
+        buildResult();
+        showScreen('result');
+      });
+      form.querySelector('[data-copy]').addEventListener('click', copyDiagnostic);
+      form.querySelector('[data-restart]').addEventListener('click', function () {
+        form.reset();
+        themeField.dispatchEvent(new Event('input'));
+        form.querySelectorAll('.stepError').forEach(function (error) { error.textContent = ''; });
+        actionStatus.textContent = '';
+        showScreen('intro');
+      });
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        if (!validateContacts()) return;
+        const subject = encodeURIComponent('Diagnóstico de livro, ' + valueOf('nome'));
+        const body = encodeURIComponent(diagnosticText());
+        actionStatus.textContent = 'Abrindo o seu aplicativo de e-mail com o diagnóstico preenchido.';
+        window.location.href = 'mailto:contato@vivianepossato.com?subject=' + subject + '&body=' + body;
+      });
+    })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz de Escrita de Memórias | Viviane Possato</title>
+  <meta name="description" content="Responda a seis perguntas e descubra um ponto de partida para escrever suas memórias com o curso de Viviane Possato." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500&family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { paper:'#FDFCF8', ink:'#1F1F1F', subtle:'#5A5A5A', accent:'#966767', line:'#E6E4E0', warm:'#F5F4F0', rosewash:'#EFE4E2' },
+          fontFamily: { serif:['"Playfair Display"','serif'], sans:['"Lato"','sans-serif'], hand:['"Caveat"','cursive'] }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { margin:0; min-height:100vh; background:#FDFCF8; color:#1F1F1F; font-family:'Lato',sans-serif; -webkit-font-smoothing:antialiased; }
+    body::before { content:''; position:fixed; inset:0; z-index:50; pointer-events:none; opacity:.025; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+    [hidden] { display:none !important; }
+    .quiz-card { background:rgba(255,255,255,.88); border:1px solid #E6E4E0; box-shadow:0 24px 70px -40px rgba(31,31,31,.42); }
+    .option { display:flex; align-items:flex-start; gap:13px; min-height:56px; padding:15px 16px; border:1px solid #E6E4E0; cursor:pointer; transition:border-color .15s, background-color .15s, transform .15s; }
+    .option:hover { border-color:#966767; }
+    .option:has(input:checked) { border-color:#966767; background:#EFE4E2; }
+    .option:has(input:checked) .select-mark { background:#966767; border-color:#966767; box-shadow:inset 0 0 0 4px #EFE4E2; }
+    .select-mark { width:18px; height:18px; margin-top:2px; border:1px solid #AAA29B; border-radius:999px; flex:0 0 auto; }
+    .option input { position:absolute; opacity:0; pointer-events:none; }
+    progress { width:100%; height:4px; border:0; appearance:none; }
+    progress::-webkit-progress-bar { background:#E6E4E0; }
+    progress::-webkit-progress-value { background:#966767; transition:width .2s ease; }
+    progress::-moz-progress-bar { background:#966767; }
+    button, a { min-height:44px; }
+    button:focus-visible, a:focus-visible, .option:focus-within { outline:2px solid #966767; outline-offset:3px; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior:auto !important; transition:none !important; } }
+  </style>
+</head>
+<body>
+
+  <header class="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
+    <a href="#quiz" class="font-serif text-lg sm:text-xl">Escrita de Memórias</a>
+    <a href="https://pay.hotmart.com/U102857700C?bid=1766501787612" class="text-sm border-b border-accent hover:text-accent">Conhecer o curso</a>
+  </header>
+
+  <main id="quiz" class="max-w-6xl mx-auto px-6 pt-4 pb-16">
+    <div class="grid lg:grid-cols-[.82fr_1.18fr] gap-10 lg:gap-14 items-stretch">
+      <aside class="order-2 lg:order-1 relative min-h-[320px] lg:min-h-[720px] overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=1000&auto=format&fit=crop" alt="Caneta tinteiro sobre uma página escrita" class="absolute inset-0 w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/15 to-transparent"></div>
+        <div class="absolute left-6 right-6 bottom-6 text-paper">
+          <p class="font-hand text-3xl text-accent mb-2">Uma lembrança por vez</p>
+          <p class="font-serif text-2xl leading-snug">Aulas gravadas, práticas guiadas e acesso vitalício.</p>
+        </div>
+      </aside>
+
+      <section class="order-1 lg:order-2 quiz-card p-6 sm:p-10 lg:p-12 min-h-[620px] flex flex-col" aria-label="Quiz de escrita de memórias">
+        <div id="progressArea" hidden>
+          <div class="flex justify-between gap-4 text-xs uppercase tracking-[.15em] text-subtle mb-3">
+            <span id="progressText" aria-live="polite">Pergunta 1 de 6</span>
+            <span>Seu ponto de partida</span>
+          </div>
+          <progress id="quizProgress" max="6" value="1" aria-label="Progresso do quiz"></progress>
+        </div>
+
+        <form id="memoryQuiz" class="flex-1 flex flex-col mt-7" novalidate>
+          <section id="screen-intro" data-screen>
+            <p class="uppercase tracking-[.2em] text-xs text-accent mb-4">Curso online de escrita de memórias</p>
+            <h1 tabindex="-1" class="font-serif text-4xl sm:text-5xl leading-[1.1] mb-6">Qual caminho pode levar as suas memórias para o papel?</h1>
+            <p class="text-subtle text-lg leading-relaxed mb-8">Responda a seis perguntas sobre o que você quer registrar, onde a escrita trava e como prefere aprender. No final, você recebe um ponto de partida para continuar.</p>
+            <div class="grid sm:grid-cols-3 gap-3 mb-9 text-sm">
+              <span class="bg-warm px-4 py-3 text-center">Aulas gravadas</span>
+              <span class="bg-warm px-4 py-3 text-center">Práticas guiadas</span>
+              <span class="bg-warm px-4 py-3 text-center">Acesso vitalício</span>
+            </div>
+            <button type="button" data-start class="bg-ink text-paper px-8 py-4 text-sm tracking-wide hover:bg-accent transition-colors">Começar o quiz</button>
+          </section>
+
+          <section id="screen-q1" data-screen hidden>
+            <fieldset>
+              <legend tabindex="-1" class="font-serif text-3xl sm:text-4xl leading-tight mb-7">Hoje, em que ponto está a sua escrita de memórias?</legend>
+              <div class="space-y-3">
+                <label class="option"><input type="radio" name="q1" value="As histórias ainda estão na minha cabeça" data-axis="inicio" data-points="3" /><span class="select-mark" aria-hidden="true"></span><span>As histórias ainda estão na minha cabeça</span></label>
+                <label class="option"><input type="radio" name="q1" value="Tenho anotações, fotos ou lembranças espalhadas" data-axis="organizacao" data-points="3" /><span class="select-mark" aria-hidden="true"></span><span>Tenho anotações, fotos ou lembranças espalhadas</span></label>
+                <label class="option"><input type="radio" name="q1" value="Já comecei alguns textos" data-axis="continuidade" data-points="3" /><span class="select-mark" aria-hidden="true"></span><span>Já comecei alguns textos</span></label>
+                <label class="option"><input type="radio" name="q1" value="Escrevo e quero um percurso para continuar" data-axis="ritmo" data-points="3" /><span class="select-mark" aria-hidden="true"></span><span>Escrevo e quero um percurso para continuar</span></label>
+              </div>
+            </fieldset>
+            <p class="stepError text-accent text-sm mt-4" role="alert"></p>
+            <div class="flex justify-between gap-4 mt-8"><button type="button" data-back="intro" class="border border-line px-6 py-3 hover:border-ink">Voltar</button><button type="button" data-next="q2" class="bg-ink text-paper px-7 py-3 hover:bg-accent">Continuar</button></div>
+          </section>
+
+          <section id="screen-q2" data-screen hidden>
+            <fieldset>
+              <legend tabindex="-1" class="font-serif text-3xl sm:text-4xl leading-tight mb-7">O que você quer preservar primeiro?</legend>
+              <div class="space-y-3">
+                <label class="option"><input type="radio" name="q2" value="uma fase da sua vida" data-objective="uma fase da sua vida" /><span class="select-mark" aria-hidden="true"></span><span>Uma fase da minha vida</span></label>
+                <label class="option"><input type="radio" name="q2" value="histórias da sua família" data-objective="histórias da sua família" /><span class="select-mark" aria-hidden="true"></span><span>Histórias da minha família</span></label>
+                <label class="option"><input type="radio" name="q2" value="pessoas, lugares e pequenos rituais" data-objective="pessoas, lugares e pequenos rituais" /><span class="select-mark" aria-hidden="true"></span><span>Pessoas, lugares e pequenos rituais</span></label>
+                <label class="option"><input type="radio" name="q2" value="um primeiro ponto de partida" data-objective="suas memórias" /><span class="select-mark" aria-hidden="true"></span><span>Ainda quero descobrir por onde começar</span></label>
+              </div>
+            </fieldset>
+            <p class="stepError text-accent text-sm mt-4" role="alert"></p>
+            <div class="flex justify-between gap-4 mt-8"><button type="button" data-back="q1" class="border border-line px-6 py-3 hover:border-ink">Voltar</button><button type="button" data-next="q3" class="bg-ink text-paper px-7 py-3 hover:bg-accent">Continuar</button></div>
+          </section>
+
+          <section id="screen-q3" data-screen hidden>
+            <fieldset>
+              <legend tabindex="-1" class="font-serif text-3xl sm:text-4xl leading-tight mb-7">O que mais interrompe a escrita?</legend>
+              <div class="space-y-3">
+                <label class="option"><input type="radio" name="q3" value="Escolher uma lembrança" data-axis="inicio" data-points="2" /><span class="select-mark" aria-hidden="true"></span><span>Não sei qual lembrança escolher</span></label>
+                <label class="option"><input type="radio" name="q3" value="Organizar o que lembro" data-axis="organizacao" data-points="2" /><span class="select-mark" aria-hidden="true"></span><span>Tenho dificuldade para organizar o que lembro</span></label>
+                <label class="option"><input type="radio" name="q3" value="Manter a continuidade" data-axis="continuidade" data-points="2" /><span class="select-mark" aria-hidden="true"></span><span>Começo um texto e perco a continuidade</span></label>
+                <label class="option"><input type="radio" name="q3" value="Encontrar uma forma de escrever" data-axis="ritmo" data-points="2" /><span class="select-mark" aria-hidden="true"></span><span>Fico em dúvida sobre como escrever</span></label>
+              </div>
+            </fieldset>
+            <p class="stepError text-accent text-sm mt-4" role="alert"></p>
+            <div class="flex justify-between gap-4 mt-8"><button type="button" data-back="q2" class="border border-line px-6 py-3 hover:border-ink">Voltar</button><button type="button" data-next="bridge" class="bg-ink text-paper px-7 py-3 hover:bg-accent">Continuar</button></div>
+          </section>
+
+          <section id="screen-bridge" data-screen hidden>
+            <p class="font-hand text-3xl text-accent mb-4">Como o curso entra nesse caminho</p>
+            <h2 tabindex="-1" class="font-serif text-3xl sm:text-4xl leading-tight mb-6">Cada aula apresenta um tema e propõe uma prática para levar a lembrança ao papel.</h2>
+            <p class="text-subtle text-lg leading-relaxed mb-8">O curso combina aulas gravadas com práticas guiadas. Você avança no seu ritmo e mantém acesso vitalício ao conteúdo para rever uma proposta ou começar outra memória.</p>
+            <div class="bg-warm p-6 border-l-2 border-accent mb-8">
+              <p class="font-serif text-xl">Cada etapa parte de algo que você viveu, viu, ouviu ou sentiu.</p>
+            </div>
+            <div class="flex justify-between gap-4"><button type="button" data-back="q3" class="border border-line px-6 py-3 hover:border-ink">Voltar</button><button type="button" data-next="q4" class="bg-ink text-paper px-7 py-3 hover:bg-accent">Continuar</button></div>
+          </section>
+
+          <section id="screen-q4" data-screen hidden>
+            <fieldset>
+              <legend tabindex="-1" class="font-serif text-3xl sm:text-4xl leading-tight mb-7">Qual forma de estudo combina com a sua rotina?</legend>
+              <div class="space-y-3">
+                <label class="option"><input type="radio" name="q4" value="Assistir a uma aula e escrever em seguida" data-axis="continuidade" data-points="1" /><span class="select-mark" aria-hidden="true"></span><span>Assistir a uma aula e escrever em seguida</span></label>
+                <label class="option"><input type="radio" name="q4" value="Fazer uma prática guiada por vez" data-axis="organizacao" data-points="1" /><span class="select-mark" aria-hidden="true"></span><span>Fazer uma prática guiada por vez</span></label>
+                <label class="option"><input type="radio" name="q4" value="Avançar em períodos curtos" data-axis="ritmo" data-points="2" /><span class="select-mark" aria-hidden="true"></span><span>Avançar em períodos curtos, quando puder</span></label>
+                <label class="option"><input type="radio" name="q4" value="Voltar ao conteúdo quando precisar" data-axis="ritmo" data-points="2" /><span class="select-mark" aria-hidden="true"></span><span>Voltar ao conteúdo sempre que precisar</span></label>
+              </div>
+            </fieldset>
+            <p class="stepError text-accent text-sm mt-4" role="alert"></p>
+            <div class="flex justify-between gap-4 mt-8"><button type="button" data-back="bridge" class="border border-line px-6 py-3 hover:border-ink">Voltar</button><button type="button" data-next="q5" class="bg-ink text-paper px-7 py-3 hover:bg-accent">Continuar</button></div>
+          </section>
+
+          <section id="screen-q5" data-screen hidden>
+            <fieldset>
+              <legend tabindex="-1" class="font-serif text-3xl sm:text-4xl leading-tight mb-7">Que ritmo você consegue sustentar agora?</legend>
+              <div class="space-y-3">
+                <label class="option"><input type="radio" name="q5" value="Um pouco por semana" data-axis="continuidade" data-points="1" /><span class="select-mark" aria-hidden="true"></span><span>Um pouco por semana</span></label>
+                <label class="option"><input type="radio" name="q5" value="Algumas sessões por mês" data-axis="organizacao" data-points="1" /><span class="select-mark" aria-hidden="true"></span><span>Algumas sessões por mês</span></label>
+                <label class="option"><input type="radio" name="q5" value="Em fases" data-axis="ritmo" data-points="2" /><span class="select-mark" aria-hidden="true"></span><span>Em fases, conforme minha disponibilidade</span></label>
+                <label class="option"><input type="radio" name="q5" value="Ainda preciso encontrar meu ritmo" data-axis="inicio" data-points="1" /><span class="select-mark" aria-hidden="true"></span><span>Ainda preciso encontrar meu ritmo</span></label>
+              </div>
+            </fieldset>
+            <p class="stepError text-accent text-sm mt-4" role="alert"></p>
+            <div class="flex justify-between gap-4 mt-8"><button type="button" data-back="q4" class="border border-line px-6 py-3 hover:border-ink">Voltar</button><button type="button" data-next="q6" class="bg-ink text-paper px-7 py-3 hover:bg-accent">Continuar</button></div>
+          </section>
+
+          <section id="screen-q6" data-screen hidden>
+            <fieldset>
+              <legend tabindex="-1" class="font-serif text-3xl sm:text-4xl leading-tight mb-7">Qual primeiro avanço você procura?</legend>
+              <div class="space-y-3">
+                <label class="option"><input type="radio" name="q6" value="Escrever a primeira cena" data-axis="inicio" data-points="2" /><span class="select-mark" aria-hidden="true"></span><span>Escrever a primeira cena</span></label>
+                <label class="option"><input type="radio" name="q6" value="Organizar minhas lembranças" data-axis="organizacao" data-points="2" /><span class="select-mark" aria-hidden="true"></span><span>Organizar minhas lembranças</span></label>
+                <label class="option"><input type="radio" name="q6" value="Retomar um texto que parei" data-axis="continuidade" data-points="2" /><span class="select-mark" aria-hidden="true"></span><span>Retomar um texto que parei</span></label>
+                <label class="option"><input type="radio" name="q6" value="Criar uma rotina de escrita" data-axis="ritmo" data-points="2" /><span class="select-mark" aria-hidden="true"></span><span>Criar uma rotina de escrita</span></label>
+              </div>
+            </fieldset>
+            <p class="stepError text-accent text-sm mt-4" role="alert"></p>
+            <div class="flex justify-between gap-4 mt-8"><button type="button" data-back="q5" class="border border-line px-6 py-3 hover:border-ink">Voltar</button><button type="button" data-result class="bg-ink text-paper px-7 py-3 hover:bg-accent">Ver meu ponto de partida</button></div>
+          </section>
+
+          <section id="screen-result" data-screen hidden aria-live="polite">
+            <p class="font-hand text-3xl text-accent mb-4">Seu ponto de partida</p>
+            <h2 id="resultTitle" tabindex="-1" class="font-serif text-4xl sm:text-5xl leading-[1.1] mb-6"></h2>
+            <p id="resultText" class="text-subtle text-lg leading-relaxed mb-8"></p>
+            <div class="bg-warm p-6 mb-8">
+              <p class="uppercase tracking-[.16em] text-xs text-accent mb-4">No Escrita de Memórias</p>
+              <div class="grid sm:grid-cols-3 gap-3 text-sm">
+                <span>Aulas gravadas</span><span>Práticas guiadas</span><span>Acesso vitalício</span>
+              </div>
+            </div>
+            <a href="https://pay.hotmart.com/U102857700C?bid=1766501787612" class="inline-flex items-center justify-center bg-accent text-paper px-8 py-4 text-sm tracking-wide hover:bg-ink transition-colors">Começar o curso na Hotmart</a>
+            <p class="text-subtle text-xs mt-3">Você será direcionado para o checkout da Hotmart.</p>
+            <button type="button" data-restart class="mt-6 text-sm underline decoration-accent underline-offset-4 hover:text-accent">Refazer o quiz</button>
+          </section>
+        </form>
+
+        <noscript>
+          <div class="mt-8 bg-warm p-6">
+            <p class="font-serif text-xl mb-3">O quiz precisa de JavaScript para mostrar as perguntas.</p>
+            <p class="text-subtle mb-5">Você ainda pode conhecer o curso e seguir para o checkout da Hotmart.</p>
+            <a href="https://pay.hotmart.com/U102857700C?bid=1766501787612" class="inline-flex items-center bg-ink text-paper px-6 py-3">Conhecer o curso</a>
+          </div>
+        </noscript>
+      </section>
+    </div>
+  </main>
+
+  <footer class="border-t border-line py-8 text-center text-sm text-subtle">Escrita de Memórias &copy; 2026 · Viviane Possato</footer>
+
+  <script>
+    (function () {
+      const form = document.getElementById('memoryQuiz');
+      const screens = Array.from(form.querySelectorAll('[data-screen]'));
+      const progressArea = document.getElementById('progressArea');
+      const progress = document.getElementById('quizProgress');
+      const progressText = document.getElementById('progressText');
+      const questionNumber = { q1:1, q2:2, q3:3, bridge:3, q4:4, q5:5, q6:6 };
+
+      function showScreen(name) {
+        screens.forEach(function (screen) { screen.hidden = screen.id !== 'screen-' + name; });
+        const number = questionNumber[name];
+        progressArea.hidden = !number;
+        if (number) {
+          progress.value = number;
+          progressText.textContent = name === 'bridge' ? '3 de 6 perguntas concluídas' : 'Pergunta ' + number + ' de 6';
+        }
+        const current = document.getElementById('screen-' + name);
+        const heading = current.querySelector('h1, h2, legend');
+        if (heading) heading.focus();
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
+      }
+
+      function validateScreen(screen) {
+        const fieldset = screen.querySelector('fieldset');
+        const error = screen.querySelector('.stepError');
+        if (!fieldset) return true;
+        const selected = fieldset.querySelector('input[type="radio"]:checked');
+        if (!selected) {
+          error.textContent = 'Escolha uma opção para continuar.';
+          const first = fieldset.querySelector('input[type="radio"]');
+          if (first) first.focus();
+          return false;
+        }
+        error.textContent = '';
+        return true;
+      }
+
+      function calculateResult() {
+        const scores = { inicio:0, organizacao:0, continuidade:0, ritmo:0 };
+        ['q1','q3','q4','q5','q6'].forEach(function (name) {
+          const selected = form.querySelector('input[name="' + name + '"]:checked');
+          if (selected && selected.dataset.axis) scores[selected.dataset.axis] += Number(selected.dataset.points || 0);
+        });
+        const q6 = form.querySelector('input[name="q6"]:checked').dataset.axis;
+        const q3 = form.querySelector('input[name="q3"]:checked').dataset.axis;
+        const tieOrder = [q6, q3, 'inicio', 'organizacao', 'continuidade', 'ritmo'].filter(function (axis, index, array) { return array.indexOf(axis) === index; });
+        const max = Math.max(scores.inicio, scores.organizacao, scores.continuidade, scores.ritmo);
+        const axis = tieOrder.find(function (candidate) { return scores[candidate] === max; });
+        const objective = form.querySelector('input[name="q2"]:checked').dataset.objective;
+        const messages = {
+          inicio: {
+            title: 'Uma primeira cena pode abrir o seu percurso.',
+            text: 'Você quer preservar ' + objective + '. Pelas suas respostas, escolher a primeira cena é o ponto que mais interrompe a escrita. As aulas gravadas e as práticas guiadas oferecem uma sequência para você encontrar uma cena e levá-la ao papel no seu ritmo.'
+          },
+          organizacao: {
+            title: 'As suas lembranças precisam ganhar uma sequência.',
+            text: 'Você reuniu material para escrever sobre ' + objective + '. O curso propõe um percurso guiado, com práticas que ajudam a organizar os detalhes e transformar essas lembranças em texto.'
+          },
+          continuidade: {
+            title: 'Você pode retomar o texto que já começou e avançar uma memória por vez.',
+            text: 'Você quer preservar ' + objective + ' e já iniciou a escrita. As aulas seguem uma sequência, e o acesso vitalício permite rever uma proposta e retomar o percurso quando precisar.'
+          },
+          ritmo: {
+            title: 'Você pode distribuir a escrita conforme o tempo disponível.',
+            text: 'Você quer preservar ' + objective + ' e procura flexibilidade para avançar. O curso é gravado, inclui práticas guiadas e oferece acesso vitalício para rever as aulas e retomar as práticas conforme a sua rotina.'
+          }
+        };
+        document.getElementById('resultTitle').textContent = messages[axis].title;
+        document.getElementById('resultText').textContent = messages[axis].text;
+      }
+
+      form.querySelector('[data-start]').addEventListener('click', function () { showScreen('q1'); });
+      form.querySelectorAll('[data-next]').forEach(function (button) {
+        button.addEventListener('click', function () {
+          const current = button.closest('[data-screen]');
+          if (validateScreen(current)) showScreen(button.dataset.next);
+        });
+      });
+      form.querySelectorAll('[data-back]').forEach(function (button) {
+        button.addEventListener('click', function () { showScreen(button.dataset.back); });
+      });
+      form.querySelector('[data-result]').addEventListener('click', function (event) {
+        const current = event.currentTarget.closest('[data-screen]');
+        if (!validateScreen(current)) return;
+        calculateResult();
+        showScreen('result');
+      });
+      form.querySelector('[data-restart]').addEventListener('click', function () {
+        form.reset();
+        form.querySelectorAll('.stepError').forEach(function (error) { error.textContent = ''; });
+        showScreen('intro');
+      });
+    })();
+  </script>
+
+</body>
+</html>
