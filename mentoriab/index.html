@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Página a Página | Mentoria individual de livro com Viviane Possato</title>
   <meta name="description" content="Mentoria individual de até 12 meses com Viviane Possato para organizar conhecimento e desenvolver um livro capítulo a capítulo." />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="canonical" href="https://vivianepossato.com/mentoria/" />
+  <link rel="stylesheet" href="/assets/site.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
@@ -39,21 +42,22 @@
     .field-label { display:block; margin-bottom:9px; font-size:.78rem; line-height:1.35; letter-spacing:.08em; text-transform:uppercase; font-weight:700; }
     .group-label { font-size:.7rem; letter-spacing:.15em; text-transform:uppercase; color:#777; font-weight:700; }
     input, textarea, select {
-      width:100%; border:1px solid #DCD9D4; border-radius:.65rem; padding:13px 15px; background:#fff; font:inherit; font-size:.95rem;
+      width:100%; border:1px solid #8A8A8A; border-radius:.65rem; padding:13px 15px; background:#fff; font:inherit; font-size:.95rem;
     }
     textarea { min-height:104px; resize:vertical; }
     input[type="radio"] { width:auto; }
     input:focus, textarea:focus, select:focus, a:focus-visible, button:focus-visible, summary:focus-visible {
       outline:2px solid #BC3D3D; outline-offset:2px;
     }
-    .radio-card { display:flex; align-items:flex-start; gap:10px; padding:14px 15px; border:1px solid #E9E7E3; border-radius:.65rem; cursor:pointer; transition:.15s; }
+    .radio-card { display:flex; align-items:flex-start; gap:10px; padding:14px 15px; border:1px solid #8A8A8A; border-radius:.65rem; cursor:pointer; transition:.15s; }
     .radio-card:has(input:checked) { border-color:#BC3D3D; background:#F8EEEE; }
     details > summary { list-style:none; cursor:pointer; }
     details > summary::-webkit-details-marker { display:none; }
     details[open] .faq-icon { transform:rotate(45deg); }
   </style>
 </head>
-<body>
+<body data-offer="mentoria" data-variant="b">
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
 
   <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-line">
     <div class="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
@@ -70,7 +74,7 @@
     </div>
   </header>
 
-  <main>
+  <main id="conteudo" tabindex="-1">
     <section id="inicio" class="max-w-6xl mx-auto px-6 pt-12 pb-20 grid md:grid-cols-2 gap-12 items-center">
       <div>
         <div class="flex flex-wrap items-center gap-3 mb-6">
@@ -78,14 +82,14 @@
           <span class="text-subtle text-xs tracking-wide uppercase">Livros de não ficção</span>
         </div>
         <h1 class="font-serif font-semibold text-4xl sm:text-5xl lg:text-[3.55rem] leading-[1.08] mb-7">
-          O conhecimento que você construiu pode ganhar uma estrutura que o leitor acompanhe do primeiro ao último capítulo.
+          Transforme o conhecimento que você construiu em um livro que o leitor consiga acompanhar.
         </h1>
         <p class="text-subtle text-lg leading-relaxed mb-9 max-w-xl">
           Página a Página é uma mentoria individual de até 12 meses para organizar a ideia do livro, sustentar a escrita e desenvolver os capítulos com o acompanhamento de Viviane Possato.
         </p>
         <div class="flex flex-wrap gap-4 items-center">
           <a href="#aplicacao" class="inline-block bg-accent text-white px-7 py-4 rounded-lg text-sm tracking-wide hover:bg-ink transition-colors">Fazer diagnóstico do meu livro</a>
-          <span class="text-subtle text-sm">Preenchimento em cerca de 3 minutos</span>
+          <span class="text-subtle text-sm">Envio dentro desta página</span>
         </div>
         <div class="grid grid-cols-3 gap-4 mt-10 pt-7 border-t border-line max-w-xl">
           <div>
@@ -106,7 +110,7 @@
       <div class="relative">
         <img src="https://vivianepossato.vercel.app/_next/image?url=%2Ffotos%2Fviviane-13.jpeg&w=1920&q=85"
              alt="Viviane Possato durante uma conversa"
-             class="w-full h-[510px] sm:h-[620px] object-cover grayscale rounded-2xl" />
+             class="w-full h-[470px] sm:h-[560px] object-cover grayscale rounded-2xl" />
         <div class="absolute bottom-5 left-5 right-5 sm:right-auto bg-white rounded-xl p-5 shadow-sm sm:max-w-xs">
           <p class="group-label text-accent mb-2">O percurso</p>
           <p class="font-serif text-lg">Estrutura, escrita e acompanhamento.</p>
@@ -246,7 +250,7 @@
           </div>
           <div class="pt-2">
             <p class="group-label text-accent mb-2">Fechamento</p>
-            <h3 class="font-serif text-2xl mb-3">O manuscrito é lido como uma obra inteira.</h3>
+            <h3 class="font-serif text-2xl mb-3">A leitura do conjunto entra no percurso quando faz parte do escopo contratado.</h3>
             <p class="text-subtle leading-relaxed max-w-2xl">A estrutura e a continuidade são retomadas para localizar os ajustes que ainda fazem parte do percurso contratado.</p>
           </div>
         </article>
@@ -316,7 +320,7 @@
           <div class="divider mb-5"></div>
           <h2 class="font-serif text-3xl sm:text-4xl leading-tight mb-6">Conte em que ponto o seu livro está.</h2>
           <p class="text-subtle text-lg leading-relaxed mb-7">
-            O diagnóstico reúne o tema, o estágio do projeto, a dificuldade atual e a sua disponibilidade. Ao concluir, o seu aplicativo de e-mail será aberto com as respostas preenchidas para você revisar e enviar.
+            O diagnóstico reúne o tema, o estágio do projeto, a dificuldade atual e a sua disponibilidade. Ao concluir, a página registra as respostas e confirma o recebimento.
           </p>
           <div class="card-white p-6">
             <p class="group-label mb-2">Investimento</p>
@@ -325,7 +329,16 @@
           </div>
         </div>
 
-        <form id="applicationForm" class="card-white p-6 sm:p-10 space-y-9">
+        <form id="applicationForm" name="mentoria-b" method="POST" action="/obrigada/" data-netlify="true" netlify-honeypot="bot-field" data-netlify-ajax class="card-white p-6 sm:p-10 space-y-9">
+          <input type="hidden" name="form-name" value="mentoria-b" />
+          <input type="hidden" name="pagina" value="mentoria-b" />
+          <input type="hidden" name="rota" value="/mentoriab" />
+          <input type="hidden" name="utm_source" data-campaign-field />
+          <input type="hidden" name="utm_medium" data-campaign-field />
+          <input type="hidden" name="utm_campaign" data-campaign-field />
+          <input type="hidden" name="utm_content" data-campaign-field />
+          <input type="hidden" name="utm_term" data-campaign-field />
+          <p class="hidden"><label>Não preencha este campo: <input name="bot-field" /></label></p>
           <div>
             <p class="group-label mb-4">Contato</p>
             <div class="grid sm:grid-cols-2 gap-5">
@@ -373,8 +386,8 @@
             </div>
           </fieldset>
 
-          <button type="submit" class="w-full bg-accent text-white py-4 rounded-lg text-sm tracking-wide hover:bg-ink transition-colors">Preparar e-mail com meu diagnóstico</button>
-          <p id="formNote" class="text-subtle text-xs text-center" aria-live="polite">Seu aplicativo de e-mail será aberto. Revise a mensagem e conclua o envio.</p>
+          <button type="submit" class="w-full bg-accent text-white py-4 rounded-lg text-sm tracking-wide hover:bg-ink transition-colors disabled:opacity-60">Enviar meu diagnóstico</button>
+          <p id="formNote" data-form-status class="text-subtle text-xs text-center" aria-live="polite">Os dados serão usados para responder sobre a mentoria.</p>
         </form>
       </div>
     </section>
@@ -401,7 +414,7 @@
         </details>
         <details class="py-6">
           <summary class="font-serif text-lg flex justify-between gap-6 items-center">O que acontece depois do formulário?<span class="faq-icon text-accent text-xl transition-transform" aria-hidden="true">+</span></summary>
-          <p class="text-subtle leading-relaxed mt-4">O seu aplicativo de e-mail abre com o diagnóstico preenchido. Depois de revisar e enviar a mensagem, a conversa pode ser combinada por e-mail ou WhatsApp.</p>
+          <p class="text-subtle leading-relaxed mt-4">A página registra as respostas e confirma o recebimento. A conversa pode ser combinada pelo e-mail ou WhatsApp informado.</p>
         </details>
       </div>
     </section>
@@ -410,9 +423,9 @@
       <img src="https://vivianepossato.vercel.app/_next/image?url=%2Ffotos%2Fviviane-notebook.jpeg&w=1920&q=90" alt="" class="absolute inset-0 w-full h-full object-cover" />
       <div class="absolute inset-0 bg-ink/85"></div>
       <div class="relative max-w-3xl mx-auto px-6 text-white">
-        <p class="group-label text-accent mb-4">O primeiro passo leva cerca de 3 minutos</p>
+        <p class="group-label text-accent mb-4">O primeiro passo é o diagnóstico</p>
         <h2 class="font-serif text-3xl sm:text-5xl leading-tight mb-7">O diagnóstico reúne o estágio do livro e abre uma conversa sobre como ele pode avançar.</h2>
-        <p class="text-white/70 text-lg leading-relaxed max-w-xl mx-auto mb-10">Responda às perguntas, revise o e-mail preparado e envie as informações para Viviane.</p>
+        <p class="text-white/70 text-lg leading-relaxed max-w-xl mx-auto mb-10">Responda às perguntas e envie as informações para Viviane dentro desta página.</p>
         <a href="#aplicacao" class="inline-block bg-accent text-white px-9 py-4 rounded-lg text-sm tracking-wide hover:bg-white hover:text-ink transition-colors">Fazer diagnóstico do meu livro</a>
       </div>
     </section>
@@ -431,24 +444,7 @@
     </div>
   </footer>
 
-  <script>
-    document.getElementById('applicationForm').addEventListener('submit', function (event) {
-      event.preventDefault();
-      const data = new FormData(event.currentTarget);
-      const subject = encodeURIComponent('Diagnóstico de livro, ' + String(data.get('nome') || '').trim());
-      const body = encodeURIComponent(
-        'Nome: ' + data.get('nome') + '\n' +
-        'E-mail: ' + data.get('email') + '\n' +
-        'WhatsApp: ' + data.get('whatsapp') + '\n' +
-        'Tema do livro: ' + data.get('tema') + '\n' +
-        'Estágio do projeto: ' + data.get('estagio') + '\n' +
-        'Ponto que interrompe a escrita: ' + data.get('dificuldade') + '\n' +
-        'Momento de investimento: ' + data.get('investimento')
-      );
-      document.getElementById('formNote').textContent = 'Abrindo o seu aplicativo de e-mail com as respostas preenchidas.';
-      window.location.href = 'mailto:contato@vivianepossato.com?subject=' + subject + '&body=' + body;
-    });
-  </script>
+  <script src="/assets/site.js" defer></script>
 
 </body>
 </html>

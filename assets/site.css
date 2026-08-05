@@ -1,0 +1,104 @@
+.skip-link {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 9999;
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 0.7rem 1rem;
+  transform: translateY(calc(-100% - 2rem));
+  border: 2px solid currentColor;
+  border-radius: 0.5rem;
+  background: #fff;
+  color: #1f1f1f;
+  font: 700 0.875rem/1.2 Arial, sans-serif;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  transition: transform 0.15s ease;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 3px solid #966767;
+  outline-offset: 3px;
+}
+
+main[tabindex="-1"]:focus {
+  outline: none;
+}
+
+[data-demo-step]:focus,
+#intentHeadline:focus,
+#stageHeadline:focus {
+  outline: 2px solid currentColor;
+  outline-offset: 6px;
+}
+
+body[data-offer="memorias"] .bg-ink .text-accent,
+body[data-offer="memorias"] .text-paper .text-accent {
+  color: #d6afaf !important;
+}
+
+body[data-offer="mentoria"] .bg-ink .text-accent,
+body[data-offer="mentoria"] .text-white .text-accent {
+  color: #f08a8a !important;
+}
+
+[data-demo-step] button,
+[data-demo-step] a {
+  min-height: 44px;
+}
+
+[data-demo-step] a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 479px) {
+  [data-demo-controls],
+  .demo-actions {
+    flex-direction: column;
+    align-items: stretch !important;
+  }
+
+  [data-demo-controls] > *,
+  .demo-actions > * {
+    width: 100%;
+  }
+}
+
+@media (max-width: 359px) {
+  body[data-offer="memorias"][data-variant="e"] header > div,
+  body[data-offer="memorias"][data-variant="f"] header > div,
+  body[data-offer="memorias"][data-variant="g"] header > div {
+    gap: 0.75rem;
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+
+  body[data-offer="memorias"][data-variant="e"] header > div > a:first-child,
+  body[data-offer="memorias"][data-variant="f"] header > div > a:first-child,
+  body[data-offer="memorias"][data-variant="g"] header > div > a:first-child {
+    max-width: 8rem;
+    font-size: 1rem;
+    line-height: 1.15;
+  }
+
+  body[data-offer="memorias"][data-variant="e"] header > div > a:last-child,
+  body[data-offer="memorias"][data-variant="f"] header > div > a:last-child,
+  body[data-offer="memorias"][data-variant="g"] header > div > a:last-child {
+    padding: 0.65rem 0.75rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skip-link {
+    transition: none;
+  }
+}

@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mentoria de Livro | Diagnóstico com Viviane Possato</title>
   <meta name="description" content="Diagnóstico para a mentoria individual de livro com Viviane Possato, com acompanhamento capítulo a capítulo por até 12 meses." />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="canonical" href="https://vivianepossato.com/mentoria/" />
+  <link rel="stylesheet" href="/assets/site.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
@@ -25,7 +28,7 @@
     .divider { width:48px; height:2px; background:#BC3D3D; }
     .card { background:#FAFAF9; border:1px solid #E9E7E3; border-radius:1rem; }
     .field-label { display:block; font-size:.74rem; letter-spacing:.1em; text-transform:uppercase; font-weight:700; margin-bottom:8px; }
-    input, textarea, select { width:100%; border:1px solid #DCD9D4; border-radius:.65rem; padding:12px 14px; background:#fff; font:inherit; font-size:.94rem; }
+    input, textarea, select { width:100%; border:1px solid #8A8A8A; border-radius:.65rem; padding:12px 14px; background:#fff; font:inherit; font-size:.94rem; }
     textarea { min-height:82px; resize:vertical; }
     input:focus, textarea:focus, select:focus, button:focus-visible, a:focus-visible, summary:focus-visible { outline:2px solid #BC3D3D; outline-offset:2px; }
     details > summary { list-style:none; cursor:pointer; }
@@ -33,7 +36,8 @@
     details[open] .faq-icon { transform:rotate(45deg); }
   </style>
 </head>
-<body>
+<body data-offer="mentoria" data-variant="c">
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
 
   <header class="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between border-b border-line">
     <a href="#inicio">
@@ -43,7 +47,7 @@
     <a href="#diagnostico" class="text-sm bg-accent text-white px-5 py-2.5 rounded-lg hover:bg-ink transition-colors">Fazer diagnóstico</a>
   </header>
 
-  <main>
+  <main id="conteudo" tabindex="-1">
     <section id="inicio" class="bg-paper">
       <div class="max-w-6xl mx-auto px-6 py-12 lg:py-16 grid lg:grid-cols-[.9fr_1.1fr] gap-12 items-start">
         <div class="lg:sticky lg:top-8">
@@ -57,11 +61,11 @@
             </div>
             <div class="flex gap-4 items-center">
               <span class="w-9 h-9 rounded-full bg-accent text-white flex items-center justify-center shrink-0">2</span>
-              <p class="text-subtle">Revise o e-mail preparado.</p>
+              <p class="text-subtle">Envie dentro desta página.</p>
             </div>
             <div class="flex gap-4 items-center">
               <span class="w-9 h-9 rounded-full bg-accent text-white flex items-center justify-center shrink-0">3</span>
-              <p class="text-subtle">Envie para Viviane.</p>
+              <p class="text-subtle">Veja a confirmação.</p>
             </div>
           </div>
           <div class="flex items-center gap-3 mt-8 pt-6 border-t border-line max-w-lg">
@@ -70,7 +74,16 @@
           </div>
         </div>
 
-        <form id="quickForm" class="bg-white border border-line rounded-2xl p-6 sm:p-9 space-y-6 shadow-sm" aria-labelledby="diagnostico">
+        <form id="quickForm" name="mentoria-c" method="POST" action="/obrigada/" data-netlify="true" netlify-honeypot="bot-field" data-netlify-ajax class="bg-white border border-line rounded-2xl p-6 sm:p-9 space-y-6 shadow-sm" aria-labelledby="diagnostico">
+          <input type="hidden" name="form-name" value="mentoria-c" />
+          <input type="hidden" name="pagina" value="mentoria-c" />
+          <input type="hidden" name="rota" value="/mentoriac" />
+          <input type="hidden" name="utm_source" data-campaign-field />
+          <input type="hidden" name="utm_medium" data-campaign-field />
+          <input type="hidden" name="utm_campaign" data-campaign-field />
+          <input type="hidden" name="utm_content" data-campaign-field />
+          <input type="hidden" name="utm_term" data-campaign-field />
+          <p class="hidden"><label>Não preencha este campo: <input name="bot-field" /></label></p>
           <div>
             <div class="divider mb-4"></div>
             <h2 id="diagnostico" class="font-serif text-3xl mb-2">Diagnóstico do livro</h2>
@@ -115,8 +128,8 @@
               </select>
             </div>
           </div>
-          <button type="submit" class="w-full bg-accent text-white py-4 rounded-lg text-sm tracking-wide hover:bg-ink transition-colors">Preparar e-mail com meu diagnóstico</button>
-          <p id="formNote" class="text-subtle text-xs text-center" aria-live="polite">O seu aplicativo de e-mail será aberto com as respostas. Revise a mensagem e conclua o envio.</p>
+          <button type="submit" class="w-full bg-accent text-white py-4 rounded-lg text-sm tracking-wide hover:bg-ink transition-colors disabled:opacity-60">Enviar meu diagnóstico</button>
+          <p id="formNote" data-form-status class="text-subtle text-xs text-center" aria-live="polite">Os dados serão usados para responder sobre a mentoria.</p>
         </form>
       </div>
     </section>
@@ -162,7 +175,7 @@
         </details>
         <details class="py-5">
           <summary class="font-serif text-lg flex justify-between gap-6">O formulário envia as respostas automaticamente?<span class="faq-icon text-accent transition-transform" aria-hidden="true">+</span></summary>
-          <p class="text-subtle leading-relaxed mt-4">O botão abre o seu aplicativo de e-mail com as respostas preenchidas. Revise a mensagem e toque em enviar para concluir.</p>
+          <p class="text-subtle leading-relaxed mt-4">O botão envia as respostas dentro da página. Depois, você verá a confirmação do recebimento.</p>
         </details>
       </div>
     </section>
@@ -170,23 +183,7 @@
 
   <footer class="bg-paper py-10 text-center text-sm text-subtle">Viviane Possato &copy; 2026 · Mentoria de Livro</footer>
 
-  <script>
-    document.getElementById('quickForm').addEventListener('submit', function (event) {
-      event.preventDefault();
-      const data = new FormData(event.currentTarget);
-      const subject = encodeURIComponent('Diagnóstico de livro, ' + String(data.get('nome') || '').trim());
-      const body = encodeURIComponent(
-        'Nome: ' + data.get('nome') + '\n' +
-        'WhatsApp: ' + data.get('whatsapp') + '\n' +
-        'E-mail: ' + data.get('email') + '\n' +
-        'Tema do livro: ' + data.get('tema') + '\n' +
-        'Estágio do livro: ' + data.get('estagio') + '\n' +
-        'Momento de investimento: ' + data.get('investimento')
-      );
-      document.getElementById('formNote').textContent = 'Abrindo o seu aplicativo de e-mail com as respostas preenchidas.';
-      window.location.href = 'mailto:contato@vivianepossato.com?subject=' + subject + '&body=' + body;
-    });
-  </script>
+  <script src="/assets/site.js" defer></script>
 
 </body>
 </html>

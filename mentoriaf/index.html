@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="canonical" href="https://vivianepossato.com/mentoria/" />
+  <link rel="stylesheet" href="/assets/site.css" />
+  <title>Página a Página | Mentoria para o estágio atual do seu livro</title>
+  <meta name="description" content="Escolha o estágio do projeto e conheça a mentoria individual de Viviane Possato para livros de não ficção, com acompanhamento por até 12 meses." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { paper:'#FAFAF9', ink:'#1A1A1A', subtle:'#5C5C5C', accent:'#BC3D3D', line:'#E9E7E3', rosewash:'#F8EEEE' },
+          fontFamily: { serif:['"Noto Serif"','Georgia','serif'], sans:['"Helvetica Neue"','Helvetica','Arial','sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior:smooth; }
+    body { margin:0; background:#fff; color:#1A1A1A; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; -webkit-font-smoothing:antialiased; }
+    .choice { text-align:left; border:1px solid #8A8A8A; background:#fff; border-radius:1rem; transition:border-color .15s,background-color .15s,transform .15s; }
+    .choice:hover { border-color:#BC3D3D; transform:translateY(-2px); }
+    .choice[aria-pressed="true"] { border-color:#BC3D3D; background:#F8EEEE; }
+    .card { background:#FAFAF9; border:1px solid #E9E7E3; border-radius:1rem; }
+    .group-label { font-size:.7rem; letter-spacing:.15em; text-transform:uppercase; font-weight:700; color:#686868; }
+    .field-label { display:block; margin-bottom:9px; font-size:.76rem; line-height:1.35; letter-spacing:.08em; text-transform:uppercase; font-weight:700; }
+    input, textarea { width:100%; border:1px solid #8A8A8A; border-radius:.65rem; padding:13px 15px; background:#fff; font:inherit; font-size:.95rem; }
+    textarea { min-height:106px; resize:vertical; }
+    input[type="radio"] { width:auto; }
+    .radio-card { display:flex; align-items:flex-start; gap:10px; padding:14px 15px; border:1px solid #8A8A8A; border-radius:.65rem; cursor:pointer; }
+    .radio-card:has(input:checked) { border-color:#BC3D3D; background:#F8EEEE; }
+    details > summary { list-style:none; cursor:pointer; }
+    details > summary::-webkit-details-marker { display:none; }
+    details[open] .faq-icon { transform:rotate(45deg); }
+    button:focus-visible, a:focus-visible, input:focus, textarea:focus, summary:focus-visible { outline:2px solid #BC3D3D; outline-offset:3px; }
+    @media (prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto !important; transition:none !important; } }
+  </style>
+</head>
+<body data-offer="mentoria" data-variant="f" data-segment="ideia">
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-line">
+    <div class="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between gap-5">
+      <a href="#inicio"><p class="font-serif text-2xl leading-none">Viviane</p><p class="text-accent text-[.65rem] tracking-[.2em] uppercase mt-1 font-semibold">Página a Página</p></a>
+      <div class="hidden lg:flex items-center border border-line rounded-lg p-1 text-xs" aria-label="Trocar estágio do livro"><button type="button" data-stage="ideia" class="px-4 py-2 rounded-md" aria-pressed="true">Ideia</button><button type="button" data-stage="andamento" class="px-4 py-2 rounded-md" aria-pressed="false">Em andamento</button><button type="button" data-stage="manuscrito" class="px-4 py-2 rounded-md" aria-pressed="false">Manuscrito</button></div>
+      <a href="#diagnostico" class="bg-accent text-white px-5 py-3 rounded-lg text-sm hover:bg-ink">Fazer diagnóstico</a>
+    </div>
+  </header>
+
+  <main id="conteudo" tabindex="-1">
+    <section id="inicio" class="bg-paper py-16 sm:py-20">
+      <div class="max-w-6xl mx-auto px-6 text-center">
+        <span class="inline-block bg-accent/10 text-accent text-xs tracking-wide uppercase px-4 py-2 rounded-full font-semibold mb-6">Mentoria individual para livros de não ficção</span>
+        <h1 class="font-serif text-4xl sm:text-5xl leading-tight mb-6">Em que ponto o seu livro está hoje?</h1>
+        <p class="text-subtle text-lg leading-relaxed max-w-2xl mx-auto mb-11">Escolha o estágio que mais se aproxima do projeto. A página adapta o processo e o diagnóstico ao ponto que você selecionou.</p>
+        <div class="grid lg:grid-cols-3 gap-5 text-left">
+          <button type="button" data-stage="ideia" class="choice p-7 sm:p-8" aria-pressed="true"><span class="font-serif text-2xl block mb-3">Tenho uma ideia ou um tema</span><span class="text-subtle leading-relaxed">Ainda preciso definir o recorte, o leitor e o mapa dos capítulos.</span></button>
+          <button type="button" data-stage="andamento" class="choice p-7 sm:p-8" aria-pressed="false"><span class="font-serif text-2xl block mb-3">Já comecei a escrever</span><span class="text-subtle leading-relaxed">Tenho anotações, páginas ou capítulos e preciso organizar a continuidade.</span></button>
+          <button type="button" data-stage="manuscrito" class="choice p-7 sm:p-8" aria-pressed="false"><span class="font-serif text-2xl block mb-3">Tenho um primeiro manuscrito</span><span class="text-subtle leading-relaxed">Quero ler o conjunto, localizar os pontos que pedem desenvolvimento e definir a próxima revisão.</span></button>
+        </div>
+        <p class="text-subtle text-sm mt-7">Se o projeto estiver entre dois estágios, escolha aquele que representa a dificuldade mais próxima.</p>
+      </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto px-6 py-20 grid lg:grid-cols-[1.05fr_.95fr] gap-14 items-center">
+      <div>
+        <p id="stageLabel" class="group-label text-accent mb-5">Para quem tem uma ideia</p>
+        <h2 id="stageHeadline" tabindex="-1" class="font-serif text-4xl sm:text-5xl lg:text-6xl leading-[1.08] mb-7">Transforme o tema do livro em um recorte que oriente os capítulos.</h2>
+        <p id="stageText" class="text-subtle text-lg leading-relaxed max-w-xl mb-9">A mentoria ajuda você a definir o leitor, a proposta do livro e uma estrutura inicial, para que a primeira etapa da escrita tenha direção.</p>
+        <a id="stageCta" href="#diagnostico" class="inline-block bg-accent text-white px-8 py-4 rounded-lg text-sm tracking-wide hover:bg-ink">Quero estruturar meu livro</a>
+        <div class="grid grid-cols-3 gap-4 mt-10 pt-7 border-t border-line max-w-xl text-sm"><div><p class="font-serif text-xl text-accent">Individual</p><p class="text-subtle mt-1">Acompanhamento</p></div><div><p class="font-serif text-xl text-accent">Até 12</p><p class="text-subtle mt-1">Meses</p></div><div><p class="font-serif text-xl text-accent">R$ 9.997</p><p class="text-subtle mt-1">A partir de</p></div></div>
+      </div>
+      <img src="https://vivianepossato.vercel.app/_next/image?url=%2Ffotos%2Fviviane-13.jpeg&w=1920&q=85" alt="Viviane Possato durante uma conversa" class="w-full h-[470px] sm:h-[580px] object-cover grayscale rounded-2xl" />
+    </section>
+
+    <section class="bg-ink text-white py-24">
+      <div class="max-w-5xl mx-auto px-6">
+        <p class="group-label text-accent mb-4">Primeiro ciclo de trabalho</p>
+        <h2 id="mapTitle" class="font-serif text-3xl sm:text-5xl leading-tight mb-12">O primeiro mapa do projeto</h2>
+        <div class="grid md:grid-cols-3 gap-5">
+          <article class="border border-white/20 rounded-2xl p-7"><span class="font-serif text-3xl text-accent">01</span><h3 id="mapStep1Title" class="font-serif text-2xl mt-5 mb-3">Leitor e proposta</h3><p id="mapStep1Text" class="text-white/70 leading-relaxed">Definir para quem o livro é escrito e qual parte da sua experiência orienta esse leitor.</p></article>
+          <article class="border border-white/20 rounded-2xl p-7"><span class="font-serif text-3xl text-accent">02</span><h3 id="mapStep2Title" class="font-serif text-2xl mt-5 mb-3">Estrutura inicial</h3><p id="mapStep2Text" class="text-white/70 leading-relaxed">Distribuir os temas entre capítulos que cumprem funções dentro do conjunto.</p></article>
+          <article class="border border-white/20 rounded-2xl p-7"><span class="font-serif text-3xl text-accent">03</span><h3 id="mapStep3Title" class="font-serif text-2xl mt-5 mb-3">Plano de escrita</h3><p id="mapStep3Text" class="text-white/70 leading-relaxed">Escolher o primeiro capítulo e definir o material que precisa ser produzido.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto px-6 py-24">
+      <div class="max-w-3xl mb-14"><p class="group-label text-accent mb-4">O percurso comum aos três estágios</p><h2 class="font-serif text-3xl sm:text-4xl leading-tight mb-6">O estágio define o primeiro trabalho, e o percurso mantém quatro eixos conectados.</h2><p class="text-subtle text-lg leading-relaxed">A mentoria trabalha recorte, estrutura, escrita e revisão a partir do material que o autor já possui. Cada encontro considera o que foi produzido e prepara a etapa seguinte.</p></div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5"><article class="card p-7"><p class="font-serif text-2xl mb-3">Recorte</p><p class="text-subtle leading-relaxed">O leitor e a proposta orientam o que entra no livro.</p></article><article class="card p-7"><p class="font-serif text-2xl mb-3">Estrutura</p><p class="text-subtle leading-relaxed">Os capítulos ganham ordem e função dentro do conjunto.</p></article><article class="card p-7"><p class="font-serif text-2xl mb-3">Escrita</p><p class="text-subtle leading-relaxed">O material avança capítulo a capítulo.</p></article><article class="card p-7"><p class="font-serif text-2xl mb-3">Revisão</p><p class="text-subtle leading-relaxed">O texto é retomado para localizar o próximo trabalho.</p></article></div>
+    </section>
+
+    <section class="bg-paper py-24">
+      <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-[.9fr_1.1fr] gap-14 items-center">
+        <div class="grid grid-cols-2 gap-4"><img src="https://vivianepossato.vercel.app/_next/image?url=%2Ffotos%2Fviviane-desk.jpeg&w=1920&q=90" alt="Viviane em seu escritório" class="w-full h-72 sm:h-96 object-cover rounded-2xl mt-10" /><img src="https://vivianepossato.vercel.app/_next/image?url=%2Ffotos%2Fviviane-08.jpeg&w=1920&q=85" alt="Viviane durante o trabalho como jornalista" class="w-full h-72 sm:h-96 object-cover rounded-2xl" /></div>
+        <div><p class="group-label text-accent mb-4">Viviane Possato</p><h2 class="font-serif text-3xl sm:text-4xl leading-tight mb-6">A experiência jornalística aplicada à estrutura do seu livro.</h2><p class="text-subtle text-lg leading-relaxed">Durante 20 anos na Globo, Viviane escreveu histórias que precisavam unir objetividade e envolvimento. Na mentoria, essa experiência orienta a organização do conhecimento e as decisões que ajudam o manuscrito a continuar.</p></div>
+      </div>
+    </section>
+
+    <section id="diagnostico" class="py-24 scroll-mt-24">
+      <div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-[.8fr_1.2fr] gap-14 items-start">
+        <div class="lg:sticky lg:top-28"><p class="group-label text-accent mb-4">Diagnóstico</p><h2 class="font-serif text-3xl sm:text-4xl leading-tight mb-6">Conte o que já existe e onde o projeto parou.</h2><p class="text-subtle text-lg leading-relaxed mb-7">O estágio escolhido já aparece no diagnóstico. Complete as informações para Viviane entender o tema, o material disponível e o tipo de apoio que o livro pede.</p><div class="card p-6"><p class="group-label mb-2">Investimento</p><p class="font-serif text-2xl">A partir de R$ 9.997</p><p class="text-subtle text-sm mt-2">O escopo e o momento do projeto são avaliados na conversa.</p></div></div>
+
+        <form id="stageForm" name="mentoria-f" method="POST" action="/obrigada/" data-netlify="true" netlify-honeypot="bot-field" data-netlify-ajax class="card p-6 sm:p-10 space-y-8">
+          <input type="hidden" name="form-name" value="mentoria-f" /><input type="hidden" name="pagina" value="mentoria-f" /><input type="hidden" name="rota" value="/mentoriaf" /><input id="selectedStage" type="hidden" name="estagio" value="Tenho uma ideia ou um tema" />
+          <input type="hidden" name="utm_source" data-campaign-field /><input type="hidden" name="utm_medium" data-campaign-field /><input type="hidden" name="utm_campaign" data-campaign-field /><input type="hidden" name="utm_content" data-campaign-field /><input type="hidden" name="utm_term" data-campaign-field />
+          <p class="hidden"><label>Não preencha este campo: <input name="bot-field" /></label></p>
+          <div class="grid sm:grid-cols-2 gap-5"><div class="sm:col-span-2"><label class="field-label" for="f-nome">Nome completo</label><input id="f-nome" name="nome" type="text" autocomplete="name" required /></div><div><label class="field-label" for="f-email">E-mail</label><input id="f-email" name="email" type="email" autocomplete="email" required /></div><div><label class="field-label" for="f-whatsapp">WhatsApp</label><input id="f-whatsapp" name="whatsapp" type="tel" autocomplete="tel" required /></div></div>
+          <div><label class="field-label" for="f-tema">Sobre o que você quer escrever?</label><textarea id="f-tema" name="tema" maxlength="500" required></textarea></div>
+          <div><label id="contextLabel" class="field-label" for="f-contexto">O que você já reuniu sobre esse tema?</label><textarea id="f-contexto" name="material_existente" maxlength="500" placeholder="Anotações, aulas, casos, documentos ou situações da sua trajetória." required></textarea></div>
+          <div><label class="field-label" for="f-dificuldade">Qual ponto interrompe o avanço hoje?</label><textarea id="f-dificuldade" name="dificuldade" maxlength="500" required></textarea></div>
+          <fieldset><legend class="field-label mb-4">Qual opção descreve o seu momento de investimento?</legend><div class="space-y-3"><label class="radio-card"><input type="radio" name="investimento" value="Tenho disponibilidade para considerar o investimento a partir de R$ 9.997" required />Tenho disponibilidade para considerar o investimento a partir de R$ 9.997</label><label class="radio-card"><input type="radio" name="investimento" value="Preciso planejar o investimento" />Preciso planejar o investimento</label><label class="radio-card"><input type="radio" name="investimento" value="Esse investimento não cabe no meu momento" />Esse investimento não cabe no meu momento</label></div></fieldset>
+          <button type="submit" class="w-full bg-accent text-white py-4 rounded-lg text-sm tracking-wide hover:bg-ink disabled:opacity-60">Enviar meu diagnóstico</button>
+          <p data-form-status class="text-subtle text-xs text-center" aria-live="polite">Os dados serão usados para responder sobre a mentoria.</p>
+        </form>
+      </div>
+    </section>
+
+    <section class="max-w-3xl mx-auto px-6 pb-24">
+      <h2 class="font-serif text-3xl mb-9">Dúvidas sobre este estágio</h2>
+      <div class="divide-y divide-line border-y border-line">
+        <details class="py-6"><summary class="font-serif text-lg flex justify-between gap-6"><span id="stageFaqQuestion">Preciso chegar com um índice pronto?</span><span class="faq-icon text-accent" aria-hidden="true">+</span></summary><p id="stageFaqAnswer" class="text-subtle leading-relaxed mt-4">A estrutura inicial faz parte do trabalho. Você pode chegar com um tema, um repertório e uma ideia de leitor.</p></details>
+        <details class="py-6"><summary class="font-serif text-lg flex justify-between gap-6">Quanto tempo dura?<span class="faq-icon text-accent" aria-hidden="true">+</span></summary><p class="text-subtle leading-relaxed mt-4">O percurso apresentado nesta página acompanha o projeto por até 12 meses.</p></details>
+        <details class="py-6"><summary class="font-serif text-lg flex justify-between gap-6">Qual é o investimento?<span class="faq-icon text-accent" aria-hidden="true">+</span></summary><p class="text-subtle leading-relaxed mt-4">O investimento parte de R$ 9.997, e o escopo é alinhado durante a conversa.</p></details>
+        <details class="py-6"><summary class="font-serif text-lg flex justify-between gap-6">A mentoria é individual?<span class="faq-icon text-accent" aria-hidden="true">+</span></summary><p class="text-subtle leading-relaxed mt-4">Sim. O acompanhamento é feito diretamente com Viviane e parte do estágio do projeto.</p></details>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-paper py-10 text-center text-sm text-subtle">Viviane Possato &copy; 2026 · Página a Página</footer>
+  <script src="/assets/site.js" defer></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', function () {
+      const content = {
+        ideia:{ label:'Para quem tem uma ideia', headline:'Transforme o tema do livro em um recorte que oriente os capítulos.', text:'A mentoria ajuda você a definir o leitor, a proposta do livro e uma estrutura inicial, para que a primeira etapa da escrita tenha direção.', cta:'Quero estruturar meu livro', mapTitle:'O primeiro mapa do projeto', stageValue:'Tenho uma ideia ou um tema', steps:[['Leitor e proposta','Definir para quem o livro é escrito e qual parte da sua experiência orienta esse leitor.'],['Estrutura inicial','Distribuir os temas entre capítulos que cumprem funções dentro do conjunto.'],['Plano de escrita','Escolher o primeiro capítulo e definir o material que precisa ser produzido.']], contextLabel:'O que você já reuniu sobre esse tema?', contextPlaceholder:'Anotações, aulas, casos, documentos ou situações da sua trajetória.', faqQuestion:'Preciso chegar com um índice pronto?', faqAnswer:'A estrutura inicial faz parte do trabalho. Você pode chegar com um tema, um repertório e uma ideia de leitor.' },
+        andamento:{ label:'Para quem já começou', headline:'Organize o que você já escreveu e devolva continuidade ao livro.', text:'O acompanhamento parte das anotações, das páginas e dos capítulos existentes para revisar o recorte, ordenar o material e definir o próximo trabalho de escrita.', cta:'Quero retomar meu livro', mapTitle:'O mapa para retomar a escrita', stageValue:'Já comecei a escrever', steps:[['Inventário do material','Identificar o que já existe, quais ideias se repetem e onde ainda há lacunas.'],['Sequência dos capítulos','Relacionar cada parte ao recorte do livro e à etapa que ela prepara.'],['Próximo trabalho','Definir qual capítulo precisa continuar e qual decisão sustenta essa etapa.']], contextLabel:'O que já está escrito ou organizado?', contextPlaceholder:'Descreva as anotações, páginas, capítulos ou materiais que já existem.', faqQuestion:'Como a mentoria trabalha o material que já existe?', faqAnswer:'As anotações, as páginas e os capítulos ajudam a revisar o recorte, organizar a sequência e escolher o próximo trabalho de escrita.' },
+        manuscrito:{ label:'Para quem tem um manuscrito', headline:'Planeje a revisão do manuscrito a partir da estrutura do conjunto.', text:'A mentoria retoma a estrutura, a continuidade entre os capítulos e os pontos que ainda precisam de desenvolvimento dentro do percurso contratado.', cta:'Quero planejar a revisão do meu manuscrito', mapTitle:'O mapa da revisão', stageValue:'Tenho um primeiro manuscrito', steps:[['Leitura da estrutura','Observar como o manuscrito distribui a proposta do livro e conduz o leitor.'],['Pontos de desenvolvimento','Localizar capítulos, ideias e passagens que ainda precisam de trabalho.'],['Plano de revisão','Organizar os ajustes que fazem parte do escopo e definir a sequência de execução.']], contextLabel:'Qual parte do manuscrito pede mais atenção?', contextPlaceholder:'Descreva os capítulos, as passagens ou as dúvidas que precisam de revisão.', faqQuestion:'A mentoria inclui preparação editorial e publicação?', faqAnswer:'Esta página apresenta o acompanhamento de estrutura e escrita. A preparação editorial e a publicação são alinhadas separadamente na conversa.' }
+      };
+      let currentStage = null;
+      let userSelected = false;
+      function setText(id,value){ document.getElementById(id).textContent=value; }
+      function render(stage, shouldTrack){
+        const next=content[stage]||content.ideia; const previous=currentStage; currentStage=stage; document.body.dataset.segment=stage;
+        document.querySelectorAll('[data-stage]').forEach(function(button){button.setAttribute('aria-pressed',String(button.dataset.stage===stage));});
+        setText('stageLabel',next.label); setText('stageHeadline',next.headline); setText('stageText',next.text); setText('stageCta',next.cta); setText('mapTitle',next.mapTitle);
+        next.steps.forEach(function(step,index){setText('mapStep'+(index+1)+'Title',step[0]);setText('mapStep'+(index+1)+'Text',step[1]);});
+        document.getElementById('selectedStage').value=next.stageValue; setText('contextLabel',next.contextLabel); document.getElementById('f-contexto').placeholder=next.contextPlaceholder; setText('stageFaqQuestion',next.faqQuestion); setText('stageFaqAnswer',next.faqAnswer);
+        const pageUrl=new URL(window.location.href); pageUrl.searchParams.set('estagio',stage); window.history.replaceState({},'',pageUrl);
+        if(shouldTrack&&window.vivianeTrack)window.vivianeTrack(userSelected?'stage_switch':'stage_select',{stage:stage,previous_stage:previous||''}); if(shouldTrack)userSelected=true;
+      }
+      document.querySelectorAll('[data-stage]').forEach(function(button){
+        button.addEventListener('click',function(){
+          render(button.dataset.stage,true);
+          const headline=document.getElementById('stageHeadline');
+          headline.focus({preventScroll:true});
+          headline.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'});
+        });
+      });
+      const requested=new URL(window.location.href).searchParams.get('estagio'); render(content[requested]?requested:'ideia',false);
+    });
+  </script>
+</body>
+</html>

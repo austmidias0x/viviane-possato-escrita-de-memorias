@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, follow" />
+  <title>Diagnóstico recebido | Viviane Possato</title>
+  <meta name="description" content="Confirmação de envio do diagnóstico para a mentoria de livro de Viviane Possato." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { paper:'#FAFAF9', ink:'#1A1A1A', subtle:'#5C5C5C', accent:'#BC3D3D', line:'#E9E7E3' },
+          fontFamily: { serif:['"Noto Serif"','Georgia','serif'], sans:['"Helvetica Neue"','Helvetica','Arial','sans-serif'] }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="min-h-screen bg-paper text-ink font-sans flex flex-col">
+  <header class="max-w-5xl w-full mx-auto px-6 py-6 border-b border-line">
+    <p class="font-serif text-2xl">Viviane Possato</p>
+  </header>
+  <main class="flex-1 flex items-center justify-center px-6 py-16">
+    <section class="max-w-2xl w-full bg-white border border-line rounded-2xl p-8 sm:p-12 text-center">
+      <span class="w-12 h-12 rounded-full bg-accent text-white inline-flex items-center justify-center text-xl mb-7" aria-hidden="true">✓</span>
+      <h1 class="font-serif text-4xl sm:text-5xl leading-tight mb-6">Recebemos o seu diagnóstico.</h1>
+      <p class="text-subtle text-lg leading-relaxed mb-9">As respostas chegaram com os seus dados de contato. A Viviane poderá responder pelo e-mail ou WhatsApp informado para conversar sobre o seu livro.</p>
+      <a href="/mentoria" class="inline-block bg-accent text-white px-8 py-4 rounded-lg text-sm tracking-wide hover:bg-ink transition-colors">Voltar para a página da mentoria</a>
+    </section>
+  </main>
+  <footer class="py-8 text-center text-sm text-subtle">Viviane Possato &copy; 2026</footer>
+</body>
+</html>

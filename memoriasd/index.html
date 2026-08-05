@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quiz de Escrita de Memórias | Viviane Possato</title>
   <meta name="description" content="Responda a seis perguntas e descubra um ponto de partida para escrever suas memórias com o curso de Viviane Possato." />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="canonical" href="https://vivianepossato.com/memorias/" />
+  <link rel="stylesheet" href="/assets/site.css" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,11 +27,11 @@
     body::before { content:''; position:fixed; inset:0; z-index:50; pointer-events:none; opacity:.025; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
     [hidden] { display:none !important; }
     .quiz-card { background:rgba(255,255,255,.88); border:1px solid #E6E4E0; box-shadow:0 24px 70px -40px rgba(31,31,31,.42); }
-    .option { display:flex; align-items:flex-start; gap:13px; min-height:56px; padding:15px 16px; border:1px solid #E6E4E0; cursor:pointer; transition:border-color .15s, background-color .15s, transform .15s; }
+    .option { display:flex; align-items:flex-start; gap:13px; min-height:56px; padding:15px 16px; border:1px solid #777; cursor:pointer; transition:border-color .15s, background-color .15s, transform .15s; }
     .option:hover { border-color:#966767; }
     .option:has(input:checked) { border-color:#966767; background:#EFE4E2; }
     .option:has(input:checked) .select-mark { background:#966767; border-color:#966767; box-shadow:inset 0 0 0 4px #EFE4E2; }
-    .select-mark { width:18px; height:18px; margin-top:2px; border:1px solid #AAA29B; border-radius:999px; flex:0 0 auto; }
+    .select-mark { width:18px; height:18px; margin-top:2px; border:1px solid #707070; border-radius:999px; flex:0 0 auto; }
     .option input { position:absolute; opacity:0; pointer-events:none; }
     progress { width:100%; height:4px; border:0; appearance:none; }
     progress::-webkit-progress-bar { background:#E6E4E0; }
@@ -39,14 +42,15 @@
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior:auto !important; transition:none !important; } }
   </style>
 </head>
-<body>
+<body data-offer="memorias" data-variant="d">
+  <a class="skip-link" href="#quiz">Pular para o conteúdo</a>
 
   <header class="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
     <a href="#quiz" class="font-serif text-lg sm:text-xl">Escrita de Memórias</a>
     <a href="https://pay.hotmart.com/U102857700C?bid=1766501787612" class="text-sm border-b border-accent hover:text-accent">Conhecer o curso</a>
   </header>
 
-  <main id="quiz" class="max-w-6xl mx-auto px-6 pt-4 pb-16">
+  <main id="quiz" tabindex="-1" class="max-w-6xl mx-auto px-6 pt-4 pb-16">
     <div class="grid lg:grid-cols-[.82fr_1.18fr] gap-10 lg:gap-14 items-stretch">
       <aside class="order-2 lg:order-1 relative min-h-[320px] lg:min-h-[720px] overflow-hidden">
         <img src="https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=1000&auto=format&fit=crop" alt="Caneta tinteiro sobre uma página escrita" class="absolute inset-0 w-full h-full object-cover" />
@@ -183,6 +187,11 @@
                 <span>Aulas gravadas</span><span>Práticas guiadas</span><span>Acesso vitalício</span>
               </div>
             </div>
+            <div class="border border-line p-6 mb-8">
+              <p class="uppercase tracking-[.16em] text-xs text-accent mb-3">Uma prática para começar hoje</p>
+              <p id="resultPractice" class="font-serif text-xl leading-relaxed mb-3"></p>
+              <p id="resultPlan" class="text-subtle leading-relaxed"></p>
+            </div>
             <a href="https://pay.hotmart.com/U102857700C?bid=1766501787612" class="inline-flex items-center justify-center bg-accent text-paper px-8 py-4 text-sm tracking-wide hover:bg-ink transition-colors">Começar o curso na Hotmart</a>
             <p class="text-subtle text-xs mt-3">Você será direcionado para o checkout da Hotmart.</p>
             <button type="button" data-restart class="mt-6 text-sm underline decoration-accent underline-offset-4 hover:text-accent">Refazer o quiz</button>
@@ -256,30 +265,45 @@
         const messages = {
           inicio: {
             title: 'Uma primeira cena pode abrir o seu percurso.',
-            text: 'Você quer preservar ' + objective + '. Pelas suas respostas, escolher a primeira cena é o ponto que mais interrompe a escrita. As aulas gravadas e as práticas guiadas oferecem uma sequência para você encontrar uma cena e levá-la ao papel no seu ritmo.'
+            text: 'Você quer preservar ' + objective + '. Pelas suas respostas, o percurso pode começar pela escolha de uma primeira cena. As aulas gravadas e as práticas guiadas oferecem uma sequência para encontrar essa cena e levá-la ao papel no seu ritmo.',
+            practice: 'Escolha uma lembrança que caiba em um lugar e em um período do dia.',
+            plan: 'Escreva quatro linhas respondendo: onde você estava, quem estava por perto, o que acontecia e qual detalhe ainda permanece visível.'
           },
           organizacao: {
             title: 'As suas lembranças precisam ganhar uma sequência.',
-            text: 'Você reuniu material para escrever sobre ' + objective + '. O curso propõe um percurso guiado, com práticas que ajudam a organizar os detalhes e transformar essas lembranças em texto.'
+            text: 'Você reuniu material para escrever sobre ' + objective + '. O curso propõe um percurso guiado, com práticas que ajudam a organizar os detalhes e transformar essas lembranças em texto.',
+            practice: 'Reúna três lembranças ligadas ao mesmo período, lugar ou pessoa.',
+            plan: 'Dê um título provisório para cada uma e escolha a que contém a cena mais nítida. Essa cena será o seu primeiro texto.'
           },
           continuidade: {
             title: 'Você pode retomar o texto que já começou e avançar uma memória por vez.',
-            text: 'Você quer preservar ' + objective + ' e já iniciou a escrita. As aulas seguem uma sequência, e o acesso vitalício permite rever uma proposta e retomar o percurso quando precisar.'
+            text: 'Você quer preservar ' + objective + ' e procura continuidade para a escrita. As aulas seguem uma sequência, e o acesso vitalício permite rever uma proposta e retomar o percurso quando precisar.',
+            practice: 'Volte ao último texto e marque o ponto em que a cena perde movimento.',
+            plan: 'Acrescente uma ação, uma fala ou um detalhe sensorial nesse ponto. Depois, escreva por dez minutos sem revisar o trecho anterior.'
           },
           ritmo: {
             title: 'Você pode distribuir a escrita conforme o tempo disponível.',
-            text: 'Você quer preservar ' + objective + ' e procura flexibilidade para avançar. O curso é gravado, inclui práticas guiadas e oferece acesso vitalício para rever as aulas e retomar as práticas conforme a sua rotina.'
+            text: 'Você quer preservar ' + objective + ' e procura flexibilidade para avançar. O curso é gravado, inclui práticas guiadas e oferece acesso vitalício para rever as aulas e retomar as práticas conforme a sua rotina.',
+            practice: 'Escolha um período de quinze minutos que já existe na sua semana.',
+            plan: 'Use a primeira sessão para listar cenas. Na sessão seguinte, escolha uma delas e descreva apenas o lugar, as pessoas e a ação.'
           }
         };
         document.getElementById('resultTitle').textContent = messages[axis].title;
         document.getElementById('resultText').textContent = messages[axis].text;
+        document.getElementById('resultPractice').textContent = messages[axis].practice;
+        document.getElementById('resultPlan').textContent = messages[axis].plan;
       }
 
-      form.querySelector('[data-start]').addEventListener('click', function () { showScreen('q1'); });
+      form.querySelector('[data-start]').addEventListener('click', function () {
+        if (window.vivianeTrack) window.vivianeTrack('quiz_start');
+        showScreen('q1');
+      });
       form.querySelectorAll('[data-next]').forEach(function (button) {
         button.addEventListener('click', function () {
           const current = button.closest('[data-screen]');
-          if (validateScreen(current)) showScreen(button.dataset.next);
+          if (!validateScreen(current)) return;
+          if (window.vivianeTrack) window.vivianeTrack('quiz_step', { next_step: button.dataset.next || '' });
+          showScreen(button.dataset.next);
         });
       });
       form.querySelectorAll('[data-back]').forEach(function (button) {
@@ -289,6 +313,7 @@
         const current = event.currentTarget.closest('[data-screen]');
         if (!validateScreen(current)) return;
         calculateResult();
+        if (window.vivianeTrack) window.vivianeTrack('quiz_complete');
         showScreen('result');
       });
       form.querySelector('[data-restart]').addEventListener('click', function () {
@@ -299,5 +324,6 @@
     })();
   </script>
 
+  <script src="/assets/site.js" defer></script>
 </body>
 </html>
