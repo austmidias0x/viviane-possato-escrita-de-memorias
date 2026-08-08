@@ -7,6 +7,7 @@
   const route = window.location.pathname;
   const pageId = offer + '-' + variant;
   const campaignKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+  const metaPixelId = '1091512559548489';
 
   window.dataLayer = window.dataLayer || [];
 
@@ -25,6 +26,39 @@
   }
 
   window.vivianeTrack = track;
+
+  function initializeMetaPixel() {
+    if (window.__vivianeMetaPixelInitialized) return;
+
+    const fbq = window.fbq = window.fbq || function () {
+      if (fbq.callMethod) {
+        fbq.callMethod.apply(fbq, arguments);
+      } else {
+        fbq.queue.push(arguments);
+      }
+    };
+
+    window._fbq = window._fbq || fbq;
+    fbq.push = fbq;
+    fbq.loaded = true;
+    fbq.version = '2.0';
+    fbq.queue = fbq.queue || [];
+
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://connect.facebook.net/en_US/fbevents.js';
+    document.head.appendChild(script);
+
+    fbq('init', metaPixelId);
+    fbq('track', 'PageView');
+    window.__vivianeMetaPixelInitialized = true;
+  }
+
+  function trackMeta(eventName, details) {
+    if (typeof window.fbq === 'function') window.fbq('track', eventName, details || {});
+  }
+
+  initializeMetaPixel();
 
   function safeSessionGet(key) {
     try {
@@ -109,6 +143,12 @@
         label: element.dataset.trackLabel || element.textContent.trim().slice(0, 120),
         destination: element.href || ''
       });
+      if (element.dataset.track === 'checkout_click') {
+        trackMeta('InitiateCheckout', {
+          content_name: pageId,
+          content_category: 'Escrita de Memórias'
+        });
+      }
     });
   });
 
@@ -193,6 +233,10 @@
         if (!response.ok) throw new Error('Falha no envio');
 
         track('form_submit_success', { form_name: form.getAttribute('name') || form.id || '' });
+        trackMeta('Lead', {
+          content_name: pageId,
+          content_category: 'Mentoria Página a Página'
+        });
         if (!qualifiedLeadTracked) {
           const investment = String(formData.get('investimento') || formData.get('disponibilidade') || formData.get('q6') || '');
           if (/tenho disponibilidade|a partir de r\$\s*9(?:\.|\s)?997/i.test(investment)) {
