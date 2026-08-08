@@ -79,7 +79,7 @@
           <progress id="quizProgress" max="6" value="1" aria-label="Progresso do diagnóstico"></progress>
         </div>
 
-        <form id="bookQuiz" name="mentoria-d" method="POST" action="/obrigada/" data-netlify="true" netlify-honeypot="bot-field" data-netlify-ajax class="flex-1 flex flex-col mt-7" novalidate>
+        <form id="lead-form" name="mentoria-d" method="POST" action="/obrigada/" data-netlify="true" netlify-honeypot="bot-field" class="flex-1 flex flex-col mt-7" novalidate>
           <input type="hidden" name="form-name" value="mentoria-d" />
           <input type="hidden" name="pagina" value="mentoria-d" />
           <input type="hidden" name="rota" value="/mentoriad" />
@@ -227,6 +227,7 @@
             </div>
           </section>
         </form>
+        <script async src="https://forms.austhq.com/forms.js" data-aust-form="88cfead0-7a9f-4e80-9490-7631ed1edc06" data-aust-form-id="lead-form"></script>
 
         <noscript>
           <div class="mt-8 bg-paper border border-line rounded-lg p-6">
@@ -242,7 +243,7 @@
 
   <script>
     (function () {
-      const form = document.getElementById('bookQuiz');
+      const form = document.getElementById('lead-form');
       const screens = Array.from(form.querySelectorAll('[data-screen]'));
       const progressArea = document.getElementById('progressArea');
       const progress = document.getElementById('quizProgress');

@@ -224,6 +224,27 @@
     });
   });
 
+  document.querySelectorAll('form#lead-form').forEach(function (form) {
+    const status = form.querySelector('[data-form-status]');
+    const submitButton = form.querySelector('button[type="submit"], input[type="submit"]');
+
+    form.addEventListener('aust:form:submitted', function () {
+      if (status) {
+        status.textContent = form.dataset.successMessage || 'Recebemos as suas respostas. A Viviane poderá entrar em contato pelo e-mail ou WhatsApp informado.';
+        status.classList.add('text-ink');
+      }
+      if (submitButton) submitButton.textContent = 'Diagnóstico enviado';
+    });
+
+    form.addEventListener('aust:form:error', function () {
+      if (status) {
+        status.textContent = 'Não foi possível enviar agora. Confira a sua conexão e tente novamente.';
+        status.classList.remove('text-ink');
+      }
+      if (submitButton) submitButton.textContent = 'Enviar meu diagnóstico';
+    });
+  });
+
   track('page_view', {
     referrer: document.referrer || '',
     utm_source: campaign.utm_source || '',

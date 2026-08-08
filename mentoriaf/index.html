@@ -92,7 +92,7 @@
     </section>
 
     <section class="max-w-6xl mx-auto px-6 py-24">
-      <div class="max-w-3xl mb-14"><p class="group-label text-accent mb-4">O percurso comum aos três estágios</p><h2 class="font-serif text-3xl sm:text-4xl leading-tight mb-6">O estágio define o primeiro trabalho, e o percurso mantém quatro eixos conectados.</h2><p class="text-subtle text-lg leading-relaxed">A mentoria trabalha recorte, estrutura, escrita e revisão a partir do material que o autor já possui. Cada encontro considera o que foi produzido e prepara a etapa seguinte.</p></div>
+      <div class="max-w-3xl mb-14"><p class="group-label text-accent mb-4">O percurso comum aos três estágios</p><h2 class="font-serif text-3xl sm:text-4xl leading-tight mb-6">O estágio define o primeiro trabalho e o percurso mantém quatro eixos conectados.</h2><p class="text-subtle text-lg leading-relaxed">A mentoria trabalha recorte, estrutura, escrita e revisão a partir do material que o autor já possui. Cada encontro considera o que foi produzido e prepara a etapa seguinte.</p></div>
       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5"><article class="card p-7"><p class="font-serif text-2xl mb-3">Recorte</p><p class="text-subtle leading-relaxed">O leitor e a proposta orientam o que entra no livro.</p></article><article class="card p-7"><p class="font-serif text-2xl mb-3">Estrutura</p><p class="text-subtle leading-relaxed">Os capítulos ganham ordem e função dentro do conjunto.</p></article><article class="card p-7"><p class="font-serif text-2xl mb-3">Escrita</p><p class="text-subtle leading-relaxed">O material avança capítulo a capítulo.</p></article><article class="card p-7"><p class="font-serif text-2xl mb-3">Revisão</p><p class="text-subtle leading-relaxed">O texto é retomado para localizar o próximo trabalho.</p></article></div>
     </section>
 
@@ -107,7 +107,7 @@
       <div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-[.8fr_1.2fr] gap-14 items-start">
         <div class="lg:sticky lg:top-28"><p class="group-label text-accent mb-4">Diagnóstico</p><h2 class="font-serif text-3xl sm:text-4xl leading-tight mb-6">Conte o que já existe e onde o projeto parou.</h2><p class="text-subtle text-lg leading-relaxed mb-7">O estágio escolhido já aparece no diagnóstico. Complete as informações para Viviane entender o tema, o material disponível e o tipo de apoio que o livro pede.</p><div class="card p-6"><p class="group-label mb-2">Investimento</p><p class="font-serif text-2xl">A partir de R$ 9.997</p><p class="text-subtle text-sm mt-2">O escopo e o momento do projeto são avaliados na conversa.</p></div></div>
 
-        <form id="stageForm" name="mentoria-f" method="POST" action="/obrigada/" data-netlify="true" netlify-honeypot="bot-field" data-netlify-ajax class="card p-6 sm:p-10 space-y-8">
+        <form id="lead-form" name="mentoria-f" method="POST" action="/obrigada/" data-netlify="true" netlify-honeypot="bot-field" class="card p-6 sm:p-10 space-y-8">
           <input type="hidden" name="form-name" value="mentoria-f" /><input type="hidden" name="pagina" value="mentoria-f" /><input type="hidden" name="rota" value="/mentoriaf" /><input id="selectedStage" type="hidden" name="estagio" value="Tenho uma ideia ou um tema" />
           <input type="hidden" name="utm_source" data-campaign-field /><input type="hidden" name="utm_medium" data-campaign-field /><input type="hidden" name="utm_campaign" data-campaign-field /><input type="hidden" name="utm_content" data-campaign-field /><input type="hidden" name="utm_term" data-campaign-field />
           <p class="hidden"><label>Não preencha este campo: <input name="bot-field" /></label></p>
@@ -119,6 +119,7 @@
           <button type="submit" class="w-full bg-accent text-white py-4 rounded-lg text-sm tracking-wide hover:bg-ink disabled:opacity-60">Enviar meu diagnóstico</button>
           <p data-form-status class="text-subtle text-xs text-center" aria-live="polite">Os dados serão usados para responder sobre a mentoria.</p>
         </form>
+        <script async src="https://forms.austhq.com/forms.js" data-aust-form="88cfead0-7a9f-4e80-9490-7631ed1edc06" data-aust-form-id="lead-form"></script>
       </div>
     </section>
 
