@@ -1013,6 +1013,7 @@ body[data-offer="mentoria"] .h-unqualified {
 }
 
 .h-offer {
+  scroll-margin-top: 96px;
   padding-block: clamp(78px, 10vw, 132px);
 }
 

@@ -18,6 +18,10 @@
   const liveTitle = document.querySelector('[data-h-live-title]');
   const liveText = document.querySelector('[data-h-live-text]');
   const liveStatus = document.querySelector('[data-h-live-status]');
+  const personalizedCopy = root.querySelector('[data-h-personalized-copy]');
+  const personalizedTitle = root.querySelector('[data-h-personalized-title]');
+  const personalizedText = root.querySelector('[data-h-personalized-text]');
+  const personalizedUnqualifiedOffer = root.querySelector('[data-h-unqualified-offer]');
   const pageMarkers = Array.from(document.querySelectorAll('[data-h-page-marker]'));
   const afterSections = Array.from(root.querySelectorAll('[data-h-after]'));
   const totalSteps = steps.length;
@@ -445,6 +449,10 @@
       result.querySelector('[data-h-result-practice]').textContent = view.signal.practice;
       result.querySelector('[data-h-result-next]').textContent = view.block.next;
       result.querySelector('[data-h-result-route]').textContent = view.block.route;
+      if (personalizedTitle) personalizedTitle.textContent = 'A sua primeira prática pode partir de ' + view.subject.focus + '.';
+      if (personalizedText) {
+        personalizedText.textContent = 'Você reconhece ' + view.signal.label + ' quando essa lembrança volta. A prática sugerida é ' + view.signal.practice + '. ' + view.block.route;
+      }
     } else {
       const qualified = view.finance.qualified;
       body.dataset.qualification = qualified ? 'qualified' : 'not-qualified';
@@ -456,6 +464,11 @@
       result.querySelector('[data-h-qualified]').hidden = !qualified;
       result.querySelector('[data-h-unqualified]').hidden = qualified;
       fillMentorForm(view);
+      if (personalizedTitle) personalizedTitle.textContent = 'O primeiro trabalho do seu livro é ' + view.obstacle.label + '.';
+      if (personalizedText) {
+        personalizedText.textContent = view.stage.result + ' ' + view.obstacle.work + ' Viviane pode usar esse material e esse objetivo para definir a primeira etapa do acompanhamento.';
+      }
+      if (personalizedUnqualifiedOffer) personalizedUnqualifiedOffer.hidden = qualified;
       emit('qualification_select', {
         qualified: qualified,
         step: 'investment',
@@ -505,6 +518,14 @@
 
   root.querySelectorAll('[data-h-start]').forEach(function (button) {
     button.addEventListener('click', startExperience);
+  });
+
+  root.querySelectorAll('[data-h-personalized-link]').forEach(function (button) {
+    button.addEventListener('click', function (event) {
+      event.preventDefault();
+      scrollToElement(personalizedCopy);
+      focusHeading(personalizedCopy);
+    });
   });
 
   quiz.addEventListener('focusin', function () {

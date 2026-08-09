@@ -6,6 +6,8 @@ import vm from "node:vm";
 const siteSource = readFileSync(new URL("../assets/site.js", import.meta.url), "utf8");
 const variantHSource = readFileSync(new URL("../assets/variant-h.js", import.meta.url), "utf8");
 const variantHCss = readFileSync(new URL("../assets/variant-h.css", import.meta.url), "utf8");
+const memoriesHSource = readFileSync(new URL("../memoriash/index.html", import.meta.url), "utf8");
+const mentoringHSource = readFileSync(new URL("../mentoriah/index.html", import.meta.url), "utf8");
 
 type EventDetail = Record<string, unknown>;
 type MockEvent = { type: string; detail?: EventDetail };
@@ -239,6 +241,46 @@ test("retains the stored campaign when the URL has no UTM parameter", () => {
   assert.equal(pageView?.utm_medium, "paid-social");
   assert.equal(pageView?.utm_campaign, "agosto");
   assert.equal(pageView?.utm_content, "criativo-3");
+});
+
+test("routes result CTAs through the personalized H copy before checkout", () => {
+  assert.match(
+    memoriesHSource,
+    /href="#memorias-h-copy-personalizada" data-h-personalized-link>Ler minha página personalizada/,
+  );
+  assert.match(
+    memoriesHSource,
+    /id="memorias-h-copy-personalizada"[^>]+data-h-personalized-copy/,
+  );
+  assert.doesNotMatch(
+    memoriesHSource.match(/<section class="h-result"[\s\S]*?<\/section>/)?.[0] || "",
+    /pay\.hotmart\.com/,
+  );
+
+  assert.match(
+    mentoringHSource,
+    /href="#mentoria-h-copy-personalizada" data-h-personalized-link>Ler meu mapa personalizado/,
+  );
+  assert.match(
+    mentoringHSource,
+    /id="mentoria-h-copy-personalizada"[^>]+data-h-personalized-copy/,
+  );
+  assert.doesNotMatch(
+    mentoringHSource.match(/<div class="h-unqualified" data-h-unqualified hidden>[\s\S]*?<\/div>/)?.[0] || "",
+    /pay\.hotmart\.com/,
+  );
+  assert.match(
+    mentoringHSource,
+    /data-h-unqualified-offer hidden>[\s\S]*?pay\.hotmart\.com[\s\S]*?alternativa-apos-copy/,
+  );
+});
+
+test("scrolls to the personalized H copy without creating a checkout event", () => {
+  assert.match(variantHSource, /scrollToElement\(personalizedCopy\)/);
+  assert.match(variantHSource, /focusHeading\(personalizedCopy\)/);
+  assert.match(variantHSource, /personalizedTitle\.textContent/);
+  assert.match(variantHSource, /personalizedText\.textContent/);
+  assert.match(variantHCss, /\.h-offer\s*{[^}]*scroll-margin-top: 96px;/s);
 });
 
 test("disables the Aust form button after success and restores it on reset", () => {
