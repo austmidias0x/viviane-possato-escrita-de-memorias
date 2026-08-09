@@ -231,6 +231,9 @@
 
   function scrollToElement(element) {
     if (!element) return;
+    window.dispatchEvent(new CustomEvent('viviane:programmatic-scroll', {
+      detail: { duration: reducedMotion.matches ? 100 : 1200 }
+    }));
     element.scrollIntoView({ behavior: reducedMotion.matches ? 'auto' : 'smooth', block: 'start' });
   }
 

@@ -168,6 +168,34 @@ test("counts Mentoria conversion only after a qualified_lead event", () => {
   assert.equal(report.offers.mentoria.conversions, 1);
 });
 
+test("places Mentoria I financial qualification after the personalized result", () => {
+  const events = [
+    stored("page_view", "v-result-one", "mentoria", "i"),
+    stored("personalization_start", "v-result-one", "mentoria", "i"),
+    stored("personalization_complete", "v-result-one", "mentoria", "i"),
+    stored("qualification_select", "v-result-one", "mentoria", "i", {
+      step: "investment",
+      qualified: true,
+    }),
+    stored("qualified_lead", "v-result-one", "mentoria", "i", { qualified: true }),
+    stored("page_view", "v-result-two", "mentoria", "i"),
+    stored("personalization_start", "v-result-two", "mentoria", "i"),
+    stored("personalization_complete", "v-result-two", "mentoria", "i"),
+  ];
+
+  const report = buildAnalyticsReport(events, 30, fixedNow);
+  const funnel = report.pages[0].funnel;
+  assert.deepEqual(funnel.map((stage) => stage.key), [
+    "view",
+    "start",
+    "result",
+    "step:investment",
+    "conversion",
+  ]);
+  assert.equal(funnel.find((stage) => stage.key === "result")?.rate_from_previous, 100);
+  assert.equal(funnel.find((stage) => stage.key === "step:investment")?.rate_from_previous, 50);
+});
+
 test("counts checkout visitors as Memórias conversions without inflating duplicates", () => {
   const visitor = "v-memorias";
   const events = [

@@ -182,6 +182,14 @@
     }
   }
 
+  function safeSessionRemove(key) {
+    try {
+      window.sessionStorage.removeItem(key);
+    } catch (error) {
+      return;
+    }
+  }
+
   const currentUrl = new URL(window.location.href);
   if (variant === 'f') {
     const segmentKey = offer === 'memorias' ? 'intencao' : 'estagio';
@@ -190,10 +198,25 @@
     body.dataset.segment = allowedSegments.includes(requestedSegment) ? requestedSegment : allowedSegments[0];
   }
 
+  const hasIncomingCampaign = campaignKeys.some(function (key) {
+    return currentUrl.searchParams.has(key);
+  });
+
   campaignKeys.forEach(function (key) {
-    const incomingValue = currentUrl.searchParams.get(key);
-    if (incomingValue) safeSessionSet('viviane_' + key, incomingValue);
-    campaign[key] = incomingValue || safeSessionGet('viviane_' + key);
+    const storageKey = 'viviane_' + key;
+    const incomingValue = currentUrl.searchParams.get(key) || '';
+
+    if (hasIncomingCampaign) {
+      if (incomingValue) {
+        safeSessionSet(storageKey, incomingValue);
+      } else {
+        safeSessionRemove(storageKey);
+      }
+      campaign[key] = incomingValue;
+      return;
+    }
+
+    campaign[key] = safeSessionGet(storageKey);
   });
 
   if (!campaign.utm_content) campaign.utm_content = pageId;
@@ -452,6 +475,8 @@
   document.querySelectorAll('form#lead-form').forEach(function (form) {
     const status = form.querySelector('[data-form-status]');
     const submitButton = form.querySelector('button[type="submit"], input[type="submit"]');
+    const originalButtonText = submitButton ? submitButton.textContent : '';
+    const originalStatusText = status ? status.textContent : '';
     let started = false;
 
     form.querySelectorAll('input[type="tel"]').forEach(function (field) {
@@ -463,6 +488,26 @@
       if (started) return;
       started = true;
       track('form_start', { form_name: form.getAttribute('name') || form.id || '' });
+    });
+
+    form.addEventListener('reset', function () {
+      clearPendingApplication();
+      window.setTimeout(function () {
+        populateFormContext(form);
+        form.querySelectorAll('input[type="tel"]').forEach(function (field) { validatePhoneField(field); });
+        delete form.dataset.lastTrackedSuccess;
+        delete form.dataset.qualifiedConversionTracked;
+        started = false;
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.textContent = originalButtonText;
+          submitButton.removeAttribute('aria-busy');
+        }
+        if (status) {
+          status.textContent = originalStatusText;
+          status.classList.remove('text-ink');
+        }
+      }, 0);
     });
 
     form.addEventListener('submit', function (event) {
@@ -486,7 +531,11 @@
         status.textContent = form.dataset.successMessage || 'Recebemos as suas respostas. A Viviane poderá entrar em contato pelo e-mail ou WhatsApp informado.';
         status.classList.add('text-ink');
       }
-      if (submitButton) submitButton.textContent = 'Diagnóstico enviado';
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Diagnóstico enviado';
+        submitButton.removeAttribute('aria-busy');
+      }
     });
 
     form.addEventListener('aust:form:error', function () {
@@ -496,7 +545,11 @@
         status.textContent = 'Não foi possível enviar agora. Confira a sua conexão e tente novamente.';
         status.classList.remove('text-ink');
       }
-      if (submitButton) submitButton.textContent = 'Enviar meu diagnóstico';
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = originalButtonText;
+        submitButton.removeAttribute('aria-busy');
+      }
     });
   });
 
@@ -516,6 +569,15 @@
 
   let meaningfulViewTracked = false;
   const scrollDepthsTracked = {};
+  let scrollDepthSuppressedUntil = 0;
+
+  window.addEventListener('viviane:programmatic-scroll', function (event) {
+    const requestedDuration = Number(event.detail && event.detail.duration);
+    const duration = Number.isFinite(requestedDuration)
+      ? Math.max(0, Math.min(requestedDuration, 3000))
+      : 1200;
+    scrollDepthSuppressedUntil = Math.max(scrollDepthSuppressedUntil, Date.now() + duration);
+  });
 
   function trackMeaningfulView(trigger) {
     if (meaningfulViewTracked) return;
@@ -528,6 +590,7 @@
   }
 
   function inspectScrollDepth() {
+    if (Date.now() < scrollDepthSuppressedUntil) return;
     const documentHeight = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
     const depth = Math.min(100, Math.round((window.scrollY / documentHeight) * 100));
 

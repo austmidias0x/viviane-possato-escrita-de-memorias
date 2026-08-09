@@ -762,7 +762,7 @@ body[data-offer="mentoria"] .h-option {
 }
 
 .h-option:has(input:focus-visible) {
-  outline: 3px solid color-mix(in srgb, var(--h-accent) 52%, transparent);
+  outline: 3px solid var(--h-accent);
   outline-offset: 3px;
 }
 
@@ -954,7 +954,7 @@ body[data-offer="mentoria"] .h-unqualified {
 
 .h-field input::placeholder,
 .h-field textarea::placeholder {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.56);
 }
 
 .h-field input:focus,
@@ -1027,6 +1027,10 @@ body[data-offer="mentoria"] .h-unqualified {
 .h-profile h2 {
   font-size: clamp(2.2rem, 4vw, 4rem);
   line-height: 1.1;
+}
+
+body[data-offer="mentoria"] .h-offer h2 {
+  font-size: clamp(2.2rem, 3.75vw, 4rem);
 }
 
 .h-offer__copy > p:not(.h-eyebrow),

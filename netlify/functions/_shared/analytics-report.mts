@@ -103,7 +103,12 @@ interface MutablePage {
   formSubmits: Set<string>;
   conversions: Set<string>;
   qualifiedLeads: Set<string>;
-  steps: Map<string, { label: string; visitors: Set<string>; firstSeenAt: number }>;
+  steps: Map<string, {
+    label: string;
+    visitors: Set<string>;
+    firstSeenAt: number;
+    phase: "before_result" | "after_result";
+  }>;
 }
 
 function createMutablePage(
@@ -179,10 +184,14 @@ function applyEvent(target: MutablePage, event: StoredAnalyticsEvent): void {
     target.stepEvents += 1;
     const identity = stepIdentity(event);
     const timestamp = Date.parse(event.occurred_at);
+    const phase = target.offer === "mentoria" && target.variant === "i" && event.event === "qualification_select"
+      ? "after_result"
+      : "before_result";
     const step = target.steps.get(identity.key) ?? {
       label: identity.label,
       visitors: new Set<string>(),
       firstSeenAt: Number.isFinite(timestamp) ? timestamp : Number.MAX_SAFE_INTEGER,
+      phase,
     };
     step.visitors.add(event.visitor_id);
     step.firstSeenAt = Math.min(
@@ -232,13 +241,32 @@ function finalizePage(page: MutablePage): PageAnalytics {
     },
   };
 
+  const interactionStages = [...page.steps.entries()]
+    .sort((left, right) => left[1].firstSeenAt - right[1].firstSeenAt || left[0].localeCompare(right[0]))
+    .map(([key, step]) => ({
+      key: `step:${key}`,
+      label: step.label,
+      visitors: step.visitors.size,
+      phase: step.phase,
+    }));
+  const withoutPhase = (stage: (typeof interactionStages)[number]) => ({
+    key: stage.key,
+    label: stage.label,
+    visitors: stage.visitors,
+  });
+  const beforeResult = interactionStages
+    .filter((stage) => stage.phase === "before_result")
+    .map(withoutPhase);
+  const afterResult = interactionStages
+    .filter((stage) => stage.phase === "after_result")
+    .map(withoutPhase);
+
   const orderedStages: Array<{ key: string; label: string; visitors: number }> = [
     { key: "view", label: "Visitantes", visitors: visitorCount },
     { key: "start", label: "Início", visitors: page.starts.size },
-    ...[...page.steps.entries()]
-      .sort((left, right) => left[1].firstSeenAt - right[1].firstSeenAt || left[0].localeCompare(right[0]))
-      .map(([key, step]) => ({ key: `step:${key}`, label: step.label, visitors: step.visitors.size })),
+    ...beforeResult,
     { key: "result", label: "Resultado", visitors: page.results.size },
+    ...afterResult,
     { key: "conversion", label: "Conversão", visitors: page.conversions.size },
   ];
 
