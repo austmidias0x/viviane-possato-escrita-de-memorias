@@ -259,20 +259,104 @@ test("routes result CTAs through the personalized H copy before checkout", () =>
 
   assert.match(
     mentoringHSource,
-    /href="#mentoria-h-copy-personalizada" data-h-personalized-link>Ler meu mapa personalizado/,
+    /href="#mentoria-h-copy-personalizada" data-h-personalized-link>Ler como a mentoria seria aplicada ao meu livro/,
   );
   assert.match(
     mentoringHSource,
     /id="mentoria-h-copy-personalizada"[^>]+data-h-personalized-copy/,
   );
-  assert.doesNotMatch(
-    mentoringHSource.match(/<div class="h-unqualified" data-h-unqualified hidden>[\s\S]*?<\/div>/)?.[0] || "",
-    /pay\.hotmart\.com/,
+  assert.doesNotMatch(mentoringHSource, /pay\.hotmart\.com|Escrita de Memórias|data-h-unqualified-offer/);
+  assert.ok(
+    mentoringHSource.indexOf('id="mentoria-h-copy-personalizada"') < mentoringHSource.indexOf('id="lead-form"'),
+    "the personalized mentoring copy must come before the application form",
   );
-  assert.match(
-    mentoringHSource,
-    /data-h-unqualified-offer hidden>[\s\S]*?pay\.hotmart\.com[\s\S]*?alternativa-apos-copy/,
-  );
+});
+
+test("keeps mentoring H inside the mentoring offer and removes diagnosis restarts", () => {
+  assert.doesNotMatch(mentoringHSource, /data-h-restart|Refazer o diagnóstico|Responder novamente/);
+  assert.doesNotMatch(variantHSource, /curso Escrita de Memórias pode ser uma forma/);
+  assert.match(mentoringHSource, /data-h-qualified hidden/);
+  assert.match(mentoringHSource, /data-h-unqualified hidden/);
+  assert.match(variantHSource, /qualifiedMentorSection\.hidden = !qualified/);
+  assert.match(variantHSource, /unqualifiedMentorSection\.hidden = qualified/);
+});
+
+test("explains and personalizes the complete Memories H course after the quiz", () => {
+  for (const movement of ["A Linha do Tempo", "O Inventário Afetivo", "Os sabores da Memória", "A Escrita dos Rituais"]) {
+    assert.match(memoriesHSource, new RegExp(movement));
+  }
+  for (const selector of [
+    "data-h-memory-subject-title",
+    "data-h-memory-signal-title",
+    "data-h-memory-block-title",
+    "data-h-memory-topic-examples",
+    "data-h-memory-final-title",
+  ]) {
+    assert.match(memoriesHSource, new RegExp(selector));
+    assert.match(variantHSource, new RegExp(selector));
+  }
+  assert.match(memoriesHSource, /aulas gravadas/);
+  assert.match(memoriesHSource, /acesso é vitalício/);
+  assert.match(memoriesHSource, /Nunca escrevi memórias/);
+  assert.match(memoriesHSource, /Preciso mostrar os meus textos/);
+});
+
+test("defines complete personalized copy for every H answer", () => {
+  const literal = variantHSource.match(/const content = (\{[\s\S]*?\n  \});\n\n  function emit/)?.[1];
+  assert.ok(literal, "the H content object must remain readable by the regression test");
+  const content = vm.runInNewContext(`(${literal})`) as {
+    memorias: {
+      subjects: Record<string, Record<string, string>>;
+      signals: Record<string, Record<string, string>>;
+      blocks: Record<string, Record<string, string>>;
+    };
+    mentoria: {
+      stages: Record<string, Record<string, string>>;
+      readers: Record<string, Record<string, string>>;
+      obstacles: Record<string, Record<string, string>>;
+      finance: Record<string, Record<string, string | boolean>>;
+    };
+  };
+
+  for (const subject of Object.values(content.memorias.subjects)) {
+    for (const field of ["courseTitle", "courseText", "reasonText", "examples", "finalTitle"]) assert.ok(subject[field]);
+  }
+  for (const signal of Object.values(content.memorias.signals)) {
+    for (const field of ["courseTitle", "courseText", "moduleLabel"]) assert.ok(signal[field]);
+    assert.equal(typeof signal.module, "string");
+  }
+  for (const block of Object.values(content.memorias.blocks)) {
+    for (const field of ["courseTitle", "courseText"]) assert.ok(block[field]);
+  }
+  for (const stage of Object.values(content.mentoria.stages)) {
+    for (const field of ["mentorshipTitle", "mentorshipText", "cardTitle", "deliverable"]) assert.ok(stage[field]);
+  }
+  for (const reader of Object.values(content.mentoria.readers)) {
+    for (const field of ["mentorshipTitle", "mentorshipText"]) assert.ok(reader[field]);
+  }
+  for (const obstacle of Object.values(content.mentoria.obstacles)) {
+    for (const field of ["resultTitle", "mentorshipTitle", "mentorshipText"]) assert.ok(obstacle[field]);
+  }
+  for (const finance of Object.values(content.mentoria.finance)) {
+    for (const field of ["closingTitle", "closingText"]) assert.ok(finance[field]);
+    assert.doesNotMatch(String(finance.reply), /Memórias|Hotmart/);
+  }
+});
+
+test("keeps H fragment links and accessible labels connected", () => {
+  for (const source of [memoriesHSource, mentoringHSource]) {
+    const ids = Array.from(source.matchAll(/\sid="([^"]+)"/g), (match) => match[1]);
+    assert.equal(new Set(ids).size, ids.length, "page IDs must be unique");
+
+    for (const fragment of Array.from(source.matchAll(/href="#([^"]+)"/g), (match) => match[1])) {
+      assert.ok(ids.includes(fragment), `missing fragment target #${fragment}`);
+    }
+    for (const referenceList of Array.from(source.matchAll(/aria-labelledby="([^"]+)"/g), (match) => match[1])) {
+      for (const reference of referenceList.split(/\s+/)) {
+        assert.ok(ids.includes(reference), `missing aria-labelledby target #${reference}`);
+      }
+    }
+  }
 });
 
 test("scrolls to the personalized H copy without creating a checkout event", () => {

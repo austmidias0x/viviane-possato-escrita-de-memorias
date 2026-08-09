@@ -1046,12 +1046,46 @@ body[data-offer="mentoria"] .h-offer h2 {
   border-top: 1px solid var(--h-line);
 }
 
+.h-curriculum__header {
+  padding: 0 0 24px;
+}
+
+.h-curriculum__header .h-eyebrow {
+  margin-bottom: 10px;
+}
+
+.h-curriculum__header > p:last-child {
+  margin: 0;
+  color: var(--h-muted);
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
+
 .h-curriculum__item {
+  position: relative;
   display: grid;
   grid-template-columns: 42px 1fr;
   gap: 18px;
   border-bottom: 1px solid var(--h-line);
   padding: 22px 0;
+  transition: background-color 180ms ease, border-color 180ms ease, padding 180ms ease;
+}
+
+.h-curriculum__item.is-recommended {
+  margin-inline: -18px;
+  border-color: color-mix(in srgb, var(--h-accent) 42%, var(--h-line));
+  background: var(--h-accent-soft);
+  padding-inline: 18px;
+}
+
+.h-curriculum__badge {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: var(--h-accent-ink);
+  font-size: 0.63rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .h-curriculum__number {
@@ -1097,6 +1131,279 @@ body[data-offer="mentoria"] .h-offer__panel {
 
 .h-offer__panel .h-button {
   margin-top: 20px;
+}
+
+.h-personal-plan {
+  background: var(--h-paper-deep);
+  padding-block: clamp(76px, 9vw, 118px);
+}
+
+.h-section-heading {
+  max-width: 790px;
+}
+
+.h-section-heading h2,
+.h-application__heading h2,
+.h-qualification-note h2 {
+  margin: 0;
+  font-family: var(--h-serif);
+  font-size: clamp(2.15rem, 4vw, 3.85rem);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
+}
+
+.h-section-heading > p:last-child,
+.h-application__heading > p:last-child,
+.h-qualification-note__inner > p:last-child {
+  max-width: 690px;
+  margin: 20px 0 0;
+  color: var(--h-muted);
+  line-height: 1.8;
+}
+
+.h-personal-plan__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 48px;
+}
+
+.h-personal-plan__card {
+  border: 1px solid var(--h-line);
+  background: var(--h-surface);
+  padding: clamp(24px, 3.2vw, 34px);
+}
+
+body[data-offer="mentoria"] .h-personal-plan__card {
+  border-radius: 14px;
+}
+
+.h-personal-plan__card > span {
+  display: block;
+  margin-bottom: 14px;
+  color: var(--h-accent-ink);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.h-personal-plan__card h3,
+.h-course-details__topics h3,
+.h-mentoring-method h3 {
+  margin: 0;
+  font-family: var(--h-serif);
+  font-size: 1.35rem;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.h-personal-plan__card > p {
+  margin: 16px 0 0;
+  color: var(--h-muted);
+  font-size: 0.9rem;
+  line-height: 1.72;
+}
+
+.h-personal-plan__deliverable {
+  border-top: 1px solid var(--h-line);
+  padding-top: 16px;
+}
+
+.h-personal-plan__deliverable strong {
+  color: var(--h-ink);
+}
+
+.h-course-details {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(36px, 7vw, 84px);
+  margin-top: clamp(54px, 8vw, 88px);
+  border-top: 1px solid var(--h-line);
+  padding-top: clamp(48px, 7vw, 76px);
+}
+
+.h-course-details__steps ol {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.h-course-details__steps li {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 16px;
+  border-bottom: 1px solid var(--h-line);
+  padding: 18px 0;
+}
+
+.h-course-details__steps li strong {
+  color: var(--h-accent-ink);
+  font-family: var(--h-serif);
+  font-size: 1.15rem;
+  font-weight: 500;
+}
+
+.h-course-details__steps li span {
+  color: var(--h-muted);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.h-course-details__topics {
+  border-left: 1px solid var(--h-line);
+  padding-left: clamp(28px, 5vw, 58px);
+}
+
+.h-course-details__topics > p:not(.h-eyebrow) {
+  margin: 18px 0 0;
+  color: var(--h-muted);
+  line-height: 1.75;
+}
+
+.h-topic-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.h-topic-list span {
+  border: 1px solid var(--h-line);
+  border-radius: 999px;
+  background: var(--h-paper);
+  padding: 8px 13px;
+  color: var(--h-muted);
+  font-size: 0.77rem;
+}
+
+.h-mentoring-method {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(36px, 7vw, 84px);
+  margin-top: clamp(54px, 8vw, 88px);
+  border-top: 1px solid var(--h-line);
+  padding-top: clamp(48px, 7vw, 76px);
+}
+
+.h-mentoring-method__facts {
+  border-top: 1px solid var(--h-line);
+}
+
+.h-mentoring-method__facts p {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.42fr) 1fr;
+  gap: 24px;
+  margin: 0;
+  border-bottom: 1px solid var(--h-line);
+  padding: 20px 0;
+}
+
+.h-mentoring-method__facts strong {
+  font-family: var(--h-serif);
+  font-weight: 500;
+}
+
+.h-mentoring-method__facts span {
+  color: var(--h-muted);
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
+
+.h-application {
+  scroll-margin-top: 96px;
+  background: var(--h-ink);
+  padding-block: clamp(76px, 9vw, 118px);
+  color: #fff;
+}
+
+.h-application__inner {
+  max-width: 900px;
+}
+
+.h-application .h-eyebrow {
+  color: color-mix(in srgb, var(--h-accent-soft) 78%, #fff);
+}
+
+.h-application__heading h2 {
+  color: #fff;
+}
+
+.h-application__heading > p:last-child {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.h-application .h-form-wrap {
+  margin-top: 40px;
+}
+
+.h-qualification-note {
+  padding-block: clamp(72px, 8vw, 104px);
+}
+
+.h-qualification-note__inner {
+  max-width: 830px;
+  border: 1px solid var(--h-line);
+  border-radius: 16px;
+  background: var(--h-paper-deep);
+  padding: clamp(30px, 5vw, 54px);
+}
+
+.h-faq {
+  padding-block: clamp(76px, 9vw, 118px);
+}
+
+.h-faq__inner {
+  max-width: 900px;
+}
+
+.h-faq__list {
+  margin-top: 42px;
+  border-top: 1px solid var(--h-line);
+}
+
+.h-faq details {
+  border-bottom: 1px solid var(--h-line);
+}
+
+.h-faq summary {
+  position: relative;
+  min-height: 66px;
+  cursor: pointer;
+  list-style: none;
+  padding: 20px 48px 20px 0;
+  font-family: var(--h-serif);
+  font-size: 1.08rem;
+}
+
+.h-faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.h-faq summary::after {
+  position: absolute;
+  top: 20px;
+  right: 4px;
+  color: var(--h-accent-ink);
+  content: "+";
+  font-family: var(--h-sans);
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.h-faq details[open] summary::after {
+  content: "−";
+}
+
+.h-faq details p {
+  max-width: 720px;
+  margin: 0;
+  padding: 0 48px 24px 0;
+  color: var(--h-muted);
+  line-height: 1.75;
 }
 
 .h-profile {
@@ -1275,6 +1582,22 @@ body[data-variant="h"] main[tabindex="-1"]:focus {
     grid-template-columns: 1fr;
   }
 
+  .h-personal-plan__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .h-course-details,
+  .h-mentoring-method {
+    grid-template-columns: 1fr;
+  }
+
+  .h-course-details__topics {
+    border-top: 1px solid var(--h-line);
+    border-left: 0;
+    padding-top: 38px;
+    padding-left: 0;
+  }
+
   .h-profile__image-wrap {
     max-width: 380px;
   }
@@ -1402,6 +1725,16 @@ body[data-variant="h"] main[tabindex="-1"]:focus {
   .h-result__action .h-button,
   .h-form-actions .h-button {
     width: 100%;
+  }
+
+  .h-curriculum__item.is-recommended {
+    margin-inline: -8px;
+    padding-inline: 8px;
+  }
+
+  .h-mentoring-method__facts p {
+    grid-template-columns: 1fr;
+    gap: 6px;
   }
 
   .h-profile__image-wrap {
