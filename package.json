@@ -1,0 +1,19 @@
+{
+  "name": "viviane-possato-landing-pages",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "npm run typecheck && npm test",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test tests/*.test.mts"
+  },
+  "dependencies": {
+    "@netlify/blobs": "9.1.5",
+    "@netlify/functions": "5.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.1",
+    "tsx": "4.23.11",
+    "typescript": "5.9.3"
+  }
+}

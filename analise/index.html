@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <meta name="referrer" content="no-referrer" />
+  <title>Análise das páginas | Viviane Possato</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/analytics-dashboard.css" />
+  <script src="/assets/analytics-dashboard.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div>
+        <p class="brand">Viviane Possato</p>
+        <p class="brand-context">Análise das páginas</p>
+      </div>
+      <button id="logoutButton" class="text-button" type="button" hidden>Sair</button>
+    </div>
+  </header>
+
+  <main id="conteudo" tabindex="-1">
+    <section id="loadingView" class="centered-view" aria-live="polite">
+      <div class="loading-mark" aria-hidden="true"></div>
+      <p>Verificando o acesso ao painel.</p>
+    </section>
+
+    <section id="loginView" class="centered-view" hidden>
+      <div class="login-card">
+        <p class="eyebrow">Área protegida</p>
+        <h1>Acompanhe cada etapa das páginas</h1>
+        <p class="login-copy">Informe a senha do painel para ver os dados de Memórias e Mentoria.</p>
+        <form id="loginForm" novalidate>
+          <label for="password">Senha</label>
+          <div class="password-row">
+            <input id="password" name="password" type="password" autocomplete="current-password" minlength="8" required />
+            <button class="primary-button" type="submit">Entrar</button>
+          </div>
+          <p id="loginMessage" class="form-message" role="alert"></p>
+        </form>
+      </div>
+    </section>
+
+    <section id="dashboardView" class="dashboard" hidden aria-labelledby="dashboardTitle">
+      <div class="dashboard-heading">
+        <div>
+          <p class="eyebrow">Experimentos H e I</p>
+          <h1 id="dashboardTitle">Desempenho por página</h1>
+          <p id="updatedAt" class="subtle-copy" aria-live="polite"></p>
+        </div>
+        <div class="toolbar" aria-label="Filtros do relatório">
+          <label for="periodSelect">Período</label>
+          <select id="periodSelect">
+            <option value="7">7 dias</option>
+            <option value="30" selected>30 dias</option>
+            <option value="90">90 dias</option>
+          </select>
+          <label for="offerSelect">Produto</label>
+          <select id="offerSelect">
+            <option value="all">Todos</option>
+            <option value="mentoria">Mentoria</option>
+            <option value="memorias">Memórias</option>
+          </select>
+          <button id="refreshButton" class="secondary-button" type="button">Atualizar</button>
+        </div>
+      </div>
+
+      <p id="dashboardStatus" class="dashboard-status" role="status" aria-live="polite"></p>
+
+      <section aria-labelledby="summaryTitle">
+        <div class="section-heading">
+          <div>
+            <p class="section-index">01</p>
+            <h2 id="summaryTitle">Visão do período</h2>
+          </div>
+          <p>Contagens por visitante único, com visualizações registradas separadamente.</p>
+        </div>
+        <div id="summaryCards" class="summary-grid"></div>
+      </section>
+
+      <section aria-labelledby="comparisonTitle">
+        <div class="section-heading">
+          <div>
+            <p class="section-index">02</p>
+            <h2 id="comparisonTitle">Comparativo H e I</h2>
+          </div>
+          <p>As taxas usam os visitantes da própria variação como base.</p>
+        </div>
+        <div id="comparisonGrid" class="comparison-grid"></div>
+      </section>
+
+      <section aria-labelledby="pagesTitle">
+        <div class="section-heading">
+          <div>
+            <p class="section-index">03</p>
+            <h2 id="pagesTitle">Todas as páginas</h2>
+          </div>
+          <p>Use esta tabela para decidir quais variações continuam recebendo orçamento.</p>
+        </div>
+        <div class="table-shell" tabindex="0" aria-label="Tabela rolável com desempenho das páginas">
+          <table>
+            <caption>Desempenho das páginas no período selecionado</caption>
+            <thead>
+              <tr>
+                <th scope="col">Página</th>
+                <th scope="col">Visitantes</th>
+                <th scope="col">Views</th>
+                <th scope="col">Inícios</th>
+                <th scope="col">Resultados</th>
+                <th scope="col">Checkout ou envios</th>
+                <th scope="col">Conversões</th>
+                <th scope="col">Qualificados</th>
+                <th scope="col">Conversão</th>
+              </tr>
+            </thead>
+            <tbody id="pagesTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section aria-labelledby="funnelsTitle">
+        <div class="section-heading">
+          <div>
+            <p class="section-index">04</p>
+            <h2 id="funnelsTitle">Funil por página</h2>
+          </div>
+          <p>Cada barra mostra quantos visitantes chegaram à etapa.</p>
+        </div>
+        <div id="funnelsGrid" class="funnels-grid"></div>
+      </section>
+
+      <footer class="dashboard-footer">
+        <p id="dataQuality"></p>
+        <p>Os relatórios não exibem respostas, nomes, contatos, IPs ou identificadores anônimos.</p>
+      </footer>
+    </section>
+  </main>
+</body>
+</html>

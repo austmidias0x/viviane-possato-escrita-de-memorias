@@ -2,14 +2,111 @@
   'use strict';
 
   const body = document.body;
-  const offer = body.dataset.offer || 'site';
-  const variant = body.dataset.variant || 'a';
-  const route = window.location.pathname;
+  const pendingApplicationKey = 'viviane_pending_application';
+  const isConversionPage = body.dataset.conversionPage === 'true';
+
+  function readPendingApplication() {
+    if (!isConversionPage) return null;
+    try {
+      const value = JSON.parse(window.sessionStorage.getItem(pendingApplicationKey) || 'null');
+      if (!value || value.offer !== 'mentoria' || !/^[a-i]$/.test(value.variant)) return null;
+      const expectedPath = value.variant === 'a' ? '/mentoria/' : '/mentoria' + value.variant + '/';
+      const normalizedPath = String(value.page_path || '').replace(/\/+$/, '') + '/';
+      const age = Date.now() - Number(value.submitted_at || 0);
+      if (normalizedPath !== expectedPath || age < 0 || age > 30 * 60 * 1000) return null;
+      if (typeof value.qualified !== 'boolean') return null;
+      return {
+        offer: value.offer,
+        variant: value.variant,
+        page_path: expectedPath,
+        form_name: String(value.form_name || '').slice(0, 80),
+        stage: String(value.stage || '').slice(0, 80),
+        qualified: value.qualified
+      };
+    } catch (error) {
+      return null;
+    }
+  }
+
+  const pendingApplication = readPendingApplication();
+  const offer = pendingApplication ? pendingApplication.offer : (body.dataset.offer || 'site');
+  const variant = pendingApplication ? pendingApplication.variant : (body.dataset.variant || 'a');
+  const route = pendingApplication ? pendingApplication.page_path : window.location.pathname;
   const pageId = offer + '-' + variant;
   const campaignKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
   const metaPixelId = '1091512559548489';
+  const analyticsEndpoint = '/api/track';
+  const campaign = {};
+  const currentHostname = window.location.hostname.toLowerCase();
+  const isProductionDomain = currentHostname === 'vivianepossato.com' || currentHostname.endsWith('.vivianepossato.com');
+  const trackingSuppressed = !isProductionDomain ||
+    new URLSearchParams(window.location.search).get('qa') === '1' ||
+    (isConversionPage && !pendingApplication);
+  const metaCustomEvents = {
+    quiz_start: 'QuizStart',
+    quiz_step: 'QuizStep',
+    quiz_complete: 'QuizComplete',
+    personalization_start: 'PersonalizationStart',
+    personalization_step: 'PersonalizationStep',
+    personalization_complete: 'PersonalizedResult',
+    mechanism_start: 'ExperienceStart',
+    mechanism_step: 'ExperienceStep',
+    mechanism_complete: 'ExperienceComplete',
+    form_start: 'ApplicationStart',
+    qualified_lead: 'QualifiedLead'
+  };
 
   window.dataLayer = window.dataLayer || [];
+
+  function createAnonymousId(prefix) {
+    if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+      return prefix + '-' + window.crypto.randomUUID();
+    }
+    return prefix + '-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 12);
+  }
+
+  function getOrCreateAnonymousId(storage, key, prefix) {
+    try {
+      const current = storage.getItem(key);
+      if (current) return current;
+      const created = createAnonymousId(prefix);
+      storage.setItem(key, created);
+      return created;
+    } catch (error) {
+      return createAnonymousId(prefix);
+    }
+  }
+
+  const visitorId = getOrCreateAnonymousId(window.localStorage, 'viviane_visitor_id', 'v');
+  const sessionId = getOrCreateAnonymousId(window.sessionStorage, 'viviane_session_id', 's');
+
+  function sendAnalytics(payload) {
+    if (trackingSuppressed) return;
+    const bodyValue = JSON.stringify(payload);
+    if (bodyValue.length > 8000) return;
+
+    window.fetch(analyticsEndpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: bodyValue,
+      credentials: 'same-origin',
+      keepalive: true
+    }).catch(function () {
+      return;
+    });
+  }
+
+  function trackMetaCustom(eventName, details) {
+    const metaEventName = metaCustomEvents[eventName];
+    if (trackingSuppressed || !metaEventName || typeof window.fbq !== 'function') return;
+
+    window.fbq('trackCustom', metaEventName, {
+      content_name: pageId,
+      content_category: offer,
+      variant: variant,
+      step: String((details && (details.step || details.next_step)) || '')
+    });
+  }
 
   function track(eventName, details) {
     const payload = Object.assign({
@@ -18,17 +115,26 @@
       variant: variant,
       segment: body.dataset.segment || '',
       page_id: pageId,
-      page_path: route
+      page_path: route,
+      visitor_id: visitorId,
+      session_id: sessionId,
+      utm_source: campaign.utm_source || '',
+      utm_medium: campaign.utm_medium || '',
+      utm_campaign: campaign.utm_campaign || '',
+      utm_content: campaign.utm_content || '',
+      utm_term: campaign.utm_term || ''
     }, details || {});
 
     window.dataLayer.push(payload);
     window.dispatchEvent(new CustomEvent('viviane:' + eventName, { detail: payload }));
+    sendAnalytics(payload);
+    trackMetaCustom(eventName, details || {});
   }
 
   window.vivianeTrack = track;
 
   function initializeMetaPixel() {
-    if (window.__vivianeMetaPixelInitialized) return;
+    if (trackingSuppressed || window.__vivianeMetaPixelInitialized) return;
 
     const fbq = window.fbq = window.fbq || function () {
       if (fbq.callMethod) {
@@ -55,7 +161,7 @@
   }
 
   function trackMeta(eventName, details) {
-    if (typeof window.fbq === 'function') window.fbq('track', eventName, details || {});
+    if (!trackingSuppressed && typeof window.fbq === 'function') window.fbq('track', eventName, details || {});
   }
 
   initializeMetaPixel();
@@ -77,8 +183,6 @@
   }
 
   const currentUrl = new URL(window.location.href);
-  const campaign = {};
-
   if (variant === 'f') {
     const segmentKey = offer === 'memorias' ? 'intencao' : 'estagio';
     const allowedSegments = offer === 'memorias' ? ['pessoal', 'familia'] : ['ideia', 'andamento', 'manuscrito'];
@@ -121,6 +225,98 @@
     field.setCustomValidity(hasValidLength ? '' : 'Informe um telefone com 10 a 15 dígitos.');
   }
 
+  function getInvestmentContext(form, formData) {
+    const fieldNames = ['investimento', 'disponibilidade', 'q6', 'financial_fit'];
+    let field = null;
+    let value = '';
+
+    fieldNames.some(function (name) {
+      const checked = form.querySelector('[name="' + name + '"]:checked');
+      const control = checked || form.querySelector('[name="' + name + '"]');
+      const formValue = formData ? formData.get(name) : '';
+      if (!control && !formValue) return false;
+      field = control;
+      value = String(formValue || (control && control.value) || '');
+      return true;
+    });
+
+    const explicitQualification = field && field.dataset ? field.dataset.qualified : '';
+    const qualified = explicitQualification === 'true' || (
+      explicitQualification !== 'false' &&
+      /tenho disponibilidade|posso investir|consigo investir|a partir de r\$\s*9(?:\.|\s)?997/i.test(value)
+    );
+
+    return { qualified: qualified, value: value };
+  }
+
+  function getFormStage(formData) {
+    if (!formData) return '';
+    return String(formData.get('estagio') || formData.get('q1') || formData.get('momento') || '');
+  }
+
+  function clearPendingApplication() {
+    try {
+      window.sessionStorage.removeItem(pendingApplicationKey);
+    } catch (error) {
+      return;
+    }
+  }
+
+  function storePendingApplication(form, formData) {
+    const investment = getInvestmentContext(form, formData);
+    try {
+      window.sessionStorage.setItem(pendingApplicationKey, JSON.stringify({
+        offer: offer,
+        variant: variant,
+        page_path: route,
+        form_name: form.getAttribute('name') || form.id || '',
+        stage: getFormStage(formData),
+        qualified: investment.qualified,
+        submitted_at: Date.now()
+      }));
+    } catch (error) {
+      return;
+    }
+  }
+
+  function recordApplicationEvents(formName, investment, stage, source, form) {
+    track('form_submit_success', {
+      form_name: formName,
+      submission_source: source || '',
+      qualified: investment.qualified
+    });
+    track('application_qualification', {
+      form_name: formName,
+      qualified: investment.qualified,
+      stage: stage
+    });
+
+    if (!investment.qualified || (form && form.dataset.qualifiedConversionTracked === 'true')) return;
+
+    if (form) form.dataset.qualifiedConversionTracked = 'true';
+    track('qualified_lead', {
+      form_name: formName,
+      qualified: true,
+      stage: stage
+    });
+    trackMeta('Lead', {
+      content_name: pageId,
+      content_category: 'Mentoria Página a Página',
+      status: 'qualified'
+    });
+  }
+
+  function recordSuccessfulApplication(form, formData, source) {
+    const currentTime = Date.now();
+    const lastSuccess = Number(form.dataset.lastTrackedSuccess || 0);
+    if (currentTime - lastSuccess < 2000) return;
+    form.dataset.lastTrackedSuccess = String(currentTime);
+
+    const formName = form.getAttribute('name') || form.id || '';
+    const investment = getInvestmentContext(form, formData);
+    recordApplicationEvents(formName, investment, getFormStage(formData), source, form);
+  }
+
   populateFormContext(document);
 
   document.querySelectorAll('a[href*="pay.hotmart.com"]').forEach(function (link) {
@@ -158,7 +354,6 @@
 
   document.querySelectorAll('form[data-netlify-ajax]').forEach(function (form) {
     let started = false;
-    let qualifiedLeadTracked = false;
     let activeController = null;
     let submissionSequence = 0;
     const status = form.querySelector('[data-form-status]') || document.getElementById('formNote') || document.getElementById('actionStatus');
@@ -232,21 +427,7 @@
         if (submissionId !== submissionSequence) return;
         if (!response.ok) throw new Error('Falha no envio');
 
-        track('form_submit_success', { form_name: form.getAttribute('name') || form.id || '' });
-        trackMeta('Lead', {
-          content_name: pageId,
-          content_category: 'Mentoria Página a Página'
-        });
-        if (!qualifiedLeadTracked) {
-          const investment = String(formData.get('investimento') || formData.get('disponibilidade') || formData.get('q6') || '');
-          if (/tenho disponibilidade|a partir de r\$\s*9(?:\.|\s)?997/i.test(investment)) {
-            qualifiedLeadTracked = true;
-            track('qualified_lead', {
-              form_name: form.getAttribute('name') || form.id || '',
-              stage: String(formData.get('estagio') || formData.get('q1') || '')
-            });
-          }
-        }
+        recordSuccessfulApplication(form, formData, 'netlify');
         if (status) {
           status.textContent = form.dataset.successMessage || 'Recebemos as suas respostas. A Viviane poderá entrar em contato pelo e-mail ou WhatsApp informado.';
           status.classList.add('text-ink');
@@ -271,8 +452,36 @@
   document.querySelectorAll('form#lead-form').forEach(function (form) {
     const status = form.querySelector('[data-form-status]');
     const submitButton = form.querySelector('button[type="submit"], input[type="submit"]');
+    let started = false;
+
+    form.querySelectorAll('input[type="tel"]').forEach(function (field) {
+      validatePhoneField(field);
+      field.addEventListener('input', function () { validatePhoneField(field); });
+    });
+
+    form.addEventListener('focusin', function () {
+      if (started) return;
+      started = true;
+      track('form_start', { form_name: form.getAttribute('name') || form.id || '' });
+    });
+
+    form.addEventListener('submit', function (event) {
+      trimFormFields(form);
+      form.querySelectorAll('input[type="tel"]').forEach(function (field) { validatePhoneField(field); });
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        form.reportValidity();
+        return;
+      }
+      const formData = new FormData(form);
+      track('form_submit_attempt', { form_name: form.getAttribute('name') || form.id || '' });
+      storePendingApplication(form, formData);
+    }, true);
 
     form.addEventListener('aust:form:submitted', function () {
+      recordSuccessfulApplication(form, new FormData(form), 'aust');
+      clearPendingApplication();
       if (status) {
         status.textContent = form.dataset.successMessage || 'Recebemos as suas respostas. A Viviane poderá entrar em contato pelo e-mail ou WhatsApp informado.';
         status.classList.add('text-ink');
@@ -281,6 +490,8 @@
     });
 
     form.addEventListener('aust:form:error', function () {
+      clearPendingApplication();
+      track('form_submit_error', { form_name: form.getAttribute('name') || form.id || '', submission_source: 'aust' });
       if (status) {
         status.textContent = 'Não foi possível enviar agora. Confira a sua conexão e tente novamente.';
         status.classList.remove('text-ink');
@@ -288,6 +499,56 @@
       if (submitButton) submitButton.textContent = 'Enviar meu diagnóstico';
     });
   });
+
+  if (isConversionPage) {
+    if (pendingApplication) {
+      recordApplicationEvents(
+        pendingApplication.form_name,
+        { qualified: pendingApplication.qualified, value: '' },
+        pendingApplication.stage,
+        'netlify-redirect',
+        null
+      );
+      clearPendingApplication();
+    }
+    return;
+  }
+
+  let meaningfulViewTracked = false;
+  const scrollDepthsTracked = {};
+
+  function trackMeaningfulView(trigger) {
+    if (meaningfulViewTracked) return;
+    meaningfulViewTracked = true;
+    track('engaged_view', { trigger: trigger });
+    trackMeta('ViewContent', {
+      content_name: pageId,
+      content_category: offer
+    });
+  }
+
+  function inspectScrollDepth() {
+    const documentHeight = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+    const depth = Math.min(100, Math.round((window.scrollY / documentHeight) * 100));
+
+    [25, 50, 75, 90].forEach(function (threshold) {
+      if (depth < threshold || scrollDepthsTracked[threshold]) return;
+      scrollDepthsTracked[threshold] = true;
+      track('scroll_depth', { depth: threshold });
+      if (threshold === 25) trackMeaningfulView('scroll_25');
+    });
+  }
+
+  let scrollFrame = null;
+  window.addEventListener('scroll', function () {
+    if (scrollFrame) return;
+    scrollFrame = window.requestAnimationFrame(function () {
+      scrollFrame = null;
+      inspectScrollDepth();
+    });
+  }, { passive: true });
+
+  window.setTimeout(function () { trackMeaningfulView('time_15s'); }, 15000);
 
   track('page_view', {
     referrer: document.referrer || '',
