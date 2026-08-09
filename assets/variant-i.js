@@ -22,6 +22,10 @@
   let personalizationStarted = false;
   let personalizationCompleted = false;
   let scrollQueued = false;
+  let choiceNavigationTimer = null;
+  let headingFocusTimer = null;
+  let lastInputMethod = 'other';
+  let lastNavigationKey = '';
   const initialOfferTitle = offerTitle ? offerTitle.textContent : '';
   const initialOfferSummary = offerSummary ? offerSummary.textContent : '';
   const initialPageStatus = pageStatus ? pageStatus.textContent : '';
@@ -180,12 +184,43 @@
       if (pageStatus) pageStatus.textContent = 'Linha ' + completeCount + ' de ' + steps.length + ' registrada. Continue na próxima escolha.';
       announce('Nova linha: ' + fragment + ' A próxima escolha está liberada.');
     }
+
+    const nextTarget = stepIndex === steps.length - 1
+      ? document.getElementById('oferta')
+      : steps[stepIndex + 1];
+    queueChoiceNavigation(nextTarget);
+  }
+
+  function cancelPendingChoiceNavigation() {
+    if (choiceNavigationTimer) window.clearTimeout(choiceNavigationTimer);
+    if (headingFocusTimer) window.clearTimeout(headingFocusTimer);
+    choiceNavigationTimer = null;
+    headingFocusTimer = null;
+  }
+
+  function choiceNavigationDelay() {
+    const usedArrowKey = lastInputMethod === 'keyboard' && /^Arrow/.test(lastNavigationKey);
+    if (usedArrowKey) return 1000;
+    return reducedMotion ? 0 : 220;
+  }
+
+  function queueChoiceNavigation(target) {
+    cancelPendingChoiceNavigation();
+    choiceNavigationTimer = window.setTimeout(function () {
+      choiceNavigationTimer = null;
+      goTo(target);
+    }, choiceNavigationDelay());
   }
 
   function goTo(target) {
     if (!target) return;
+    cancelPendingChoiceNavigation();
+    window.dispatchEvent(new CustomEvent('viviane:programmatic-scroll', {
+      detail: { duration: reducedMotion ? 100 : 1400 }
+    }));
     target.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
-    window.setTimeout(function () {
+    headingFocusTimer = window.setTimeout(function () {
+      headingFocusTimer = null;
       const focusTarget = target.querySelector('legend, h2, h3');
       if (focusTarget) {
         focusTarget.setAttribute('tabindex', '-1');
@@ -211,6 +246,14 @@
     });
   });
 
+  choiceForm.addEventListener('pointerdown', function () {
+    lastInputMethod = 'pointer';
+    lastNavigationKey = '';
+  });
+  choiceForm.addEventListener('keydown', function (event) {
+    lastInputMethod = 'keyboard';
+    lastNavigationKey = event.key || '';
+  });
   choiceForm.addEventListener('change', handleChoice);
   choiceForm.addEventListener('submit', function (event) { event.preventDefault(); });
 

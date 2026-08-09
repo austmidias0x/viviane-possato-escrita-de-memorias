@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
@@ -9,6 +10,7 @@ import {
 } from "../netlify/functions/_shared/analytics-schema.mts";
 import {
   buildAnalyticsReport,
+  isStoredAnalyticsEvent,
   utcDatePrefixes,
 } from "../netlify/functions/_shared/analytics-report.mts";
 import {
@@ -61,6 +63,21 @@ function stored(
     session_id: `s-${visitor}`,
     ...details,
   };
+}
+
+function reportPage(
+  report: ReturnType<typeof buildAnalyticsReport>,
+  offer: StoredAnalyticsEvent["offer"],
+  variant: StoredAnalyticsEvent["variant"],
+  path?: string,
+) {
+  const page = report.pages.find((candidate) => (
+    candidate.offer === offer &&
+    candidate.variant === variant &&
+    (!path || candidate.page_path === path)
+  ));
+  assert.ok(page, `${offer}-${variant}${path ? ` em ${path}` : ""}`);
+  return page;
 }
 
 test("accepts the complete event contract", () => {
@@ -159,7 +176,7 @@ test("counts Mentoria conversion only after a qualified_lead event", () => {
     stored("application_qualification", visitorUnqualified, "mentoria", "h", { qualified: false }),
   ];
   const report = buildAnalyticsReport(events, 30, fixedNow);
-  const page = report.pages[0];
+  const page = reportPage(report, "mentoria", "h");
   assert.equal(page.visitors, 2);
   assert.equal(page.form_submits, 2);
   assert.equal(page.conversions, 1);
@@ -173,6 +190,7 @@ test("places Mentoria I financial qualification after the personalized result", 
     stored("page_view", "v-result-one", "mentoria", "i"),
     stored("personalization_start", "v-result-one", "mentoria", "i"),
     stored("personalization_complete", "v-result-one", "mentoria", "i"),
+    stored("form_start", "v-result-one", "mentoria", "i"),
     stored("qualification_select", "v-result-one", "mentoria", "i", {
       step: "investment",
       qualified: true,
@@ -184,16 +202,28 @@ test("places Mentoria I financial qualification after the personalized result", 
   ];
 
   const report = buildAnalyticsReport(events, 30, fixedNow);
-  const funnel = report.pages[0].funnel;
+  const funnel = reportPage(report, "mentoria", "i").funnel;
   assert.deepEqual(funnel.map((stage) => stage.key), [
-    "view",
+    "visitors",
     "start",
+    "step_origem",
+    "step_estagio",
+    "step_decisao",
+    "step_apoio",
     "result",
-    "step:investment",
+    "form_start",
+    "financial_answer",
+    "form_attempt",
+    "form_success",
     "conversion",
   ]);
-  assert.equal(funnel.find((stage) => stage.key === "result")?.rate_from_previous, 100);
-  assert.equal(funnel.find((stage) => stage.key === "step:investment")?.rate_from_previous, 50);
+  assert.equal(funnel.find((stage) => stage.key === "result")?.visitors, 2);
+  assert.equal(funnel.find((stage) => stage.key === "form_start")?.visitors, 1);
+  assert.equal(funnel.find((stage) => stage.key === "form_start")?.rate_from_previous, 50);
+  assert.equal(funnel.find((stage) => stage.key === "form_start")?.denominator_key, "visitors");
+  assert.equal(funnel.find((stage) => stage.key === "financial_answer")?.visitors, 1);
+  assert.equal(funnel.find((stage) => stage.key === "financial_answer")?.rate_from_previous, 100);
+  assert.equal(funnel.find((stage) => stage.key === "financial_answer")?.denominator_key, "form_start");
 });
 
 test("counts checkout visitors as Memórias conversions without inflating duplicates", () => {
@@ -207,7 +237,7 @@ test("counts checkout visitors as Memórias conversions without inflating duplic
     stored("checkout_click", visitor, "memorias", "i"),
   ];
   const report = buildAnalyticsReport(events, 7, fixedNow);
-  const page = report.pages[0];
+  const page = reportPage(report, "memorias", "i");
   assert.equal(page.visitors, 1);
   assert.equal(page.views, 2);
   assert.equal(page.checkout_clicks, 1);
@@ -221,8 +251,120 @@ test("keeps home and /memorias/ as separate rows", () => {
     stored("page_view", "v-route", "memorias", "a", { page_path: "/memorias/" }),
   ];
   const report = buildAnalyticsReport(events, 7, fixedNow);
-  assert.equal(report.pages.length, 2);
-  assert.deepEqual(report.pages.map((page) => page.page_path).sort(), ["/", "/memorias/"]);
+  const memoriesA = report.pages.filter((page) => page.offer === "memorias" && page.variant === "a");
+  assert.equal(report.pages.length, 19);
+  assert.deepEqual(memoriesA.map((page) => page.page_path).sort(), ["/", "/memorias/"]);
+  assert.equal(report.offers.memorias.visitors, 2);
+  assert.equal(report.offer_variants.memorias.a.visitors, 1);
+});
+
+test("returns all A to I experiment pages even when the period has no events", () => {
+  const report = buildAnalyticsReport([], 30, fixedNow);
+  const experimentPages = report.pages.filter((page) => page.is_experiment_page);
+  assert.equal(experimentPages.length, 18);
+  assert.deepEqual(report.comparisons.map((comparison) => comparison.pages.length), [9, 9]);
+  assert.ok(experimentPages.every((page) => page.visitors === 0 && page.has_data === false));
+  assert.ok(Object.values(report.totals.rates).every((rate) => rate === null));
+  assert.ok(experimentPages.every((page) => Object.values(page.rates).every((rate) => rate === null)));
+  assert.deepEqual(report.filters.variants, ["a", "b", "c", "d", "e", "f", "g", "h", "i"]);
+});
+
+test("rejects corrupted stored events before adding them to the report", () => {
+  const valid = stored("page_view", "v-valid", "memorias", "a");
+  assert.equal(isStoredAnalyticsEvent(valid), true);
+  assert.equal(isStoredAnalyticsEvent({ ...valid, event: "unknown_event" }), false);
+  assert.equal(isStoredAnalyticsEvent({ ...valid, page_id: "mentoria-a" }), false);
+  assert.equal(isStoredAnalyticsEvent({ ...valid, page_path: "/mentoria/" }), false);
+});
+
+test("loads the shared tracking contract on every A to I route", () => {
+  const variants = ["a", "b", "c", "d", "e", "f", "g", "h", "i"] as const;
+  for (const offer of ["memorias", "mentoria"] as const) {
+    for (const variant of variants) {
+      const directory = variant === "a" ? offer : `${offer}${variant}`;
+      const html = readFileSync(new URL(`../${directory}/index.html`, import.meta.url), "utf8");
+      assert.match(html, new RegExp(`<body[^>]*data-offer=["']${offer}["'][^>]*data-variant=["']${variant}["']`), `${offer}-${variant}`);
+      assert.match(html, /<script src=["']\/assets\/site\.js["'] defer><\/script>/, `${offer}-${variant}`);
+    }
+  }
+});
+
+test("uses page-specific denominators for optional and required experiences", () => {
+  const events = [
+    stored("page_view", "v-mentor-e", "mentoria", "e"),
+    stored("form_start", "v-mentor-e", "mentoria", "e"),
+    stored("page_view", "v-memory-h", "memorias", "h"),
+    stored("quiz_start", "v-memory-h", "memorias", "h"),
+    stored("quiz_step", "v-memory-h", "memorias", "h", { step: "1" }),
+    stored("quiz_step", "v-memory-h", "memorias", "h", { step: "2" }),
+    stored("quiz_step", "v-memory-h", "memorias", "h", { step: "3" }),
+    stored("quiz_complete", "v-memory-h", "memorias", "h"),
+    stored("checkout_click", "v-memory-h", "memorias", "h"),
+    stored("page_view", "v-memory-i", "memorias", "i"),
+    stored("checkout_click", "v-memory-i", "memorias", "i"),
+  ];
+  const report = buildAnalyticsReport(events, 30, fixedNow);
+  const mentorE = reportPage(report, "mentoria", "e");
+  assert.equal(mentorE.funnel.find((stage) => stage.key === "form_start")?.denominator_key, "visitors");
+  assert.equal(mentorE.funnel.find((stage) => stage.key === "form_start")?.rate_from_previous, 100);
+
+  const memoryH = reportPage(report, "memorias", "h");
+  const comparisonDecision = memoryH.comparison_funnel.find((stage) => stage.key === "decision");
+  const comparisonConversion = memoryH.comparison_funnel.find((stage) => stage.key === "conversion");
+  assert.equal(comparisonDecision?.applicable, false);
+  assert.equal(comparisonConversion?.label, "Checkout aberto");
+  assert.equal(comparisonConversion?.denominator_key, "experience_complete");
+  assert.equal(comparisonConversion?.rate_from_previous, 100);
+  assert.equal(memoryH.funnel.find((stage) => stage.key === "conversion")?.denominator_key, "result");
+
+  const memoryI = reportPage(report, "memorias", "i");
+  assert.equal(memoryI.comparison_funnel.find((stage) => stage.key === "conversion")?.denominator_key, "visitors");
+  assert.equal(memoryI.funnel.find((stage) => stage.key === "conversion")?.denominator_key, "visitors");
+});
+
+test("treats I personalization as optional because header links bypass it", () => {
+  const memoriesI = readFileSync(new URL("../memoriasi/index.html", import.meta.url), "utf8");
+  const mentoringI = readFileSync(new URL("../mentoriai/index.html", import.meta.url), "utf8");
+  assert.match(memoriesI, /class="i-header__link" href="#oferta"/);
+  assert.match(mentoringI, /class="i-header__link" href="#aplicacao"/);
+
+  const report = buildAnalyticsReport([], 30, fixedNow);
+  assert.equal(reportPage(report, "memorias", "i").funnel.at(-1)?.denominator_key, "visitors");
+  assert.equal(reportPage(report, "mentoria", "i").funnel.find((stage) => stage.key === "form_start")?.denominator_key, "visitors");
+});
+
+test("treats the Memories D quiz as optional because its header opens checkout", () => {
+  const memoriesD = readFileSync(new URL("../memoriasd/index.html", import.meta.url), "utf8");
+  assert.match(memoriesD, /<a href="https:\/\/pay\.hotmart\.com\/[^"?]+\?[^\"]+"[^>]*>Conhecer o curso<\/a>/);
+
+  const report = buildAnalyticsReport([], 30, fixedNow);
+  assert.equal(reportPage(report, "memorias", "d").funnel.at(-1)?.denominator_key, "visitors");
+  assert.equal(reportPage(report, "mentoria", "d").funnel.find((stage) => stage.key === "form_attempt")?.denominator_key, "result");
+});
+
+test("keeps universal A to I stages aligned across offers", () => {
+  const report = buildAnalyticsReport([], 7, fixedNow);
+  const expected = ["visitors", "engaged", "experience_start", "experience_complete", "decision", "conversion"];
+  report.comparisons.forEach((comparison) => {
+    comparison.pages.forEach((page) => {
+      assert.deepEqual(page.comparison_funnel.map((stage) => stage.key), expected);
+    });
+  });
+});
+
+test("renders A to I controls and keeps the selected rate tied to each bar", () => {
+  const html = readFileSync(new URL("../analise/index.html", import.meta.url), "utf8");
+  const client = readFileSync(new URL("../assets/analytics-dashboard.js", import.meta.url), "utf8");
+  const css = readFileSync(new URL("../assets/analytics-dashboard.css", import.meta.url), "utf8");
+  assert.match(html, /id="variantSelect"/);
+  assert.match(html, /id="rateBasisSelect"/);
+  assert.match(html, /id="readingGrid"/);
+  assert.doesNotMatch(html, /Comparativo H e I|Experimentos H e I/);
+  assert.match(client, /comparison\.offer === 'mentoria' \|\| stage\.key !== 'decision'/);
+  assert.match(client, /const barRate = stage\.denominator_key \? selectedRate\(stage\) : stage\.rate_from_visitors/);
+  assert.match(client, /variant !== 'all' && !page\.is_experiment_page/);
+  assert.match(client, /cell\.colSpan = 8/);
+  assert.match(css, /@media \(max-width: 480px\)[\s\S]*?\.funnel-stage-line[\s\S]*?flex-direction: column/);
 });
 
 test("builds date prefixes that include both rolling-period boundary dates", () => {

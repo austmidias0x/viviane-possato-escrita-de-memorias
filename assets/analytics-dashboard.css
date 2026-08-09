@@ -278,20 +278,23 @@ select {
 }
 
 .toolbar {
-  display: grid;
-  grid-template-columns: auto auto auto;
+  display: flex;
   align-items: end;
-  gap: 0.5rem 0.7rem;
+  justify-content: flex-end;
+  gap: 0.7rem;
+  flex-wrap: wrap;
 }
 
-.toolbar label {
-  margin: 0;
-  grid-row: 1;
+.toolbar-field {
+  min-width: 116px;
 }
 
-.toolbar select,
-.toolbar button {
-  grid-row: 2;
+.toolbar-field label {
+  margin: 0 0 0.4rem;
+}
+
+.toolbar-field select {
+  width: 100%;
 }
 
 .dashboard-status {
@@ -364,11 +367,12 @@ select {
 
 .comparison-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 1rem;
 }
 
 .comparison-card,
+.reading-card,
 .funnel-card {
   overflow: hidden;
   border: 1px solid var(--line);
@@ -389,6 +393,7 @@ select {
 }
 
 .comparison-card h3,
+.reading-card h3,
 .funnel-card h3 {
   margin: 0;
   font-size: 1.25rem;
@@ -409,34 +414,78 @@ select {
   text-transform: uppercase;
 }
 
-.comparison-body {
-  padding: 0.4rem 1.35rem 1.2rem;
+.matrix-shell {
+  overflow-x: auto;
 }
 
-.variant-row {
-  display: grid;
-  grid-template-columns: 34px repeat(3, 1fr);
-  gap: 0.7rem;
-  align-items: center;
-  padding: 1rem 0;
-  border-bottom: 1px solid var(--line);
+.matrix-table,
+.reading-table {
+  min-width: 1040px;
 }
 
-.variant-row:last-child {
-  border-bottom: 0;
+.matrix-table th,
+.matrix-table td,
+.reading-table th,
+.reading-table td {
+  vertical-align: top;
 }
 
-.variant-stat span {
+.matrix-table th:first-child,
+.matrix-table td:first-child,
+.reading-table th:first-child,
+.reading-table td:first-child {
+  min-width: 112px;
+}
+
+.matrix-table td,
+.reading-table td {
+  min-width: 132px;
+}
+
+.stage-label,
+.stage-rate,
+.not-applicable,
+.supplemental-tag {
   display: block;
+}
+
+.stage-label {
+  max-width: 170px;
+  margin: 0 0 0.35rem auto;
   color: var(--subtle);
-  font-size: 0.68rem;
-  text-transform: uppercase;
+  font-size: 0.7rem;
+  line-height: 1.35;
+  white-space: normal;
 }
 
-.variant-stat strong {
+.stage-value {
   display: block;
-  margin-top: 0.25rem;
-  font-size: 1.05rem;
+  font-size: 1rem;
+}
+
+.stage-rate {
+  margin-top: 0.3rem;
+  color: var(--accent-deep);
+  font-size: 0.72rem;
+  line-height: 1.35;
+  white-space: normal;
+}
+
+.not-applicable {
+  color: var(--subtle);
+  font-size: 0.76rem;
+}
+
+.supplemental-tag {
+  width: max-content;
+  margin-top: 0.45rem;
+  padding: 0.2rem 0.45rem;
+  border-radius: 99px;
+  background: var(--paper-deep);
+  color: var(--subtle);
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .empty-copy {
@@ -454,7 +503,7 @@ select {
 
 table {
   width: 100%;
-  min-width: 850px;
+  min-width: 1050px;
   border-collapse: collapse;
 }
 
@@ -518,6 +567,12 @@ tbody tr:last-child td {
 .funnels-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.reading-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 1rem;
 }
 
@@ -614,34 +669,15 @@ tbody tr:last-child td {
 
   .toolbar {
     width: 100%;
-    grid-template-columns: 1fr 1fr;
+    justify-content: stretch;
+  }
+
+  .toolbar-field {
+    flex: 1 1 calc(50% - 0.7rem);
   }
 
   .toolbar button {
-    grid-column: 1 / -1;
-    grid-row: 4;
-  }
-
-  .toolbar label:first-of-type {
-    grid-column: 1;
-    grid-row: 1;
-  }
-
-  .toolbar select:first-of-type {
-    grid-column: 1;
-    grid-row: 2;
-    width: 100%;
-  }
-
-  .toolbar label:nth-of-type(2) {
-    grid-column: 2;
-    grid-row: 1;
-  }
-
-  .toolbar select:nth-of-type(2) {
-    grid-column: 2;
-    grid-row: 2;
-    width: 100%;
+    flex: 1 0 100%;
   }
 
   .dashboard-footer {
@@ -662,12 +698,18 @@ tbody tr:last-child td {
     min-height: 0;
   }
 
-  .variant-row {
-    grid-template-columns: 32px 1fr;
+  .toolbar-field {
+    flex-basis: 100%;
   }
 
-  .variant-stat {
-    grid-column: 2;
+  .funnel-stage-line {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .funnel-stage-line span:last-child {
+    white-space: normal;
   }
 }
 

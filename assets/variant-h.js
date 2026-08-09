@@ -29,7 +29,10 @@
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const answers = {};
   let started = false;
-  let interactionMode = 'keyboard';
+  let answerNavigationTimer = null;
+  let headingFocusTimer = null;
+  let lastInputMethod = 'other';
+  let lastNavigationKey = '';
 
   const content = {
     memorias: {
@@ -331,7 +334,33 @@
   function focusHeading(container) {
     const heading = container && container.querySelector('[data-h-focus]');
     if (!heading) return;
-    window.setTimeout(function () { heading.focus({ preventScroll: true }); }, reducedMotion.matches ? 0 : 360);
+    if (headingFocusTimer) window.clearTimeout(headingFocusTimer);
+    headingFocusTimer = window.setTimeout(function () {
+      headingFocusTimer = null;
+      heading.focus({ preventScroll: true });
+    }, reducedMotion.matches ? 0 : 360);
+  }
+
+  function cancelPendingAnswerNavigation() {
+    if (answerNavigationTimer) window.clearTimeout(answerNavigationTimer);
+    if (headingFocusTimer) window.clearTimeout(headingFocusTimer);
+    answerNavigationTimer = null;
+    headingFocusTimer = null;
+  }
+
+  function answerNavigationDelay() {
+    const usedArrowKey = lastInputMethod === 'keyboard' && /^Arrow/.test(lastNavigationKey);
+    if (usedArrowKey) return 1000;
+    return reducedMotion.matches ? 0 : 220;
+  }
+
+  function queueAnswerNavigation(target) {
+    cancelPendingAnswerNavigation();
+    answerNavigationTimer = window.setTimeout(function () {
+      answerNavigationTimer = null;
+      scrollToElement(target);
+      focusHeading(target);
+    }, answerNavigationDelay());
   }
 
   function updateLiveCopy(kicker, title, text, completed) {
@@ -671,11 +700,13 @@
   });
 
   quiz.addEventListener('pointerdown', function () {
-    interactionMode = 'pointer';
+    lastInputMethod = 'pointer';
+    lastNavigationKey = '';
   });
 
-  quiz.addEventListener('keydown', function () {
-    interactionMode = 'keyboard';
+  quiz.addEventListener('keydown', function (event) {
+    lastInputMethod = 'keyboard';
+    lastNavigationKey = event.key || '';
   });
 
   steps.forEach(function (step, index) {
@@ -709,20 +740,17 @@
         const nextStep = steps[index + 1];
         revealStep(index + 1);
         liveStatus.textContent = 'Resposta registrada. Pergunta ' + (index + 2) + ' de ' + totalSteps + ' liberada.';
-        if (interactionMode === 'pointer') {
-          window.setTimeout(function () { scrollToElement(nextStep); }, reducedMotion.matches ? 0 : 220);
-        }
+        queueAnswerNavigation(nextStep);
       } else {
         renderResult();
-        if (interactionMode === 'pointer') {
-          window.setTimeout(function () { scrollToElement(result); }, reducedMotion.matches ? 0 : 220);
-        }
+        queueAnswerNavigation(result);
       }
     });
   });
 
   root.querySelectorAll('[data-h-restart]').forEach(function (button) {
     button.addEventListener('click', function () {
+      cancelPendingAnswerNavigation();
       Object.keys(answers).forEach(function (key) { delete answers[key]; });
       steps.forEach(function (step, index) {
         step.hidden = index !== 0;

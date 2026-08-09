@@ -219,8 +219,21 @@
       const progress = document.getElementById('quizProgress');
       const progressText = document.getElementById('progressText');
       const questionNumber = { q1:1, q2:2, q3:3, bridge:3, q4:4, q5:5, q6:6 };
+      const automaticNextScreen = { q1:'q2', q2:'q3', q3:'bridge', q4:'q5', q5:'q6', q6:'result' };
+      let automaticAdvanceTimer = null;
+      let headingFocusTimer = null;
+      let lastInputMethod = 'other';
+      let lastNavigationKey = '';
 
       function showScreen(name) {
+        if (automaticAdvanceTimer) {
+          window.clearTimeout(automaticAdvanceTimer);
+          automaticAdvanceTimer = null;
+        }
+        if (headingFocusTimer) {
+          window.clearTimeout(headingFocusTimer);
+          headingFocusTimer = null;
+        }
         screens.forEach(function (screen) { screen.hidden = screen.id !== 'screen-' + name; });
         const number = questionNumber[name];
         progressArea.hidden = !number;
@@ -230,9 +243,17 @@
         }
         const current = document.getElementById('screen-' + name);
         const heading = current.querySelector('h1, h2, legend');
-        if (heading) heading.focus();
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        window.dispatchEvent(new CustomEvent('viviane:programmatic-scroll', {
+          detail: { duration: reducedMotion ? 100 : 1200 }
+        }));
         window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
+        if (heading) {
+          headingFocusTimer = window.setTimeout(function () {
+            headingFocusTimer = null;
+            heading.focus({ preventScroll: true });
+          }, reducedMotion ? 0 : 360);
+        }
       }
 
       function validateScreen(screen) {
@@ -248,6 +269,27 @@
         }
         error.textContent = '';
         return true;
+      }
+
+      function advanceFromScreen(screen, nextScreen) {
+        if (!validateScreen(screen)) return;
+        if (nextScreen === 'result') {
+          calculateResult();
+          if (window.vivianeTrack) window.vivianeTrack('quiz_complete');
+        } else if (window.vivianeTrack) {
+          window.vivianeTrack('quiz_step', { next_step: nextScreen });
+        }
+        showScreen(nextScreen);
+      }
+
+      function queueAutomaticAdvance(screen, nextScreen) {
+        if (automaticAdvanceTimer) window.clearTimeout(automaticAdvanceTimer);
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const usedArrowKey = lastInputMethod === 'keyboard' && /^Arrow/.test(lastNavigationKey);
+        automaticAdvanceTimer = window.setTimeout(function () {
+          automaticAdvanceTimer = null;
+          advanceFromScreen(screen, nextScreen);
+        }, usedArrowKey ? 1000 : (reducedMotion ? 0 : 220));
       }
 
       function calculateResult() {
@@ -301,20 +343,31 @@
       form.querySelectorAll('[data-next]').forEach(function (button) {
         button.addEventListener('click', function () {
           const current = button.closest('[data-screen]');
-          if (!validateScreen(current)) return;
-          if (window.vivianeTrack) window.vivianeTrack('quiz_step', { next_step: button.dataset.next || '' });
-          showScreen(button.dataset.next);
+          advanceFromScreen(current, button.dataset.next);
         });
+      });
+      form.addEventListener('pointerdown', function () {
+        lastInputMethod = 'pointer';
+        lastNavigationKey = '';
+      });
+      form.addEventListener('keydown', function (event) {
+        lastInputMethod = 'keyboard';
+        lastNavigationKey = event.key || '';
+      });
+      form.addEventListener('change', function (event) {
+        const input = event.target.closest('input[type="radio"]');
+        if (!input || !input.checked) return;
+        const current = input.closest('[data-screen]');
+        const currentName = current.id.replace('screen-', '');
+        const nextScreen = automaticNextScreen[currentName];
+        if (nextScreen) queueAutomaticAdvance(current, nextScreen);
       });
       form.querySelectorAll('[data-back]').forEach(function (button) {
         button.addEventListener('click', function () { showScreen(button.dataset.back); });
       });
       form.querySelector('[data-result]').addEventListener('click', function (event) {
         const current = event.currentTarget.closest('[data-screen]');
-        if (!validateScreen(current)) return;
-        calculateResult();
-        if (window.vivianeTrack) window.vivianeTrack('quiz_complete');
-        showScreen('result');
+        advanceFromScreen(current, 'result');
       });
       form.querySelector('[data-restart]').addEventListener('click', function () {
         form.reset();

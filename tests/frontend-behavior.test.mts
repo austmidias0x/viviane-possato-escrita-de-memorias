@@ -5,9 +5,12 @@ import vm from "node:vm";
 
 const siteSource = readFileSync(new URL("../assets/site.js", import.meta.url), "utf8");
 const variantHSource = readFileSync(new URL("../assets/variant-h.js", import.meta.url), "utf8");
+const variantISource = readFileSync(new URL("../assets/variant-i.js", import.meta.url), "utf8");
 const variantHCss = readFileSync(new URL("../assets/variant-h.css", import.meta.url), "utf8");
 const memoriesHSource = readFileSync(new URL("../memoriash/index.html", import.meta.url), "utf8");
 const mentoringHSource = readFileSync(new URL("../mentoriah/index.html", import.meta.url), "utf8");
+const memoriesDSource = readFileSync(new URL("../memoriasd/index.html", import.meta.url), "utf8");
+const mentoringDSource = readFileSync(new URL("../mentoriad/index.html", import.meta.url), "utf8");
 
 type EventDetail = Record<string, unknown>;
 type MockEvent = { type: string; detail?: EventDetail };
@@ -414,6 +417,89 @@ test("signals the analytics guard before H moves the viewport", () => {
 
   assert.notEqual(signalIndex, -1);
   assert.ok(scrollIndex > signalIndex);
+});
+
+test("automatically advances every radio question in the D quizzes", () => {
+  assert.match(
+    memoriesDSource,
+    /automaticNextScreen = \{ q1:'q2', q2:'q3', q3:'bridge', q4:'q5', q5:'q6', q6:'result' \}/,
+  );
+  assert.match(
+    mentoringDSource,
+    /automaticNextScreen = \{ q1:'q2', q3:'bridge', q4:'q5', q5:'q6', q6:'result' \}/,
+  );
+
+  for (const source of [memoriesDSource, mentoringDSource]) {
+    assert.match(source, /form\.addEventListener\('change',[\s\S]*?queueAutomaticAdvance\(current, nextScreen\)/);
+    assert.match(source, /function advanceFromScreen\(screen, nextScreen\)/);
+    assert.match(source, /heading\.focus\(\{ preventScroll: true \}\)/);
+  }
+});
+
+test("cancels the queued D advance when the existing continue action runs first", () => {
+  for (const source of [memoriesDSource, mentoringDSource]) {
+    assert.match(
+      source,
+      /function showScreen\(name\) \{\s*if \(automaticAdvanceTimer\) \{\s*window\.clearTimeout\(automaticAdvanceTimer\);/,
+    );
+    assert.equal(source.match(/vivianeTrack\('quiz_step'/g)?.length, 1);
+    assert.equal(source.match(/vivianeTrack\('quiz_complete'/g)?.length, 1);
+    assert.match(source, /advanceFromScreen\(current, button\.dataset\.next\)/);
+    assert.match(source, /advanceFromScreen\(current, 'result'\)/);
+  }
+});
+
+test("automatically scrolls H and I choices and moves focus to the next prompt", () => {
+  assert.match(variantHSource, /queueAnswerNavigation\(nextStep\)/);
+  assert.match(variantHSource, /queueAnswerNavigation\(result\)/);
+  assert.match(
+    variantHSource,
+    /function queueAnswerNavigation\(target\)[\s\S]*?scrollToElement\(target\);[\s\S]*?focusHeading\(target\)/,
+  );
+
+  assert.match(
+    variantISource,
+    /const nextTarget = stepIndex === steps\.length - 1[\s\S]*?queueChoiceNavigation\(nextTarget\)/,
+  );
+  assert.match(variantISource, /focusTarget\.focus\(\{ preventScroll: true \}\)/);
+});
+
+test("cancels stale focus timers and gives keyboard arrows time to move within a radio group", () => {
+  assert.match(variantHSource, /function cancelPendingAnswerNavigation\(\)[\s\S]*?window\.clearTimeout\(headingFocusTimer\)/);
+  assert.match(variantHSource, /usedArrowKey[\s\S]*?return 1000/);
+  assert.match(variantISource, /function cancelPendingChoiceNavigation\(\)[\s\S]*?window\.clearTimeout\(headingFocusTimer\)/);
+  assert.match(variantISource, /usedArrowKey[\s\S]*?return 1000/);
+
+  for (const source of [memoriesDSource, mentoringDSource]) {
+    assert.match(source, /if \(headingFocusTimer\) \{\s*window\.clearTimeout\(headingFocusTimer\)/);
+    assert.match(source, /usedArrowKey \? 1000 : \(reducedMotion \? 0 : 220\)/);
+  }
+});
+
+test("guards scroll-depth tracking before every automatic quiz scroll", () => {
+  for (const source of [memoriesDSource, mentoringDSource, variantHSource, variantISource]) {
+    const signalIndex = source.indexOf("viviane:programmatic-scroll");
+    const scrollIntoViewIndex = source.indexOf("scrollIntoView", signalIndex);
+    const scrollToIndex = source.indexOf("scrollTo", signalIndex);
+    const viewportMoveIndex = scrollIntoViewIndex === -1 ? scrollToIndex : scrollIntoViewIndex;
+
+    assert.notEqual(signalIndex, -1);
+    assert.ok(viewportMoveIndex > signalIndex);
+  }
+});
+
+test("keeps conversion calls outside the quiz auto-scroll implementations", () => {
+  for (const source of [memoriesDSource, mentoringDSource, variantHSource, variantISource]) {
+    assert.doesNotMatch(source, /fbq\(['"]track['"],\s*['"](?:Lead|InitiateCheckout)['"]/);
+  }
+});
+
+test("keeps the Mentoria D completion payload inside the analytics contract", () => {
+  assert.match(
+    mentoringDSource,
+    /vivianeTrack\('quiz_complete', \{ stage: valueOf\('q1'\) \}\)/,
+  );
+  assert.doesNotMatch(mentoringDSource, /quiz_complete[^\n]*investment/);
 });
 
 function hexToRgb(hex: string): [number, number, number] {
