@@ -18,6 +18,7 @@
   const liveText = document.querySelector('[data-h-live-text]');
   const liveStatus = document.querySelector('[data-h-live-status]');
   const pageMarkers = Array.from(document.querySelectorAll('[data-h-page-marker]'));
+  const afterSections = Array.from(root.querySelectorAll('[data-h-after]'));
   const totalSteps = steps.length;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const answers = {};
@@ -219,6 +220,13 @@
     }
   }
 
+  function setAfterVisible(visible) {
+    afterSections.forEach(function (section) {
+      section.hidden = !visible;
+      section.classList.toggle('is-revealed', visible);
+    });
+  }
+
   function scrollToElement(element) {
     if (!element) return;
     element.scrollIntoView({ behavior: reducedMotion.matches ? 'auto' : 'smooth', block: 'start' });
@@ -347,7 +355,9 @@
     const completed = Object.keys(answers).length;
     const percent = Math.round((completed / totalSteps) * 100);
     progressFill.style.width = percent + '%';
-    progressText.textContent = completed + ' de ' + totalSteps + ' respostas registradas';
+    progressText.textContent = completed < totalSteps
+      ? 'Pergunta ' + (completed + 1) + ' de ' + totalSteps
+      : 'Respostas concluídas';
   }
 
   function selectedReply(input, key) {
@@ -377,6 +387,8 @@
       }
     });
     result.hidden = true;
+    body.removeAttribute('data-qualification');
+    setAfterVisible(false);
   }
 
   function revealStep(index) {
@@ -414,6 +426,7 @@
   function renderResult() {
     const view = currentView();
     result.hidden = false;
+    setAfterVisible(true);
 
     if (offer === 'memorias') {
       result.querySelector('[data-h-result-title]').textContent = 'A sua primeira página pode começar por ' + view.subject.focus + '.';
@@ -462,32 +475,37 @@
       : 'A síntese do seu livro está disponível depois da última pergunta.';
   }
 
-  function startExperience() {
-    if (started) {
-      const pendingStep = steps.find(function (step) { return !answers[step.dataset.hKey]; });
-      const target = pendingStep || result;
-      scrollToElement(target);
-      focusHeading(target);
-      return;
-    }
+  function markExperienceStarted(trigger) {
+    if (started) return;
     started = true;
+    emit('quiz_start', { step: 0, next_step: 1, trigger: trigger || 'first_interaction' });
+    emit('personalization_start', { step: 0, next_step: 1, trigger: trigger || 'first_interaction' });
+  }
+
+  function startExperience() {
+    markExperienceStarted('start_button');
     quiz.hidden = false;
     progress.hidden = false;
-    emit('quiz_start', { step: 0, next_step: 1, trigger: 'start_button' });
-    emit('personalization_start', { step: 0, next_step: 1, trigger: 'start_button' });
-    revealStep(0);
-    scrollToElement(steps[0]);
-    focusHeading(steps[0]);
+    steps[0].hidden = false;
+    const pendingStep = steps.find(function (step) { return !answers[step.dataset.hKey]; });
+    const target = pendingStep || result;
+    scrollToElement(target);
+    focusHeading(target);
   }
 
   root.querySelectorAll('[data-h-start]').forEach(function (button) {
     button.addEventListener('click', startExperience);
   });
 
+  quiz.addEventListener('focusin', function () {
+    markExperienceStarted('first_focus');
+  });
+
   steps.forEach(function (step, index) {
     step.addEventListener('change', function (event) {
       const input = event.target.closest('input[type="radio"]');
       if (!input) return;
+      markExperienceStarted('first_answer');
       const key = step.dataset.hKey;
       const previous = answers[key];
       if (previous && previous !== input.value) resetAfter(index);
@@ -530,6 +548,7 @@
         }
       });
       result.hidden = true;
+      setAfterVisible(false);
       body.removeAttribute('data-qualification');
       updateProgress();
       const defaults = content[offer].defaults;
@@ -540,5 +559,10 @@
       focusHeading(steps[0]);
     });
   });
+
+  quiz.hidden = false;
+  progress.hidden = false;
+  steps[0].hidden = false;
+  setAfterVisible(false);
 
 })();

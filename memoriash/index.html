@@ -27,76 +27,29 @@
   </header>
 
   <main id="conteudo" tabindex="-1" data-h-experience>
-    <section id="inicio" class="h-hero">
-      <div class="h-shell h-hero__grid">
-        <div>
-          <p class="h-eyebrow">Uma conversa de três perguntas</p>
-          <h1>Antes de apresentar o curso, quero entender qual lembrança trouxe você até aqui.</h1>
-          <p class="h-hero__lead">Você escolhe o que deseja preservar, reconhece como essa lembrança aparece e conta qual parte da escrita pede ajuda. Enquanto responde, você vê um ponto de partida ser construído na página ao lado.</p>
-          <ul class="h-hero__facts" aria-label="Informações sobre a experiência">
-            <li>3 perguntas</li>
-            <li>Cerca de 1 minuto</li>
-            <li>Uma proposta de escrita ao final</li>
-          </ul>
-          <div class="h-hero__action">
-            <button class="h-button h-button--primary" type="button" data-h-start>Começar pela minha lembrança</button>
-          </div>
-          <p class="h-hero__note">Você responde somente ao que fizer sentido para você.</p>
-        </div>
-
-        <aside class="h-page-wrap" aria-label="Página personalizada pelas suas respostas">
-          <div class="h-page">
-            <span class="h-page__margin" aria-hidden="true"></span>
-            <div class="h-page__content">
-              <p class="h-page__kicker" data-h-live-kicker>Esta página começa com você</p>
-              <div class="h-page__copy" data-h-live-copy>
-                <h2 class="h-page__title" data-h-live-title>Você tem uma lembrança em mente.</h2>
-                <p class="h-page__text" data-h-live-text>Responda a três perguntas. A página vai acompanhar as suas escolhas e mostrar um ponto de partida possível para a sua escrita.</p>
-              </div>
-              <div class="h-page__footer">
-                <span>Seu rascunho de partida</span>
-                <span class="h-page__progress" aria-hidden="true">
-                  <span data-h-page-marker></span>
-                  <span data-h-page-marker></span>
-                  <span data-h-page-marker></span>
-                </span>
-              </div>
-            </div>
-          </div>
-          <p class="h-sr-only" aria-live="polite" aria-atomic="true" data-h-live-status></p>
-        </aside>
+    <section id="inicio" class="h-hero h-hero--compact">
+      <div class="h-shell h-hero__compact">
+        <p class="h-eyebrow">Escrita de Memórias · 3 perguntas</p>
+        <h1>Qual lembrança você quer escrever?</h1>
+        <p class="h-hero__lead">Comece pela primeira imagem, pessoa ou história que apareceu na sua cabeça. As duas respostas seguintes definem um exercício para escrever essa lembrança.</p>
       </div>
     </section>
 
-    <section id="conversa" class="h-conversation">
+    <section id="conversa" class="h-conversation h-conversation--quiz-first" aria-labelledby="memorias-h-primeira-pergunta">
       <div class="h-shell">
-        <div class="h-conversation__heading">
-          <p class="h-eyebrow">Três escolhas sobre a lembrança</p>
-          <h2 class="h-section-title">Depois de cada resposta, você recebe a próxima pergunta.</h2>
-          <p class="h-section-lead">Ela organiza as escolhas que ajudam você a recortar uma cena, observar um detalhe e começar um primeiro exercício.</p>
-        </div>
-
         <div class="h-conversation__grid">
-          <aside class="h-context" aria-label="Quem conduz o percurso">
-            <img class="h-context__image" src="https://i.im.ge/2025/12/23/BhBOb6.1774e106e-ImagemdoWhatsAppde2025-11-04s185439-72da8cf21-1.png" alt="Viviane Possato" />
-            <div class="h-context__caption">
-              <strong>Viviane Possato</strong>
-              <span>Jornalista, escritora e mentora, com 20 anos de experiência na Globo.</span>
-            </div>
-          </aside>
-
           <div class="h-dialogue">
-            <div class="h-progress" data-h-progress hidden aria-label="Progresso da conversa">
+            <div class="h-progress" data-h-progress aria-label="Progresso da conversa">
               <div class="h-progress__line" aria-hidden="true"><div class="h-progress__fill" data-h-progress-fill></div></div>
               <div class="h-progress__labels">
-                <span data-h-progress-text aria-live="polite">0 de 3 respostas registradas</span>
-                <span>A sua página muda a cada escolha</span>
+                <span data-h-progress-text aria-live="polite">Pergunta 1 de 3</span>
+                <span>Escolha uma opção para avançar</span>
               </div>
             </div>
 
-            <div class="h-quiz" data-h-quiz hidden>
-              <fieldset class="h-step" data-h-step data-h-key="origem" hidden>
-                <legend tabindex="-1" data-h-focus>Quando você pensa em escrever as suas memórias, o que aparece primeiro?</legend>
+            <div class="h-quiz" data-h-quiz>
+              <fieldset class="h-step" data-h-step data-h-key="origem">
+                <legend id="memorias-h-primeira-pergunta" tabindex="-1" data-h-focus>Quando você pensa em escrever as suas memórias, o que aparece primeiro?</legend>
                 <p class="h-step__number">Pergunta 1 de 3</p>
                 <p class="h-step__helper">Escolha a lembrança que voltou à sua cabeça enquanto você lia esta página.</p>
                 <div class="h-options">
@@ -164,10 +117,33 @@
               </div>
             </noscript>
           </div>
+
+          <aside class="h-page-wrap" aria-label="Página personalizada pelas suas respostas">
+            <div class="h-page">
+              <span class="h-page__margin" aria-hidden="true"></span>
+              <div class="h-page__content">
+                <p class="h-page__kicker" data-h-live-kicker>Esta página começa com você</p>
+                <div class="h-page__copy" data-h-live-copy>
+                  <h2 class="h-page__title" data-h-live-title>Você tem uma lembrança em mente.</h2>
+                  <p class="h-page__text" data-h-live-text>Responda a três perguntas. A página vai acompanhar as suas escolhas e mostrar um ponto de partida possível para a sua escrita.</p>
+                </div>
+                <div class="h-page__footer">
+                  <span>Seu rascunho de partida</span>
+                  <span class="h-page__progress" aria-hidden="true">
+                    <span data-h-page-marker></span>
+                    <span data-h-page-marker></span>
+                    <span data-h-page-marker></span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <p class="h-sr-only" aria-live="polite" aria-atomic="true" data-h-live-status></p>
+          </aside>
         </div>
       </div>
     </section>
 
+    <div class="h-after" data-h-after hidden>
     <section class="h-offer" aria-labelledby="memorias-h-curso">
       <div class="h-shell h-offer__grid">
         <div class="h-offer__copy">
@@ -212,6 +188,7 @@
         <a class="h-button h-button--primary" href="https://pay.hotmart.com/U102857700C?bid=1766501787612" data-track-label="final">Começar o curso</a>
       </div>
     </section>
+    </div>
   </main>
 
   <footer class="h-footer">Escrita de Memórias &copy; 2026 · Viviane Possato</footer>
