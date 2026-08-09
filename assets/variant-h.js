@@ -12,6 +12,7 @@
   const progress = root.querySelector('[data-h-progress]');
   const progressFill = root.querySelector('[data-h-progress-fill]');
   const progressText = root.querySelector('[data-h-progress-text]');
+  const progressInstruction = root.querySelector('[data-h-progress-instruction]');
   const liveCopy = document.querySelector('[data-h-live-copy]');
   const liveKicker = document.querySelector('[data-h-live-kicker]');
   const liveTitle = document.querySelector('[data-h-live-title]');
@@ -23,6 +24,7 @@
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const answers = {};
   let started = false;
+  let interactionMode = 'keyboard';
 
   const content = {
     memorias: {
@@ -358,6 +360,11 @@
     progressText.textContent = completed < totalSteps
       ? 'Pergunta ' + (completed + 1) + ' de ' + totalSteps
       : 'Respostas concluídas';
+    progressInstruction.textContent = completed < totalSteps
+      ? 'Escolha uma opção para avançar'
+      : 'Veja a síntese abaixo';
+    progress.setAttribute('aria-valuenow', String(completed));
+    progress.setAttribute('aria-valuetext', progressText.textContent);
   }
 
   function selectedReply(input, key) {
@@ -501,6 +508,14 @@
     markExperienceStarted('first_focus');
   });
 
+  quiz.addEventListener('pointerdown', function () {
+    interactionMode = 'pointer';
+  });
+
+  quiz.addEventListener('keydown', function () {
+    interactionMode = 'keyboard';
+  });
+
   steps.forEach(function (step, index) {
     step.addEventListener('change', function (event) {
       const input = event.target.closest('input[type="radio"]');
@@ -528,8 +543,19 @@
       if (input.hasAttribute('data-qualified')) stepPayload.qualified = input.dataset.qualified === 'true';
       emit('quiz_step', stepPayload);
 
-      if (index + 1 < totalSteps) revealStep(index + 1);
-      else renderResult();
+      if (index + 1 < totalSteps) {
+        const nextStep = steps[index + 1];
+        revealStep(index + 1);
+        liveStatus.textContent = 'Resposta registrada. Pergunta ' + (index + 2) + ' de ' + totalSteps + ' liberada.';
+        if (interactionMode === 'pointer') {
+          window.setTimeout(function () { scrollToElement(nextStep); }, reducedMotion.matches ? 0 : 220);
+        }
+      } else {
+        renderResult();
+        if (interactionMode === 'pointer') {
+          window.setTimeout(function () { scrollToElement(result); }, reducedMotion.matches ? 0 : 220);
+        }
+      }
     });
   });
 

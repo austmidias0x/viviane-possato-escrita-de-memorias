@@ -434,19 +434,21 @@ body[data-offer="mentoria"] .h-page__kicker {
 }
 
 .h-hero__compact {
-  max-width: 900px;
-  padding-block: clamp(34px, 5vw, 62px) clamp(20px, 3vw, 34px);
+  padding-block: clamp(28px, 3.5vw, 46px) clamp(16px, 2vw, 24px);
 }
 
 .h-hero--compact h1 {
-  max-width: 820px;
-  font-size: clamp(2.65rem, 5vw, 4.65rem);
+  max-width: 1050px;
+  font-size: clamp(2.65rem, 4.5vw, 4.15rem);
   line-height: 1.02;
+  overflow-wrap: break-word;
+  text-wrap: balance;
 }
 
 .h-hero--compact .h-hero__lead {
-  max-width: 760px;
-  margin-top: 18px;
+  max-width: 1040px;
+  margin-top: 16px;
+  text-wrap: pretty;
 }
 
 .h-conversation--quiz-first {
@@ -472,7 +474,7 @@ body[data-offer="mentoria"] .h-page__kicker {
 
 .h-conversation--quiz-first .h-page,
 .h-conversation--quiz-first .h-page__content {
-  min-height: 520px;
+  min-height: 460px;
 }
 
 .h-conversation--quiz-first .h-step:first-child {
@@ -597,12 +599,21 @@ body[data-offer="mentoria"] .h-progress {
 }
 
 .h-progress__labels {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
   gap: 16px;
   margin-top: 10px;
   color: var(--h-muted);
   font-size: 0.78rem;
+}
+
+.h-progress__labels span:first-child {
+  white-space: nowrap;
+}
+
+.h-progress__labels span:last-child {
+  min-width: 0;
+  text-align: right;
 }
 
 .h-quiz {
@@ -612,11 +623,12 @@ body[data-offer="mentoria"] .h-progress {
 
 .h-step {
   scroll-margin-top: 155px;
+  min-inline-size: 0;
   min-width: 0;
   margin: 0;
   border: 1px solid var(--h-line);
   background: var(--h-surface);
-  padding: clamp(24px, 5vw, 48px);
+  padding: clamp(24px, 4vw, 36px);
   box-shadow: 0 22px 70px -58px rgba(31, 31, 31, 0.8);
 }
 
@@ -640,7 +652,9 @@ body[data-offer="mentoria"] .h-step {
 }
 
 .h-step__number {
-  margin: 13px 0 0;
+  clear: both;
+  margin: 0;
+  padding-top: 13px;
   color: var(--h-accent-ink);
   font-size: 0.69rem;
   font-weight: 700;
@@ -649,13 +663,18 @@ body[data-offer="mentoria"] .h-step {
 }
 
 .h-step legend {
+  float: left;
+  width: 100%;
   max-width: 680px;
+  margin: 0;
   padding: 0;
   font-family: var(--h-serif);
-  font-size: clamp(1.55rem, 3vw, 2.35rem);
+  font-size: clamp(1.55rem, 2.7vw, 2.15rem);
   font-weight: 500;
   letter-spacing: -0.025em;
   line-height: 1.24;
+  overflow-wrap: break-word;
+  text-wrap: balance;
 }
 
 .h-step__helper {
@@ -745,6 +764,11 @@ body[data-offer="mentoria"] .h-option {
 .h-option:has(input:focus-visible) {
   outline: 3px solid color-mix(in srgb, var(--h-accent) 52%, transparent);
   outline-offset: 3px;
+}
+
+.h-option > span:last-child {
+  min-width: 0;
+  overflow-wrap: break-word;
 }
 
 .h-step__reply {
@@ -1271,7 +1295,7 @@ body[data-variant="h"] main[tabindex="-1"]:focus {
   }
 
   .h-hero__compact {
-    padding-block: 28px 18px;
+    padding-block: 22px 12px;
   }
 
   .h-hero h1 {
@@ -1279,12 +1303,13 @@ body[data-variant="h"] main[tabindex="-1"]:focus {
   }
 
   .h-hero--compact h1 {
-    font-size: clamp(2.35rem, 11.5vw, 3.45rem);
+    font-size: clamp(2.15rem, 10.5vw, 3.1rem);
   }
 
   .h-hero--compact .h-hero__lead {
-    margin-top: 14px;
-    font-size: 1rem;
+    margin-top: 12px;
+    font-size: 0.95rem;
+    line-height: 1.62;
   }
 
   .h-conversation--quiz-first {
@@ -1331,11 +1356,25 @@ body[data-variant="h"] main[tabindex="-1"]:focus {
 
   .h-progress {
     top: 68px;
+    margin-bottom: 18px;
+    padding: 12px 14px;
   }
 
   .h-step {
     scroll-margin-top: 145px;
-    padding: 24px 18px;
+    padding: 22px 16px;
+  }
+
+  .h-step legend {
+    font-size: clamp(1.4rem, 7.2vw, 1.75rem);
+  }
+
+  .h-step__helper {
+    font-size: 0.84rem;
+  }
+
+  .h-options {
+    margin-top: 20px;
   }
 
   .h-options,
@@ -1386,6 +1425,42 @@ body[data-variant="h"] main[tabindex="-1"]:focus {
   .h-page__footer {
     align-items: flex-start;
     flex-direction: column;
+  }
+}
+
+@media (max-width: 340px) {
+  .h-header__inner {
+    min-height: 60px;
+  }
+
+  .h-hero__compact {
+    padding-block: 16px 8px;
+  }
+
+  .h-hero--compact .h-hero__lead {
+    display: none;
+  }
+
+  .h-progress {
+    top: 60px;
+    margin-bottom: 10px;
+    padding: 8px 12px;
+  }
+
+  .h-progress__labels {
+    grid-template-columns: 1fr;
+  }
+
+  .h-progress__labels span:last-child {
+    display: none;
+  }
+
+  .h-step {
+    padding: 16px 14px;
+  }
+
+  .h-options {
+    margin-top: 16px;
   }
 }
 
