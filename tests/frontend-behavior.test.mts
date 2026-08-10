@@ -58,6 +58,7 @@ function createSiteHarness(options: {
   const sessionStorage = createStorage(options.session);
   const localStorage = createStorage();
   const parsedUrl = new URL(options.url || "http://localhost/memoriash/");
+  let assignedLocation = "";
 
   const submitButton = {
     disabled: false,
@@ -85,7 +86,9 @@ function createSiteHarness(options: {
       formListeners.set(type, handlers);
     },
     getAttribute(name: string): string | null {
-      return name === "name" ? "mentoria-h" : null;
+      if (name === "name") return "mentoria-h";
+      if (name === "action") return "/obrigada/";
+      return null;
     },
     checkValidity(): boolean {
       return true;
@@ -140,6 +143,9 @@ function createSiteHarness(options: {
       hostname: parsedUrl.hostname,
       pathname: parsedUrl.pathname,
       search: parsedUrl.search,
+      assign(value: string): void {
+        assignedLocation = value;
+      },
     },
     innerHeight: 100,
     scrollY: 0,
@@ -184,6 +190,9 @@ function createSiteHarness(options: {
     status,
     submitButton,
     dataLayer: windowMock.dataLayer || [],
+    get assignedLocation(): string {
+      return assignedLocation;
+    },
     dispatchForm(type: string, detail?: EventDetail): void {
       (formListeners.get(type) || []).forEach((handler) => handler({ type, detail }));
     },
@@ -370,7 +379,7 @@ test("scrolls to the personalized H copy without creating a checkout event", () 
   assert.match(variantHCss, /\.h-offer\s*{[^}]*scroll-margin-top: 96px;/s);
 });
 
-test("disables the Aust form button after success and restores it on reset", () => {
+test("redirects after Aust success and restores the form state on reset", () => {
   const harness = createSiteHarness({
     withForm: true,
     session: { viviane_pending_application: "pending" },
@@ -379,6 +388,7 @@ test("disables the Aust form button after success and restores it on reset", () 
   harness.dispatchForm("aust:form:submitted");
   assert.equal(harness.submitButton.disabled, true);
   assert.equal(harness.submitButton.textContent, "Diagnóstico enviado");
+  assert.equal(harness.assignedLocation, "/obrigada/");
 
   harness.form.dataset.qualifiedConversionTracked = "true";
   harness.dispatchForm("reset");

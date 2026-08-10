@@ -536,6 +536,7 @@
         submitButton.textContent = 'Diagnóstico enviado';
         submitButton.removeAttribute('aria-busy');
       }
+      window.location.assign(form.getAttribute('action') || '/obrigada/');
     });
 
     form.addEventListener('aust:form:error', function () {
