@@ -50,6 +50,7 @@ function createSiteHarness(options: {
   url?: string;
   session?: Record<string, string>;
   withForm?: boolean;
+  investmentQualified?: boolean;
 } = {}) {
   let clock = 1_000_000;
   const timers: Array<() => void> = [];
@@ -69,12 +70,19 @@ function createSiteHarness(options: {
     textContent: "Os dados serão usados para responder sobre a mentoria.",
     classList: createClassList(),
   };
+  const investmentControl = options.investmentQualified === undefined ? null : {
+    dataset: { qualified: String(options.investmentQualified) },
+    value: options.investmentQualified
+      ? "Tenho disponibilidade para considerar o investimento a partir de R$ 9.997"
+      : "Esse investimento não cabe no meu momento",
+  };
   const form = {
     id: "lead-form",
     dataset: {} as Record<string, string>,
     querySelector(selector: string): unknown {
       if (selector === "[data-form-status]") return status;
       if (selector === 'button[type="submit"], input[type="submit"]') return submitButton;
+      if (selector === '[name="investimento"]:checked' || selector === '[name="investimento"]') return investmentControl;
       return null;
     },
     querySelectorAll(_selector: string): unknown[] {
@@ -97,7 +105,7 @@ function createSiteHarness(options: {
   };
 
   const body = {
-    dataset: { offer: "memorias", variant: "h" } as Record<string, string>,
+    dataset: { offer: options.withForm ? "mentoria" : "memorias", variant: "h" } as Record<string, string>,
   };
   const documentMock = {
     body,
@@ -129,8 +137,8 @@ function createSiteHarness(options: {
   class TestFormData {
     constructor(_form?: unknown) {}
 
-    get(_name: string): null {
-      return null;
+    get(name: string): string | null {
+      return name === "investimento" && investmentControl ? investmentControl.value : null;
     }
   }
 
@@ -190,6 +198,10 @@ function createSiteHarness(options: {
     status,
     submitButton,
     dataLayer: windowMock.dataLayer || [],
+    get metaCalls(): unknown[][] {
+      const fbq = windowMock.fbq as { queue?: ArrayLike<unknown[]> } | undefined;
+      return fbq && fbq.queue ? Array.from(fbq.queue, (entry) => Array.from(entry)) : [];
+    },
     get assignedLocation(): string {
       return assignedLocation;
     },
@@ -400,6 +412,34 @@ test("redirects after Aust success and restores the form state on reset", () => 
   assert.equal(harness.form.dataset.lastTrackedSuccess, undefined);
   assert.equal(harness.form.dataset.qualifiedConversionTracked, undefined);
   assert.equal(harness.sessionStorage.getItem("viviane_pending_application"), null);
+});
+
+test("submits an application without sending Meta Lead when investment is unavailable", () => {
+  const harness = createSiteHarness({
+    url: "https://vivianepossato.com/mentoriah/",
+    withForm: true,
+    investmentQualified: false,
+  });
+
+  harness.dispatchForm("aust:form:submitted");
+
+  assert.equal(harness.assignedLocation, "/obrigada/");
+  assert.equal(harness.dataLayer.some((entry) => entry.event === "form_submit_success"), true);
+  assert.equal(harness.dataLayer.some((entry) => entry.event === "qualified_lead"), false);
+  assert.equal(harness.metaCalls.some((call) => call[0] === "track" && call[1] === "Lead"), false);
+});
+
+test("sends Meta Lead only when investment is explicitly marked as qualified", () => {
+  const harness = createSiteHarness({
+    url: "https://vivianepossato.com/mentoriah/",
+    withForm: true,
+    investmentQualified: true,
+  });
+
+  harness.dispatchForm("aust:form:submitted");
+
+  assert.equal(harness.dataLayer.some((entry) => entry.event === "qualified_lead"), true);
+  assert.equal(harness.metaCalls.some((call) => call[0] === "track" && call[1] === "Lead"), true);
 });
 
 test("ignores scroll depth during the H programmatic scroll window", () => {

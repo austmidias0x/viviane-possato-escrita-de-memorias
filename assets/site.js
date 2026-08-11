@@ -263,11 +263,12 @@
       return true;
     });
 
-    const explicitQualification = field && field.dataset ? field.dataset.qualified : '';
-    const qualified = explicitQualification === 'true' || (
-      explicitQualification !== 'false' &&
-      /tenho disponibilidade|posso investir|consigo investir|a partir de r\$\s*9(?:\.|\s)?997/i.test(value)
-    );
+    const eligibilityField = form.querySelector('[name="elegivel_meta_lead"]');
+    const selectedOption = field && field.selectedOptions ? field.selectedOptions[0] : null;
+    const explicitQualification = eligibilityField
+      ? String(eligibilityField.value || '').toLowerCase()
+      : String((selectedOption && selectedOption.dataset.qualified) || (field && field.dataset && field.dataset.qualified) || '').toLowerCase();
+    const qualified = explicitQualification === 'true';
 
     return { qualified: qualified, value: value };
   }
