@@ -11,6 +11,9 @@ const memoriesHSource = readFileSync(new URL("../memoriash/index.html", import.m
 const mentoringHSource = readFileSync(new URL("../mentoriah/index.html", import.meta.url), "utf8");
 const memoriesDSource = readFileSync(new URL("../memoriasd/index.html", import.meta.url), "utf8");
 const mentoringDSource = readFileSync(new URL("../mentoriad/index.html", import.meta.url), "utf8");
+const memoriesJSource = readFileSync(new URL("../memoriasj/index.html", import.meta.url), "utf8");
+const mentoringJSource = readFileSync(new URL("../mentoriaj/index.html", import.meta.url), "utf8");
+const variantJCss = readFileSync(new URL("../assets/variant-j.css", import.meta.url), "utf8");
 const mentoringASource = readFileSync(new URL("../mentoria/index.html", import.meta.url), "utf8");
 
 type EventDetail = Record<string, unknown>;
@@ -288,6 +291,30 @@ test("keeps example text away from the Mentoria A field borders", () => {
     mentoringASource,
     /#diagnostico select \{\s*padding:\.9rem 2\.8rem \.9rem 1\.15rem;/,
   );
+});
+
+test("keeps Mentoria J connected to Aust CRM and marks qualification explicitly", () => {
+  assert.match(mentoringJSource, /name="mentoria-j"/);
+  assert.match(mentoringJSource, /data-aust-form="88cfead0-7a9f-4e80-9490-7631ed1edc06"/);
+  assert.match(mentoringJSource, /name="disponibilidade"[^>]*data-qualified="true"/);
+  assert.equal((mentoringJSource.match(/name="disponibilidade"[^>]*data-qualified="false"/g) || []).length, 3);
+  assert.match(mentoringJSource, /name="name"/);
+  assert.match(mentoringJSource, /name="email"/);
+  assert.match(mentoringJSource, /name="whatsapp_with_ddd"/);
+  assert.match(mentoringJSource, /name="tema"/);
+  assert.match(mentoringJSource, /name="estagio"/);
+  assert.match(mentoringJSource, /name="trava"/);
+});
+
+test("keeps Mentoria J placeholders inset from field borders", () => {
+  assert.match(variantJCss, /\.j-field input,[\s\S]*?padding:\s*\.88rem 1rem;/);
+  assert.match(mentoringJSource, /placeholder="Digite seu nome"/);
+  assert.match(mentoringJSource, /placeholder="Ex\.: recorte, estrutura ou revisão"/);
+});
+
+test("keeps Memories J on the existing Hotmart checkout", () => {
+  const checkoutLinks = memoriesJSource.match(/https:\/\/pay\.hotmart\.com\/U102857700C\?bid=1766501787612/g) || [];
+  assert.equal(checkoutLinks.length, 3);
 });
 
 test("retains the stored campaign when the URL has no UTM parameter", () => {

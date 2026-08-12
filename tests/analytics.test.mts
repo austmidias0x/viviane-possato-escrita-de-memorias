@@ -21,6 +21,7 @@ import {
   sessionCookie,
 } from "../netlify/functions/_shared/auth.mts";
 import { isSameOrigin, readJsonBody } from "../netlify/functions/_shared/http.mts";
+import { clientIp, parseMetaBrowserEvent } from "../netlify/functions/_shared/meta-events.mts";
 
 const fixedNow = new Date("2026-08-09T12:00:00.000Z");
 
@@ -125,6 +126,42 @@ test("normalizes numeric interaction steps to strings", () => {
   if (!result.ok) return;
   assert.equal(result.event.step, "1");
   assert.equal(result.event.next_step, "2");
+});
+
+test("accepts allowlisted Meta events and strips source URL parameters", () => {
+  const result = parseMetaBrowserEvent({
+    event_name: "Lead",
+    event_id: "meta-11111111-1111-4111-8111-111111111111",
+    event_source_url: "https://vivianepossato.com/mentoriaj/?utm_source=meta",
+    fbp: "fb.1.1766501787612.123456789",
+    fbc: "fb.1.1766501787612.ABC_def-123",
+  });
+  assert.equal(result.ok, true);
+  if (!result.ok) return;
+  assert.equal(result.event.event_source_url, "https://vivianepossato.com/mentoriaj/");
+});
+
+test("rejects Meta events from unknown names and external pages", () => {
+  assert.equal(parseMetaBrowserEvent({
+    event_name: "Purchase",
+    event_id: "meta-11111111-1111-4111-8111-111111111111",
+    event_source_url: "https://vivianepossato.com/memoriasj/",
+  }).ok, false);
+  assert.equal(parseMetaBrowserEvent({
+    event_name: "PageView",
+    event_id: "meta-11111111-1111-4111-8111-111111111111",
+    event_source_url: "https://example.com/",
+  }).ok, false);
+});
+
+test("prefers Netlify client IP for server events", () => {
+  const request = new Request("https://vivianepossato.com/api/meta/events", {
+    headers: {
+      "x-nf-client-connection-ip": "203.0.113.9",
+      "x-forwarded-for": "198.51.100.1, 198.51.100.2",
+    },
+  });
+  assert.equal(clientIp(request), "203.0.113.9");
 });
 
 test("omits optional PII and unsupported optional values without dropping the event", () => {
@@ -252,21 +289,21 @@ test("keeps home and /memorias/ as separate rows", () => {
   ];
   const report = buildAnalyticsReport(events, 7, fixedNow);
   const memoriesA = report.pages.filter((page) => page.offer === "memorias" && page.variant === "a");
-  assert.equal(report.pages.length, 19);
+  assert.equal(report.pages.length, 21);
   assert.deepEqual(memoriesA.map((page) => page.page_path).sort(), ["/", "/memorias/"]);
   assert.equal(report.offers.memorias.visitors, 2);
   assert.equal(report.offer_variants.memorias.a.visitors, 1);
 });
 
-test("returns all A to I experiment pages even when the period has no events", () => {
+test("returns all A to J experiment pages even when the period has no events", () => {
   const report = buildAnalyticsReport([], 30, fixedNow);
   const experimentPages = report.pages.filter((page) => page.is_experiment_page);
-  assert.equal(experimentPages.length, 18);
-  assert.deepEqual(report.comparisons.map((comparison) => comparison.pages.length), [9, 9]);
+  assert.equal(experimentPages.length, 20);
+  assert.deepEqual(report.comparisons.map((comparison) => comparison.pages.length), [10, 10]);
   assert.ok(experimentPages.every((page) => page.visitors === 0 && page.has_data === false));
   assert.ok(Object.values(report.totals.rates).every((rate) => rate === null));
   assert.ok(experimentPages.every((page) => Object.values(page.rates).every((rate) => rate === null)));
-  assert.deepEqual(report.filters.variants, ["a", "b", "c", "d", "e", "f", "g", "h", "i"]);
+  assert.deepEqual(report.filters.variants, ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"]);
 });
 
 test("rejects corrupted stored events before adding them to the report", () => {
@@ -277,8 +314,8 @@ test("rejects corrupted stored events before adding them to the report", () => {
   assert.equal(isStoredAnalyticsEvent({ ...valid, page_path: "/mentoria/" }), false);
 });
 
-test("loads the shared tracking contract on every A to I route", () => {
-  const variants = ["a", "b", "c", "d", "e", "f", "g", "h", "i"] as const;
+test("loads the shared tracking contract on every A to J route", () => {
+  const variants = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"] as const;
   for (const offer of ["memorias", "mentoria"] as const) {
     for (const variant of variants) {
       const directory = variant === "a" ? offer : `${offer}${variant}`;
@@ -342,7 +379,7 @@ test("treats the Memories D quiz as optional because its header opens checkout",
   assert.equal(reportPage(report, "mentoria", "d").funnel.find((stage) => stage.key === "form_attempt")?.denominator_key, "result");
 });
 
-test("keeps universal A to I stages aligned across offers", () => {
+test("keeps universal A to J stages aligned across offers", () => {
   const report = buildAnalyticsReport([], 7, fixedNow);
   const expected = ["visitors", "engaged", "experience_start", "experience_complete", "decision", "conversion"];
   report.comparisons.forEach((comparison) => {
@@ -352,7 +389,7 @@ test("keeps universal A to I stages aligned across offers", () => {
   });
 });
 
-test("renders A to I controls and keeps the selected rate tied to each bar", () => {
+test("renders A to J controls and keeps the selected rate tied to each bar", () => {
   const html = readFileSync(new URL("../analise/index.html", import.meta.url), "utf8");
   const client = readFileSync(new URL("../assets/analytics-dashboard.js", import.meta.url), "utf8");
   const css = readFileSync(new URL("../assets/analytics-dashboard.css", import.meta.url), "utf8");

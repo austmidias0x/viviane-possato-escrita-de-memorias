@@ -30,7 +30,7 @@ export const ANALYTICS_EVENTS = [
 
 export type AnalyticsEventName = (typeof ANALYTICS_EVENTS)[number];
 export type AnalyticsOffer = "memorias" | "mentoria";
-export type AnalyticsVariant = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i";
+export type AnalyticsVariant = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j";
 
 export interface StoredAnalyticsEvent {
   schema_version: 1;
@@ -102,7 +102,7 @@ const CONTROL_OR_MARKUP_PATTERN = /[\p{C}<>]/u;
 const EMAIL_PATTERN = /[\p{L}\p{N}._%+-]+@[\p{L}\p{N}.-]+\.[\p{L}]{2,}/iu;
 const PHONE_PATTERN = /(?:\+?\d[\s().-]*){9,}/;
 const OFFER_SET = new Set<AnalyticsOffer>(["memorias", "mentoria"]);
-const VARIANT_SET = new Set<AnalyticsVariant>(["a", "b", "c", "d", "e", "f", "g", "h", "i"]);
+const VARIANT_SET = new Set<AnalyticsVariant>(["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"]);
 
 type RecordValue = Record<string, unknown>;
 type ParseResult =

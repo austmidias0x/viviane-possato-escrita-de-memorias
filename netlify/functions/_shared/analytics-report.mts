@@ -6,7 +6,7 @@ import {
   type StoredAnalyticsEvent,
 } from "./analytics-schema.mts";
 
-const VARIANTS: AnalyticsVariant[] = ["a", "b", "c", "d", "e", "f", "g", "h", "i"];
+const VARIANTS: AnalyticsVariant[] = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
 const OFFERS: AnalyticsOffer[] = ["mentoria", "memorias"];
 const ANALYTICS_EVENT_SET = new Set<AnalyticsEventName>(ANALYTICS_EVENTS);
 const START_EVENTS = new Set<AnalyticsEventName>([
