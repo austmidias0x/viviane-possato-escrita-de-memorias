@@ -279,6 +279,17 @@ test("keeps the redesigned Mentoria A form connected to Aust CRM", () => {
   }
 });
 
+test("keeps example text away from the Mentoria A field borders", () => {
+  assert.match(
+    mentoringASource,
+    /#diagnostico input:not\(\[type="hidden"\]\):not\(\[type="radio"\]\) \{\s*padding:\.9rem 1\.15rem;/,
+  );
+  assert.match(
+    mentoringASource,
+    /#diagnostico select \{\s*padding:\.9rem 2\.8rem \.9rem 1\.15rem;/,
+  );
+});
+
 test("retains the stored campaign when the URL has no UTM parameter", () => {
   const harness = createSiteHarness({
     url: "http://localhost/memoriash/?fbclid=123",
