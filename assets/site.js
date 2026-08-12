@@ -9,7 +9,7 @@
     if (!isConversionPage) return null;
     try {
       const value = JSON.parse(window.sessionStorage.getItem(pendingApplicationKey) || 'null');
-      if (!value || value.offer !== 'mentoria' || !/^[a-i]$/.test(value.variant)) return null;
+      if (!value || value.offer !== 'mentoria' || !/^[a-j]$/.test(value.variant)) return null;
       const expectedPath = value.variant === 'a' ? '/mentoria/' : '/mentoria' + value.variant + '/';
       const normalizedPath = String(value.page_path || '').replace(/\/+$/, '') + '/';
       const age = Date.now() - Number(value.submitted_at || 0);
@@ -36,6 +36,7 @@
   const campaignKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
   const metaPixelId = '1091512559548489';
   const analyticsEndpoint = '/api/track';
+  const metaEventsEndpoint = '/api/meta/events';
   const campaign = {};
   const currentHostname = window.location.hostname.toLowerCase();
   const isProductionDomain = currentHostname === 'vivianepossato.com' || currentHostname.endsWith('.vivianepossato.com');
@@ -96,16 +97,60 @@
     });
   }
 
+  function createMetaEventId() {
+    return createAnonymousId('meta');
+  }
+
+  function readCookie(name) {
+    const prefix = name + '=';
+    const part = String(document.cookie || '').split(';').map(function (value) { return value.trim(); }).find(function (value) {
+      return value.indexOf(prefix) === 0;
+    });
+    return part ? decodeURIComponent(part.slice(prefix.length)) : '';
+  }
+
+  function metaClickCookie() {
+    const stored = readCookie('_fbc');
+    if (stored) return stored;
+    const clickId = new URL(window.location.href).searchParams.get('fbclid');
+    return clickId ? 'fb.1.' + Date.now() + '.' + clickId : '';
+  }
+
+  function sendMetaServerEvent(eventName, eventId) {
+    if (trackingSuppressed) return;
+    const payload = JSON.stringify({
+      event_name: eventName,
+      event_id: eventId,
+      event_source_url: window.location.origin + window.location.pathname,
+      fbp: readCookie('_fbp'),
+      fbc: metaClickCookie()
+    });
+    if (payload.length > 4000) return;
+    window.fetch(metaEventsEndpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: payload,
+      credentials: 'same-origin',
+      keepalive: true
+    }).catch(function () {
+      return;
+    });
+  }
+
   function trackMetaCustom(eventName, details) {
     const metaEventName = metaCustomEvents[eventName];
-    if (trackingSuppressed || !metaEventName || typeof window.fbq !== 'function') return;
+    if (trackingSuppressed || !metaEventName) return;
 
-    window.fbq('trackCustom', metaEventName, {
-      content_name: pageId,
-      content_category: offer,
-      variant: variant,
-      step: String((details && (details.step || details.next_step)) || '')
-    });
+    const eventId = createMetaEventId();
+    if (typeof window.fbq === 'function') {
+      window.fbq('trackCustom', metaEventName, {
+        content_name: pageId,
+        content_category: offer,
+        variant: variant,
+        step: String((details && (details.step || details.next_step)) || '')
+      }, { eventID: eventId });
+    }
+    sendMetaServerEvent(metaEventName, eventId);
   }
 
   function track(eventName, details) {
@@ -156,12 +201,17 @@
     document.head.appendChild(script);
 
     fbq('init', metaPixelId);
-    fbq('track', 'PageView');
+    const pageViewEventId = createMetaEventId();
+    fbq('track', 'PageView', {}, { eventID: pageViewEventId });
+    sendMetaServerEvent('PageView', pageViewEventId);
     window.__vivianeMetaPixelInitialized = true;
   }
 
   function trackMeta(eventName, details) {
-    if (!trackingSuppressed && typeof window.fbq === 'function') window.fbq('track', eventName, details || {});
+    if (trackingSuppressed) return;
+    const eventId = createMetaEventId();
+    if (typeof window.fbq === 'function') window.fbq('track', eventName, details || {}, { eventID: eventId });
+    sendMetaServerEvent(eventName, eventId);
   }
 
   initializeMetaPixel();
