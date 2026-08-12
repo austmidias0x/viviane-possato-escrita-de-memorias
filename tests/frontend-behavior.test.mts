@@ -296,14 +296,23 @@ test("keeps example text away from the Mentoria A field borders", () => {
 test("keeps Mentoria J connected to Aust CRM and marks qualification explicitly", () => {
   assert.match(mentoringJSource, /name="mentoria-j"/);
   assert.match(mentoringJSource, /data-aust-form="88cfead0-7a9f-4e80-9490-7631ed1edc06"/);
-  assert.match(mentoringJSource, /name="disponibilidade"[^>]*data-qualified="true"/);
-  assert.equal((mentoringJSource.match(/name="disponibilidade"[^>]*data-qualified="false"/g) || []).length, 3);
+  assert.equal((mentoringJSource.match(/name="disponibilidade"[^>]*data-qualified="true"/g) || []).length, 3);
+  assert.equal((mentoringJSource.match(/name="disponibilidade"[^>]*data-qualified="false"/g) || []).length, 1);
   assert.match(mentoringJSource, /name="name"/);
   assert.match(mentoringJSource, /name="email"/);
   assert.match(mentoringJSource, /name="whatsapp_with_ddd"/);
   assert.match(mentoringJSource, /name="tema"/);
   assert.match(mentoringJSource, /name="estagio"/);
   assert.match(mentoringJSource, /name="trava"/);
+});
+
+test("qualifies every explicit positive investment range on Mentoria A and J", () => {
+  for (const source of [mentoringASource, mentoringJSource]) {
+    assert.match(source, /value="Até R\$ 5\.000" data-qualified="true"/);
+    assert.match(source, /value="De R\$ 5\.001 a R\$ 9\.996" data-qualified="true"/);
+    assert.match(source, /value="A partir de R\$ 9\.997" data-qualified="true"/);
+    assert.match(source, /value="Ainda não pretendo investir" data-qualified="false"/);
+  }
 });
 
 test("keeps Mentoria J placeholders inset from field borders", () => {
