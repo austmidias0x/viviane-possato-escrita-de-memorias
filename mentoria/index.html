@@ -231,11 +231,22 @@
     .form-field--full { grid-column:1 / -1; }
     #diagnostico input:not([type="hidden"]):not([type="radio"]),
     #diagnostico select {
-      min-height:52px;
+      min-height:54px;
       border-color:#A6A09A;
       border-radius:.7rem;
       background:#fff;
       transition:border-color .15s,box-shadow .15s;
+    }
+    #diagnostico input:not([type="hidden"]):not([type="radio"]) {
+      padding:.9rem 1.15rem;
+    }
+    #diagnostico select {
+      padding:.9rem 2.8rem .9rem 1.15rem;
+    }
+    #diagnostico input::placeholder {
+      color:#77736F;
+      font-style:italic;
+      opacity:1;
     }
     #diagnostico input:not([type="hidden"]):not([type="radio"]):hover,
     #diagnostico select:hover { border-color:#6F6964; }
