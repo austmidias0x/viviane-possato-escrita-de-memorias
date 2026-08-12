@@ -55,6 +55,235 @@
     input[type="radio"] { width:auto; }
     .radio-card:has(input:checked) { border-color:#BC3D3D; background: rgba(188,61,61,0.06); }
     .squiggle { color:#D9A8A8; }
+    .diagnostic-section {
+      position:relative;
+      overflow:hidden;
+      border-block:1px solid #E9E7E3;
+      background:
+        radial-gradient(circle at 7% 16%, rgba(188,61,61,.08), transparent 24rem),
+        linear-gradient(180deg, #FBF8F6 0%, #FAFAF9 100%);
+      padding:clamp(5rem,9vw,8rem) 0;
+    }
+    .diagnostic-section::after {
+      position:absolute;
+      right:-8rem;
+      bottom:-12rem;
+      width:28rem;
+      height:28rem;
+      border:1px solid rgba(188,61,61,.1);
+      border-radius:999px;
+      content:"";
+    }
+    .diagnostic-shell {
+      position:relative;
+      z-index:1;
+      display:grid;
+      width:min(1180px,calc(100% - 48px));
+      margin-inline:auto;
+      grid-template-columns:minmax(0,.72fr) minmax(560px,1.18fr);
+      align-items:start;
+      gap:clamp(3rem,7vw,6.5rem);
+    }
+    .diagnostic-intro {
+      position:sticky;
+      top:7.5rem;
+      padding-top:.5rem;
+    }
+    .diagnostic-kicker {
+      margin-bottom:1.1rem;
+      color:#A52E2E;
+      font-size:.72rem;
+      font-weight:700;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+    }
+    .diagnostic-title {
+      margin:0;
+      font-family:"Noto Serif",Georgia,serif;
+      font-size:clamp(2.35rem,4.2vw,4.15rem);
+      font-weight:500;
+      letter-spacing:-.035em;
+      line-height:1.07;
+    }
+    .diagnostic-copy {
+      max-width:30rem;
+      margin:1.5rem 0 0;
+      color:#5C5C5C;
+      font-size:1.06rem;
+      line-height:1.75;
+    }
+    .diagnostic-steps {
+      display:grid;
+      gap:.9rem;
+      margin:2.25rem 0 0;
+      padding:0;
+      list-style:none;
+    }
+    .diagnostic-steps li {
+      display:grid;
+      grid-template-columns:2rem 1fr;
+      align-items:center;
+      gap:.85rem;
+      color:#444;
+      font-size:.92rem;
+    }
+    .diagnostic-steps span {
+      display:grid;
+      width:2rem;
+      height:2rem;
+      border:1px solid rgba(188,61,61,.38);
+      border-radius:999px;
+      place-items:center;
+      color:#A52E2E;
+      font-family:"Noto Serif",Georgia,serif;
+      font-size:.82rem;
+    }
+    .diagnostic-investment {
+      margin-top:2.25rem;
+      border-left:3px solid #BC3D3D;
+      background:rgba(255,255,255,.66);
+      padding:1rem 1.15rem;
+    }
+    .diagnostic-investment strong {
+      display:block;
+      font-family:"Noto Serif",Georgia,serif;
+      font-size:1.3rem;
+      font-weight:500;
+    }
+    .diagnostic-investment p {
+      margin:.25rem 0 0;
+      color:#686868;
+      font-size:.82rem;
+      line-height:1.5;
+    }
+    .diagnostic-author {
+      display:flex;
+      align-items:center;
+      gap:.85rem;
+      margin-top:2rem;
+      border-top:1px solid rgba(26,26,26,.1);
+      padding-top:1.5rem;
+    }
+    .diagnostic-author img {
+      width:2.8rem;
+      height:2.8rem;
+      border-radius:999px;
+      object-fit:cover;
+      filter:grayscale(1);
+    }
+    .diagnostic-author strong,
+    .diagnostic-author span { display:block; }
+    .diagnostic-author strong { font-size:.9rem; }
+    .diagnostic-author span { margin-top:.1rem; color:#686868; font-size:.78rem; }
+    .diagnostic-form {
+      border:1px solid rgba(26,26,26,.1);
+      border-radius:1.5rem;
+      background:rgba(255,255,255,.94);
+      padding:clamp(1.5rem,4vw,3rem);
+      box-shadow:0 32px 80px -50px rgba(36,25,25,.5);
+      backdrop-filter:blur(14px);
+    }
+    .form-section + .form-section {
+      margin-top:2rem;
+      border-top:1px solid #E9E7E3;
+      padding-top:2rem;
+    }
+    .form-section-heading {
+      display:flex;
+      align-items:center;
+      gap:.75rem;
+      margin-bottom:1.2rem;
+    }
+    .form-section-heading span {
+      display:grid;
+      width:1.8rem;
+      height:1.8rem;
+      border-radius:999px;
+      background:#F8EEEE;
+      place-items:center;
+      color:#A52E2E;
+      font-family:"Noto Serif",Georgia,serif;
+      font-size:.75rem;
+    }
+    .form-section-heading h3 {
+      margin:0;
+      font-family:"Noto Serif",Georgia,serif;
+      font-size:1.4rem;
+      font-weight:500;
+    }
+    .form-section-heading strong {
+      font-family:"Noto Serif",Georgia,serif;
+      font-size:1.4rem;
+      font-weight:500;
+    }
+    .investment-legend {
+      display:block;
+      width:100%;
+      padding:0;
+    }
+    .investment-legend .form-section-heading { margin-bottom:1.2rem; }
+    .investment-question { max-width:46rem; }
+    .form-grid {
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:1.1rem;
+    }
+    .form-field--full { grid-column:1 / -1; }
+    #diagnostico input:not([type="hidden"]):not([type="radio"]),
+    #diagnostico select {
+      min-height:52px;
+      border-color:#A6A09A;
+      border-radius:.7rem;
+      background:#fff;
+      transition:border-color .15s,box-shadow .15s;
+    }
+    #diagnostico input:not([type="hidden"]):not([type="radio"]):hover,
+    #diagnostico select:hover { border-color:#6F6964; }
+    #diagnostico .radio-card {
+      min-height:58px;
+      border-color:#B8B2AC;
+      border-radius:.75rem;
+      background:#fff;
+      line-height:1.35;
+    }
+    #diagnostico .radio-card:hover { border-color:#BC3D3D; }
+    #diagnostico .radio-card:has(input:checked) {
+      border-color:#BC3D3D;
+      background:#F8EEEE;
+      box-shadow:inset 0 0 0 1px rgba(188,61,61,.12);
+    }
+    #diagnostico input[type="radio"] { accent-color:#BC3D3D; }
+    .form-submit-area {
+      margin-top:2rem;
+      border-top:1px solid #E9E7E3;
+      padding-top:1.5rem;
+    }
+    .form-submit-area button {
+      min-height:56px;
+      border-radius:.8rem;
+      font-weight:600;
+      box-shadow:0 14px 30px -18px rgba(188,61,61,.72);
+    }
+    .form-submit-area p { margin:.8rem 0 0; line-height:1.5; }
+    @media (max-width: 960px) {
+      .diagnostic-shell { grid-template-columns:1fr; }
+      .diagnostic-intro { position:static; max-width:42rem; }
+      .diagnostic-title { max-width:14ch; }
+    }
+    @media (max-width: 640px) {
+      .diagnostic-section { padding:4.5rem 0; }
+      .diagnostic-shell { width:min(100% - 32px,1180px); gap:2.5rem; }
+      .diagnostic-title { font-size:2.5rem; }
+      .diagnostic-copy { font-size:1rem; }
+      .diagnostic-steps { margin-top:1.75rem; }
+      .diagnostic-author { display:none; }
+      .diagnostic-form { border-radius:1.1rem; padding:1.35rem; }
+      .form-grid { grid-template-columns:1fr; }
+      .form-field--full { grid-column:auto; }
+      .form-section + .form-section { margin-top:1.6rem; padding-top:1.6rem; }
+      .form-section-heading h3 { font-size:1.25rem; }
+      #diagnostico .radio-card { min-height:54px; }
+    }
   </style>
 </head>
 <body data-offer="mentoria" data-variant="a">
@@ -115,13 +344,28 @@
   </section>
 
   <!-- Diagnóstico form -->
-  <section id="diagnostico" class="py-20">
-    <div class="max-w-2xl mx-auto px-6">
-      <div class="divider mb-5"></div>
-      <h2 class="font-serif text-3xl sm:text-4xl mb-3">Diagnóstico do seu livro</h2>
-      <p class="text-subtle leading-relaxed mb-10">Preciso entender seu caso para a gente conversar com clareza.</p>
+  <section id="diagnostico" class="diagnostic-section">
+    <div class="diagnostic-shell">
+      <aside class="diagnostic-intro">
+        <p class="diagnostic-kicker">Próximo passo</p>
+        <h2 id="diagnostico-titulo" class="diagnostic-title">Conte em que ponto o seu livro está.</h2>
+        <p class="diagnostic-copy">As respostas ajudam Viviane a entender o tema, o estágio do projeto e o que hoje interrompe a escrita antes da conversa.</p>
+        <ol class="diagnostic-steps" aria-label="Como funciona o diagnóstico">
+          <li><span>1</span>Preencha os dados e o contexto do livro.</li>
+          <li><span>2</span>Envie as respostas dentro desta página.</li>
+          <li><span>3</span>Use a confirmação para chamar Viviane no WhatsApp.</li>
+        </ol>
+        <div class="diagnostic-investment">
+          <strong>A partir de R$ 9.997</strong>
+          <p>O diagnóstico registra o seu momento para que a conversa comece com esse contexto.</p>
+        </div>
+        <div class="diagnostic-author">
+          <img src="https://vivianepossato.vercel.app/_next/image?url=%2Ffotos%2Fviviane-13.jpeg&w=1920&q=85" alt="" />
+          <div><strong>Viviane Possato</strong><span>Jornalista e mentora de livros</span></div>
+        </div>
+      </aside>
 
-      <form id="lead-form" name="mentoria-a" method="POST" action="/obrigada/" data-netlify="true" netlify-honeypot="bot-field" class="card-white p-6 sm:p-10 space-y-10">
+      <form id="lead-form" name="mentoria-a" method="POST" action="/obrigada/" data-netlify="true" netlify-honeypot="bot-field" class="diagnostic-form" aria-labelledby="diagnostico-titulo">
         <input type="hidden" name="form-name" value="mentoria-a" />
         <input type="hidden" name="pagina" value="mentoria-a" />
         <input type="hidden" name="rota" value="/mentoria" />
@@ -131,10 +375,10 @@
         <input type="hidden" name="utm_content" data-campaign-field />
         <input type="hidden" name="utm_term" data-campaign-field />
         <p class="hidden"><label>Não preencha este campo: <input name="bot-field" data-aust-honeypot /></label></p>
-        <div>
-          <p class="group-label mb-4">Contato</p>
-          <div class="space-y-5">
-            <div>
+        <section class="form-section">
+          <div class="form-section-heading"><span>01</span><h3>Seus dados</h3></div>
+          <div class="form-grid">
+            <div class="form-field--full">
               <label class="field-label" for="nome">Nome completo</label>
               <input id="nome" name="name" type="text" placeholder="Seu nome" required />
             </div>
@@ -147,33 +391,37 @@
               <input id="whatsapp" name="whatsapp_with_ddd" type="tel" placeholder="(00) 00000-0000" required />
             </div>
           </div>
-        </div>
+        </section>
 
-        <div>
-          <p class="group-label mb-4">O livro</p>
-          <label class="field-label" for="tema">Sobre o que você quer escrever?</label>
-          <input id="tema" name="tema" type="text" placeholder="Exemplo: metodologia de vendas, experiência como gestor, trajetória no mercado financeiro..." required />
-        </div>
+        <section class="form-section">
+          <div class="form-section-heading"><span>02</span><h3>Sobre o livro</h3></div>
+          <div class="form-grid">
+            <div class="form-field--full">
+              <label class="field-label" for="tema">Sobre o que você quer escrever?</label>
+              <input id="tema" name="tema" type="text" placeholder="Resuma o tema em uma frase" required />
+            </div>
+            <div>
+              <label class="field-label" for="estagio">Em que ponto o projeto está?</label>
+              <select id="estagio" name="estagio" required>
+                <option value="" selected disabled>Selecione o estágio</option>
+                <option>Tenho uma ideia ou um tema</option>
+                <option>Tenho anotações espalhadas</option>
+                <option>Já escrevi alguns capítulos</option>
+                <option>Tenho um primeiro rascunho</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label" for="trava">O que interrompe a escrita hoje?</label>
+              <input id="trava" name="trava" type="text" placeholder="Estrutura, tempo ou direção" required />
+            </div>
+          </div>
+        </section>
 
-        <div>
-          <label class="field-label" for="estagio">Em que ponto o projeto está?</label>
-          <select id="estagio" name="estagio" required>
-            <option value="" selected disabled>Selecione o estágio</option>
-            <option>Tenho uma ideia ou um tema</option>
-            <option>Tenho anotações espalhadas</option>
-            <option>Já escrevi alguns capítulos</option>
-            <option>Tenho um primeiro rascunho</option>
-          </select>
-        </div>
-
-        <div>
-          <p class="group-label mb-4">Motivação</p>
-          <label class="field-label" for="trava">O que interrompe a escrita hoje?</label>
-          <input id="trava" name="trava" type="text" placeholder="Estrutura, confiança no texto, disciplina ou primeiro passo?" required />
-        </div>
-
-        <fieldset>
-          <legend class="field-label mb-4">O investimento da mentoria parte de R$ 9.997. Qual opção descreve melhor o seu momento?</legend>
+        <fieldset class="form-section">
+          <legend class="investment-legend">
+            <span class="form-section-heading"><span>03</span><strong>Momento do investimento</strong></span>
+            <span class="field-label mb-4 investment-question">O investimento da mentoria parte de R$ 9.997. Qual opção descreve melhor o seu momento?</span>
+          </legend>
           <div class="grid sm:grid-cols-2 gap-3">
             <label class="radio-card"><input type="radio" name="disponibilidade" value="Ainda não pretendo investir" data-qualified="false" required /> Ainda não pretendo investir</label>
             <label class="radio-card"><input type="radio" name="disponibilidade" value="Até R$ 5.000" data-qualified="false" /> Até R$ 5.000</label>
@@ -182,8 +430,10 @@
           </div>
         </fieldset>
 
-        <button type="submit" class="w-full bg-accent text-white py-4 rounded-lg text-sm tracking-wide hover:bg-ink transition-colors disabled:opacity-60">Enviar meu diagnóstico</button>
-        <p id="formNote" data-form-status class="text-subtle text-xs text-center" aria-live="polite">Os dados serão usados para responder sobre a mentoria.</p>
+        <div class="form-submit-area">
+          <button type="submit" class="w-full bg-accent text-white py-4 text-sm tracking-wide hover:bg-ink transition-colors disabled:opacity-60">Enviar meu diagnóstico</button>
+          <p id="formNote" data-form-status class="text-subtle text-xs text-center" aria-live="polite">Os dados serão usados para responder sobre a mentoria.</p>
+        </div>
       </form>
       <script async src="https://forms.austhq.com/forms.js" data-aust-form="88cfead0-7a9f-4e80-9490-7631ed1edc06" data-aust-form-id="lead-form"></script>
     </div>

@@ -11,6 +11,7 @@ const memoriesHSource = readFileSync(new URL("../memoriash/index.html", import.m
 const mentoringHSource = readFileSync(new URL("../mentoriah/index.html", import.meta.url), "utf8");
 const memoriesDSource = readFileSync(new URL("../memoriasd/index.html", import.meta.url), "utf8");
 const mentoringDSource = readFileSync(new URL("../mentoriad/index.html", import.meta.url), "utf8");
+const mentoringASource = readFileSync(new URL("../mentoria/index.html", import.meta.url), "utf8");
 
 type EventDetail = Record<string, unknown>;
 type MockEvent = { type: string; detail?: EventDetail };
@@ -247,6 +248,35 @@ test("replaces a stored campaign when the URL contains a partial new campaign", 
   assert.equal(pageView?.utm_campaign, "agosto");
   assert.equal(pageView?.utm_medium, "");
   assert.equal(pageView?.utm_content, "memorias-h");
+});
+
+test("keeps the redesigned Mentoria A form connected to Aust CRM", () => {
+  assert.match(mentoringASource, /<form id="lead-form" name="mentoria-a" method="POST" action="\/obrigada\/" data-netlify="true" netlify-honeypot="bot-field"/);
+  assert.match(mentoringASource, /class="diagnostic-form" aria-labelledby="diagnostico-titulo"/);
+  assert.match(
+    mentoringASource,
+    /<script async src="https:\/\/forms\.austhq\.com\/forms\.js" data-aust-form="88cfead0-7a9f-4e80-9490-7631ed1edc06" data-aust-form-id="lead-form"><\/script>/,
+  );
+
+  for (const fieldName of [
+    "form-name",
+    "pagina",
+    "rota",
+    "utm_source",
+    "utm_medium",
+    "utm_campaign",
+    "utm_content",
+    "utm_term",
+    "name",
+    "email",
+    "whatsapp_with_ddd",
+    "tema",
+    "estagio",
+    "trava",
+    "disponibilidade",
+  ]) {
+    assert.match(mentoringASource, new RegExp(`name="${fieldName}"`), `missing CRM field ${fieldName}`);
+  }
 });
 
 test("retains the stored campaign when the URL has no UTM parameter", () => {
