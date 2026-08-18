@@ -313,12 +313,7 @@
       return true;
     });
 
-    const eligibilityField = form.querySelector('[name="elegivel_meta_lead"]');
-    const selectedOption = field && field.selectedOptions ? field.selectedOptions[0] : null;
-    const explicitQualification = eligibilityField
-      ? String(eligibilityField.value || '').toLowerCase()
-      : String((selectedOption && selectedOption.dataset.qualified) || (field && field.dataset && field.dataset.qualified) || '').toLowerCase();
-    const qualified = explicitQualification === 'true';
+    const qualified = true;
 
     return { qualified: qualified, value: value };
   }
@@ -365,7 +360,7 @@
       stage: stage
     });
 
-    if (!investment.qualified || (form && form.dataset.qualifiedConversionTracked === 'true')) return;
+    if (form && form.dataset.qualifiedConversionTracked === 'true') return;
 
     if (form) form.dataset.qualifiedConversionTracked = 'true';
     track('qualified_lead', {
@@ -376,7 +371,7 @@
     trackMeta('Lead', {
       content_name: pageId,
       content_category: 'Mentoria Página a Página',
-      status: 'qualified'
+      status: 'submitted'
     });
   }
 

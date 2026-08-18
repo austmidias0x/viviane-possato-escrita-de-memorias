@@ -276,7 +276,6 @@ test("keeps the redesigned Mentoria A form connected to Aust CRM", () => {
     "tema",
     "estagio",
     "trava",
-    "disponibilidade",
   ]) {
     assert.match(mentoringASource, new RegExp(`name="${fieldName}"`), `missing CRM field ${fieldName}`);
   }
@@ -306,13 +305,12 @@ test("keeps Mentoria J connected to Aust CRM and marks qualification explicitly"
   assert.match(mentoringJSource, /name="trava"/);
 });
 
-test("qualifies every explicit positive investment range on Mentoria A and J", () => {
-  for (const source of [mentoringASource, mentoringJSource]) {
-    assert.match(source, /value="Até R\$ 5\.000" data-qualified="true"/);
-    assert.match(source, /value="De R\$ 5\.001 a R\$ 9\.996" data-qualified="true"/);
-    assert.match(source, /value="A partir de R\$ 9\.997" data-qualified="true"/);
-    assert.match(source, /value="Ainda não pretendo investir" data-qualified="false"/);
-  }
+test("removes investment qualification from Mentoria A and preserves the archived Mentoria J choices", () => {
+  assert.doesNotMatch(mentoringASource, /name="disponibilidade"/);
+  assert.match(mentoringJSource, /value="Até R\$ 5\.000" data-qualified="true"/);
+  assert.match(mentoringJSource, /value="De R\$ 5\.001 a R\$ 9\.996" data-qualified="true"/);
+  assert.match(mentoringJSource, /value="A partir de R\$ 9\.997" data-qualified="true"/);
+  assert.match(mentoringJSource, /value="Ainda não pretendo investir" data-qualified="false"/);
 });
 
 test("keeps Mentoria J placeholders inset from field borders", () => {
@@ -491,7 +489,7 @@ test("redirects after Aust success and restores the form state on reset", () => 
   assert.equal(harness.sessionStorage.getItem("viviane_pending_application"), null);
 });
 
-test("submits an application without sending Meta Lead when investment is unavailable", () => {
+test("sends Meta Lead after every confirmed application", () => {
   const harness = createSiteHarness({
     url: "https://vivianepossato.com/mentoriah/",
     withForm: true,
@@ -502,11 +500,11 @@ test("submits an application without sending Meta Lead when investment is unavai
 
   assert.equal(harness.assignedLocation, "/obrigada/");
   assert.equal(harness.dataLayer.some((entry) => entry.event === "form_submit_success"), true);
-  assert.equal(harness.dataLayer.some((entry) => entry.event === "qualified_lead"), false);
-  assert.equal(harness.metaCalls.some((call) => call[0] === "track" && call[1] === "Lead"), false);
+  assert.equal(harness.dataLayer.some((entry) => entry.event === "qualified_lead"), true);
+  assert.equal(harness.metaCalls.some((call) => call[0] === "track" && call[1] === "Lead"), true);
 });
 
-test("sends Meta Lead only when investment is explicitly marked as qualified", () => {
+test("deduplicates Meta Lead after a confirmed application", () => {
   const harness = createSiteHarness({
     url: "https://vivianepossato.com/mentoriah/",
     withForm: true,
@@ -514,9 +512,10 @@ test("sends Meta Lead only when investment is explicitly marked as qualified", (
   });
 
   harness.dispatchForm("aust:form:submitted");
+  harness.dispatchForm("aust:form:submitted");
 
-  assert.equal(harness.dataLayer.some((entry) => entry.event === "qualified_lead"), true);
-  assert.equal(harness.metaCalls.some((call) => call[0] === "track" && call[1] === "Lead"), true);
+  assert.equal(harness.dataLayer.filter((entry) => entry.event === "qualified_lead").length, 1);
+  assert.equal(harness.metaCalls.filter((call) => call[0] === "track" && call[1] === "Lead").length, 1);
 });
 
 test("ignores scroll depth during the H programmatic scroll window", () => {
