@@ -258,7 +258,7 @@ test("keeps the redesigned Mentoria A form connected to Aust CRM", () => {
   assert.match(mentoringASource, /class="diagnostic-form" aria-labelledby="diagnostico-titulo"/);
   assert.match(
     mentoringASource,
-    /<script async src="https:\/\/forms\.austhq\.com\/forms\.js" data-aust-form="88cfead0-7a9f-4e80-9490-7631ed1edc06" data-aust-form-id="lead-form"><\/script>/,
+    /<script async src="https:\/\/app\.austhq\.com\/forms\.js" data-aust-form="88cfead0-7a9f-4e80-9490-7631ed1edc06" data-aust-form-id="lead-form"><\/script>/,
   );
 
   for (const fieldName of [
