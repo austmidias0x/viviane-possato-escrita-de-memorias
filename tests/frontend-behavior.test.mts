@@ -322,6 +322,9 @@ test("keeps Mentoria J placeholders inset from field borders", () => {
 test("keeps Memories J on the existing Hotmart checkout", () => {
   const checkoutLinks = memoriesJSource.match(/https:\/\/pay\.hotmart\.com\/U102857700C\?bid=1766501787612/g) || [];
   assert.equal(checkoutLinks.length, 3);
+  assert.match(memoriesJSource, /R\$ 197 à vista/);
+  assert.match(memoriesJSource, /<strong>R\$ 197<\/strong>/);
+  assert.doesNotMatch(memoriesJSource, /R\$ 297/);
 });
 
 test("retains the stored campaign when the URL has no UTM parameter", () => {
